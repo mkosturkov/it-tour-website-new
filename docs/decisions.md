@@ -135,3 +135,4 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later
 3. Photos: who has the past event photos, and can we use them?
 4. Volunteer form: which fields do we need?
 5. Sponsors: are we sure about no public prices?
+6. Numbers: the mockups say 230+ speakers and 350+ talks. These are estimates (from the highest speaker ID on the old site, and roughly 6 talks per edition). What are the real counts? The 62 editions and the 2012 start are exact.
