@@ -19,8 +19,8 @@
   --text: #eef1f4;
   --muted: #a0abb8;
   --dim: #6f7b88;
-  --accent: #7cf2c4;
-  --accent-ink: #0f2a20;
+  --accent: #7aa7ff;
+  --accent-ink: #0c1a33;
   --live: #ff6363;
 
   --plovdiv: #c8ca08;
@@ -33,6 +33,12 @@
   --body: "Inter", system-ui, sans-serif;
   --r: 14px;
 }
+/* Accent options, picked with the mockup accent switch */
+[data-accent="blue"]   { --accent: #7aa7ff; --accent-ink: #0c1a33; }
+[data-accent="violet"] { --accent: #b49cff; --accent-ink: #1d1438; }
+[data-accent="white"]  { --accent: #f1ece2; --accent-ink: #171c23; }
+[data-accent="teal"]   { --accent: #5fb4c7; --accent-ink: #0b2228; }
+[data-accent="mint"]   { --accent: #7cf2c4; --accent-ink: #0f2a20; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--body); }
@@ -145,7 +151,7 @@ nav ul a:hover { color: var(--text); }
 /* involve */
 .involve { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .inv { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 28px; display: grid; gap: 12px; align-content: start; }
-.inv .icon { width: 46px; height: 46px; border-radius: 12px; background: color-mix(in srgb, var(--accent) 14%, var(--panel)); display: grid; place-items: center; }
+.inv .icon { color: var(--accent); width: 46px; height: 46px; border-radius: 12px; background: color-mix(in srgb, var(--accent) 14%, var(--panel)); display: grid; place-items: center; }
 .inv h3 { font-size: 23px; }
 .inv p { margin: 0; color: var(--muted); }
 .inv .btn { justify-self: start; margin-top: 6px; }
@@ -193,6 +199,13 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
 .status .actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .status .btn { padding: 9px 16px; font-size: 14px; }
 
+/* Mockup-only chrome: accent switch */
+.accent-switch { position: fixed; top: 80px; right: 16px; z-index: 1000; display: flex; align-items: center; gap: 2px; padding: 4px 4px 4px 12px; border-radius: 999px; background: #111; color: #ddd; font: 500 12px/1 system-ui, sans-serif; box-shadow: 0 6px 24px rgba(0,0,0,.3); }
+.accent-switch span { margin-right: 4px; opacity: .7; }
+.accent-switch button { border: 0; border-radius: 999px; padding: 6px 10px 6px 8px; background: transparent; color: inherit; font: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.accent-switch button i { width: 12px; height: 12px; border-radius: 50%; background: var(--sw); }
+.accent-switch button[aria-pressed="true"] { background: #fff; color: #111; }
+
 @media (max-width: 960px) {
   nav ul { display: none; }
   .hero-grid, .stops-grid, .news-grid, .subscribe { grid-template-columns: 1fr; }
@@ -218,6 +231,9 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
   .status .now, .status p { display: none; }
   .status img { width: 36px; height: 36px; }
   .foot { grid-template-columns: 1fr; }
+  .accent-switch { left: 12px; right: 12px; overflow-x: auto; white-space: nowrap; padding-left: 4px; }
+  .accent-switch button { padding: 6px 8px 6px 6px; font-size: 11px; flex: none; }
+  .accent-switch span { display: none; }
 }
 </style>
 </head>
@@ -374,17 +390,17 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
       </div>
       <div class="involve">
         <div class="inv">
-          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7cf2c4" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
           <h3>Стани лектор</h3><p>Имаш опит, който си струва да се разкаже? Кандидатствай за някой от градовете.</p>
           <a class="btn btn-ghost" href="#">Кандидатствай</a>
         </div>
         <div class="inv">
-          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7cf2c4" stroke-width="2"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></span>
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></span>
           <h3>Стани спонсор</h3><p>Подкрепи безплатните конференции и се срещни с IT общността в пет града.</p>
           <a class="btn btn-ghost" href="#">Свържи се с нас</a>
         </div>
         <div class="inv">
-          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7cf2c4" stroke-width="2"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M17 11h6M20 8v6"/></svg></span>
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M17 11h6M20 8v6"/></svg></span>
           <h3>Стани доброволец</h3><p>Помогни в своя град или за целия сезон: регистрация, зали, стрийм, снимки.</p>
           <a class="btn btn-ghost" href="#">Запиши се</a>
         </div>
@@ -443,6 +459,28 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
 </div>
 
 <script>
+// Mockup-only: accent colour switch (?accent=blue|violet|white|teal|mint, remembered per browser)
+(function () {
+  var OPTS = [['blue', 'Синьо', '#7aa7ff'], ['violet', 'Виолетово', '#b49cff'], ['white', 'Бяло', '#f1ece2'], ['teal', 'Тюркоаз', '#5fb4c7'], ['mint', 'Зелено', '#7cf2c4']];
+  var KEY = 'ittour-mock-accent';
+  function read() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function save(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+  var cur = new URLSearchParams(location.search).get('accent') || read() || 'blue';
+  if (!OPTS.some(function (o) { return o[0] === cur; })) cur = 'blue';
+  document.documentElement.setAttribute('data-accent', cur);
+  var bar = document.createElement('div');
+  bar.className = 'accent-switch';
+  bar.innerHTML = '<span>Акцент:</span>' + OPTS.map(function (o) {
+    return '<button data-a="' + o[0] + '" style="--sw:' + o[2] + '" aria-pressed="' + (o[0] === cur) + '"><i></i>' + o[1] + '</button>';
+  }).join('');
+  bar.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    cur = b.dataset.a; save(cur);
+    document.documentElement.setAttribute('data-accent', cur);
+    bar.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+  });
+  document.body.appendChild(bar);
+})();
 document.addEventListener('click', function (e) {
   var x = e.target.closest('.status .x');
   if (x) x.closest('.status').classList.add('closed');
