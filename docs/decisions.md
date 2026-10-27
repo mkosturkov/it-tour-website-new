@@ -1,6 +1,6 @@
 # IT Tour website: decisions and open questions
 
-Status: planning done. Next: homepage mockups in four directions.
+Status: homepage feedback given. Version E (dark, about-first, status pop-up) built for review.
 Last updated: 2026-10-27
 
 Legend: ✅ decided · ❓ open, to discuss · 🔜 later
@@ -136,3 +136,9 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later
 4. Volunteer form: which fields do we need?
 5. Sponsors: are we sure about no public prices?
 6. Numbers: the mockups say 230+ speakers and 350+ talks. These are estimates (from the highest speaker ID on the old site, and roughly 6 talks per edition). What are the real counts? The 62 editions and the 2012 start are exact.
+
+## Homepage feedback (round 1)
+- ✅ C (Editorial) dropped. A: clean and easy to follow, but no paper or road-trip look. B: colours liked, terminal style too generic. D: section order confusing.
+- ✅ Homepage order: what IT Tour is → stops (map with dates + city cards) → news → team → videos → get involved → sponsors → subscribe.
+- ✅ Season status is a small pop-up that slides in after load (next stop / live now). No pop-up off-season.
+- ✅ Dark theme, a bit lighter than B, not terminal-styled. Built as version E (designs/e-tour-dark).
