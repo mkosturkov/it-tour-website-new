@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Лектори · IT Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/mockup.css">
+<link rel="stylesheet" href="site.css">
+<script src="../shared/mockup.js"></script>
+<script src="site.js"></script>
+</head>
+<body data-page="talks">
+<div data-slot="header"></div>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">IT Tour</a><span>/</span><span>Лектори</span></div>
+      <h1>Лекторите на IT Tour</h1>
+      <p class="lead">Над 230 души са говорили на сцената от 2012 насам. Всеки има профил с всичките си лекции.</p>
+      <div class="links"><a class="btn btn-primary" href="speak.html">Стани лектор</a></div>
+    </div>
+  </section>
+
+  <section class="tight" style="padding-top:0">
+    <div class="wrap">
+      <form class="filters" role="search">
+        <input type="search" id="sp-q" placeholder="Търси по име" aria-label="Търсене по име">
+        <select aria-label="Град" id="sp-city"><option>Всички градове</option><option>Пловдив</option><option>Търново</option><option>Бургас</option><option>Варна</option><option>Русе</option></select>
+      </form>
+      <p class="count-line">Показани 8 от 230+ (примерни данни)</p>
+      <div class="speakers">
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--plovdiv)">снимка</div><b>Светлин Наков</b><span>PlovdivConf 2025</span></a>
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--plovdiv)">снимка</div><b>Никола Богданов</b><span>PlovdivConf 2025</span></a>
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--plovdiv)">снимка</div><b>Стефан Ангелов</b><span>PlovdivConf 2025</span></a>
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--plovdiv)">снимка</div><b>Михаил Петров</b><span>PlovdivConf 2025</span></a>
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--burgas)">снимка</div><b>Иво Гергов</b><span>BurgasConf 2026</span></a>
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--burgas)">снимка</div><b>Росен Иванов</b><span>BurgasConf 2026</span></a>
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--varna)">снимка</div><b>Име Фамилия</b><span>3 лекции · Варна, Русе</span></a>
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--tarnovo)">снимка</div><b>Име Фамилия</b><span>2 лекции · Търново</span></a>
+      </div>
+      <div class="pager"><a class="pill on" href="#">1</a><a class="pill" href="#">2</a><a class="pill" href="#">3</a><span class="pill" style="border:0">…</span><a class="pill" href="#">Напред →</a></div>
+    </div>
+  </section>
+</main>
+
+<div data-slot="footer"></div>
+<div data-slot="status"></div>
+</body>
+</html>

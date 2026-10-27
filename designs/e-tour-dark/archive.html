@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Архив · IT Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/mockup.css">
+<link rel="stylesheet" href="site.css">
+<script src="../shared/mockup.js"></script>
+<script src="site.js"></script>
+</head>
+<body data-page="archive">
+<div data-slot="header"></div>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">IT Tour</a><span>/</span><span>Архив</span></div>
+      <h1>Всички издания от 2012 насам</h1>
+      <p class="lead">62 конференции в шест града. Всяко издание има своя страница с програмата, видеата и снимките. Старите адреси като burgasconf.com/archive/2019 водят тук.</p>
+    </div>
+  </section>
+
+  <section class="tight" style="padding-top:0">
+    <div class="wrap">
+      <div class="filters" id="arch-filters">
+        <div class="pills" role="group" aria-label="Град">
+          <button class="pill on" data-city="all">Всички градове</button>
+          <button class="pill" data-city="plovdiv"><span class="cdot" style="--c:var(--plovdiv)"></span>Пловдив</button>
+          <button class="pill" data-city="tarnovo"><span class="cdot" style="--c:var(--tarnovo)"></span>Търново</button>
+          <button class="pill" data-city="burgas"><span class="cdot" style="--c:var(--burgas)"></span>Бургас</button>
+          <button class="pill" data-city="varna"><span class="cdot" style="--c:var(--varna)"></span>Варна</button>
+          <button class="pill" data-city="ruse"><span class="cdot" style="--c:var(--ruse)"></span>Русе</button>
+          <button class="pill" data-city="blagoevgrad"><span class="cdot" style="--c:var(--dim)"></span>Благоевград</button>
+        </div>
+        <select id="arch-year" aria-label="Година"><option value="all">Всички години</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>…</option><option>2012</option></select>
+      </div>
+
+      <div id="arch-list">
+        <div class="year-head" data-year="2026"><h2>2026</h2><span>сезонът тече · 2 от 5 издания минаха</span></div>
+        <div class="ed-grid" data-year="2026">
+          <a class="ed" href="event-ruse.html" data-city="plovdiv"><img src="../shared/logos/plovdiv.png" alt=""><div><h3>PlovdivConf 2026</h3><p>30.05 · Хотел SPS</p></div><div class="stats"><span>8 лекции</span><span>видеа</span><span>снимки</span></div></a>
+          <a class="ed" href="event-ruse.html" data-city="tarnovo"><img src="../shared/logos/tarnovo.png" alt=""><div><h3>TarnovoConf 2026</h3><p>27.06 · ВТУ, Корпус 4</p></div><div class="stats"><span>5 лекции</span><span>видеа</span><span>снимки</span></div></a>
+        </div>
+
+        <div class="year-head" data-year="2025"><h2>2025</h2><span>5 издания</span></div>
+        <div class="ed-grid" data-year="2025">
+          <a class="ed" href="event-ruse.html" data-city="plovdiv"><img src="../shared/logos/plovdiv.png" alt=""><div><h3>PlovdivConf 2025</h3><p>Пловдив</p></div><div class="stats"><span>лекции</span><span>видеа</span><span>снимки</span></div></a>
+          <a class="ed" href="event-ruse.html" data-city="tarnovo"><img src="../shared/logos/tarnovo.png" alt=""><div><h3>TarnovoConf 2025</h3><p>Велико Търново</p></div><div class="stats"><span>лекции</span><span>видеа</span><span>снимки</span></div></a>
+          <a class="ed" href="event-ruse.html" data-city="burgas"><img src="../shared/logos/burgas.png" alt=""><div><h3>BurgasConf 2025</h3><p>Бургас</p></div><div class="stats"><span>лекции</span><span>видеа</span><span>снимки</span></div></a>
+          <a class="ed" href="event-ruse.html" data-city="varna"><img src="../shared/logos/varna.png" alt=""><div><h3>VarnaConf 2025</h3><p>Варна</p></div><div class="stats"><span>лекции</span><span>видеа</span><span>снимки</span></div></a>
+          <a class="ed" href="event-ruse.html" data-city="ruse"><img src="../shared/logos/ruse.png" alt=""><div><h3>RuseConf 2025</h3><p>Русе</p></div><div class="stats"><span>лекции</span><span>видеа</span><span>снимки</span></div></a>
+        </div>
+
+        <div class="year-head" data-year="2024"><h2>2024</h2><span>5 издания</span></div>
+        <div class="ed-grid" data-year="2024">
+          <a class="ed" href="event-ruse.html" data-city="plovdiv"><img src="../shared/logos/plovdiv.png" alt=""><div><h3>PlovdivConf 2024</h3><p>Пловдив</p></div><div class="stats"><span>лекции</span><span>видеа</span><span>снимки</span></div></a>
+          <a class="ed" href="event-ruse.html" data-city="tarnovo"><img src="../shared/logos/tarnovo.png" alt=""><div><h3>TarnovoConf 2024</h3><p>Велико Търново</p></div><div class="stats"><span>лекции</span><span>видеа</span><span>снимки</span></div></a>
+          <a class="ed" href="event-ruse.html" data-city="burgas"><img src="../shared/logos/burgas.png" alt=""><div><h3>BurgasConf 2024</h3><p>Бургас</p></div><div class="stats"><span>лекции</span><span>видеа</span><span>снимки</span></div></a>
+          <a class="ed" href="event-ruse.html" data-city="varna"><img src="../shared/logos/varna.png" alt=""><div><h3>VarnaConf 2024</h3><p>Варна</p></div><div class="stats"><span>лекции</span><span>видеа</span><span>снимки</span></div></a>
+          <a class="ed" href="event-ruse.html" data-city="ruse"><img src="../shared/logos/ruse.png" alt=""><div><h3>RuseConf 2024</h3><p>Русе</p></div><div class="stats"><span>лекции</span><span>видеа</span><span>снимки</span></div></a>
+        </div>
+
+        <div class="year-head" data-year="older"><h2>По-стари години</h2><span>2012 – 2023 · включително BlagoevgradConf до 2014</span></div>
+        <div class="editions" data-year="older">
+          <a class="pill" href="#">2023</a><a class="pill" href="#">2022</a><a class="pill" href="#">2021</a><a class="pill" href="#">2020</a><a class="pill" href="#">2019</a><a class="pill" href="#">2018</a><a class="pill" href="#">2017</a><a class="pill" href="#">2016</a><a class="pill" href="#">2015</a><a class="pill" href="#">2014</a><a class="pill" href="#">2013</a><a class="pill" href="#">2012</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-slot="footer"></div>
+<div data-slot="status"></div>
+<script>
+// Mockup filter: city pills and year select hide non-matching editions
+(function () {
+  var city = 'all', year = 'all';
+  function apply() {
+    document.querySelectorAll('#arch-list .ed').forEach(function (e) { e.hidden = city !== 'all' && e.dataset.city !== city; });
+    document.querySelectorAll('#arch-list [data-year]').forEach(function (b) {
+      var y = b.dataset.year, visibleYear = year === 'all' || y === year || (y === 'older' && !/^202[4-6]$/.test(year));
+      var hasItems = !b.classList.contains('ed-grid') || b.querySelector('.ed:not([hidden])');
+      b.hidden = !visibleYear || (!hasItems);
+    });
+    document.querySelectorAll('#arch-list .year-head').forEach(function (h) {
+      var g = h.nextElementSibling; if (g && g.hidden) h.hidden = true;
+    });
+  }
+  document.getElementById('arch-filters').addEventListener('click', function (e) {
+    var p = e.target.closest('[data-city]'); if (!p) return;
+    city = p.dataset.city;
+    this.querySelectorAll('[data-city]').forEach(function (x) { x.classList.toggle('on', x === p); });
+    apply();
+  });
+  document.getElementById('arch-year').addEventListener('change', function () { year = this.value; apply(); });
+})();
+</script>
+</body>
+</html>

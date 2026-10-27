@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BurgasConf 2026 · IT Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/mockup.css">
+<link rel="stylesheet" href="site.css">
+<script src="../shared/mockup.js"></script>
+<script src="site.js"></script>
+</head>
+<body data-page="stops" style="--c:var(--burgas)">
+<div data-slot="header"></div>
+<div class="mock-note"><div class="wrap"><b>Макет:</b> страница на събитие в деня на конференцията (на живо). Лекциите в 14:30 и 15:20 са истински, останалите са примерни.</div></div>
+
+<main>
+  <section class="ev-hero">
+    <div class="wrap ev-grid">
+      <div>
+        <div class="ev-brand"><img src="../shared/logos/burgas.png" alt="Лого на BurgasConf"><a class="part-of" href="index.html"><span class="mark"></span>Част от IT Tour 2026 · спирка 3 от 5</a></div>
+        <h1>BurgasConf <span>2026</span></h1>
+        <span class="state-chip live"><span class="dot"></span>На живо сега</span>
+        <div class="ev-facts">
+          <div><b>Събота, 25 юли 2026</b>10:30 – 18:00, после after party</div>
+          <div><b>Колеж по туризъм</b>Университет „Проф. д-р Асен Златаров“</div>
+          <div><b>Вход свободен</b>без билети</div>
+        </div>
+        <div class="cta"><a class="btn btn-primary" href="#live">▶ Гледай на живо</a><a class="btn btn-ghost" href="#schedule">Програмата</a></div>
+      </div>
+      <div class="side-card" id="rsvp">
+        <h3>Идваш ли днес?</h3>
+        <div class="rsvp">
+          <div class="count"><span class="faces"><i></i><i></i><i></i><i></i></span><span><b>86</b> души казаха, че идват</span></div>
+          <a class="btn btn-primary" href="#" data-rsvp>Идвам</a>
+          <span class="done-msg">Чудесно, до скоро! Ще ти пратим линк към записите след събитието.</span>
+          <ul class="perks"><li>Напомняне и карта до залата</li><li>Записите и слайдовете първи</li><li>Без регистрация на входа</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="ev-nav" aria-label="Секции на събитието"><div class="wrap"><ul>
+    <li><a href="#live">На живо</a></li><li><a href="#schedule">Програма</a></li><li><a href="#speakers">Лектори</a></li><li><a href="#venue">Място</a></li><li><a href="#partners">Партньори</a></li><li><a href="#editions">Минали издания</a></li>
+  </ul></div></nav>
+
+  <section id="live">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow" style="color:var(--live)">● Излъчване на живо</span><h2>Гледай от залата</h2></div></div>
+      <div class="player-wrap">
+        <div class="player">
+          <div class="screen ph" role="img" aria-label="Вграден плейър (заместител)"><span class="live-tag">НА ЖИВО</span><div class="play"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div>
+          <div class="bar"><span style="color:var(--muted);font-size:14px">Вграденият плейър идва от YouTube или от външна услуга.</span>
+            <div class="stream-links"><a class="btn btn-ghost btn-sm" href="#">Гледай в YouTube ↗</a><a class="btn btn-ghost btn-sm" href="#">Външен плейър ↗</a></div>
+          </div>
+        </div>
+        <div class="onstage">
+          <span class="label">Сега на сцената · 14:30</span>
+          <h3>Смарт хоум: Решенията, които не са за подценяване</h3>
+          <div class="who" style="display:flex;gap:10px;align-items:center;color:var(--muted)"><span class="ph" style="width:36px;height:36px;border-radius:50%;font-size:0"></span>Иво Гергов</div>
+          <div class="next"><span class="label">След това · 15:20</span><br><b style="color:var(--text)">Coding в ерата на AI</b><br>Росен Иванов</div>
+          <a class="more" href="#schedule">Цялата програма ↓</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" id="schedule">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Програма</span><h2>25 юли</h2></div><span class="placeholder-tag">една зала, една сцена</span></div>
+      <div class="schedule">
+        <div class="slot break past"><span class="time">10:00</span><div><h3>Регистрация и кафе</h3></div></div>
+        <div class="slot past"><span class="time">10:30</span><div><h3>Откриване на BurgasConf 2026</h3><div class="who">Екипът на IT Tour</div></div></div>
+        <div class="slot past"><span class="time">10:45</span><div><h3>Примерна лекция: Наблюдаемост без бюджет</h3><div class="who"><span class="ph"></span>Име Фамилия</div></div><a class="act" href="talk.html">Запис ▶</a></div>
+        <div class="slot past"><span class="time">11:35</span><div><h3>Примерна лекция: Как мигрирахме монолит, без да спираме</h3><div class="who"><span class="ph"></span>Име Фамилия</div></div><a class="act" href="talk.html">Запис ▶</a></div>
+        <div class="slot break past"><span class="time">12:25</span><div><h3>Обедна почивка</h3></div></div>
+        <div class="slot past"><span class="time">13:40</span><div><h3>Примерна лекция: Тестове, които хората четат</h3><div class="who"><span class="ph"></span>Име Фамилия</div></div><a class="act" href="talk.html">Запис ▶</a></div>
+        <div class="slot now"><span class="time">14:30</span><div><h3>Смарт хоум: Решенията, които не са за подценяване</h3><div class="who"><span class="ph"></span>Иво Гергов</div></div><a class="act" href="#live" style="color:var(--live)">● Сега</a></div>
+        <div class="slot"><span class="time">15:20</span><div><h3>Coding в ерата на AI</h3><div class="who"><span class="ph"></span>Росен Иванов</div></div></div>
+        <div class="slot break"><span class="time">16:10</span><div><h3>Кафе пауза</h3></div></div>
+        <div class="slot"><span class="time">16:30</span><div><h3>Примерна дискусия: 20 години в бранша</h3><div class="who"><span class="ph"></span>Модератор и гости</div></div></div>
+        <div class="slot"><span class="time">17:20</span><div><h3>Lightning talks</h3><div class="who">5 минути, всеки може да се запише на място</div></div></div>
+        <div class="slot break"><span class="time">18:30</span><div><h3>After party</h3></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="speakers">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Лектори</span><h2>Кой говори</h2></div><a class="more" href="speakers.html">Всички лектори на IT Tour →</a></div>
+      <div class="speakers">
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--burgas)">снимка</div><b>Иво Гергов</b><span>Смарт хоум: Решенията, които не са за подценяване</span></a>
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--burgas)">снимка</div><b>Росен Иванов</b><span>Coding в ерата на AI</span></a>
+        <a class="speaker" href="speaker.html"><div class="ph">снимка</div><b>Име Фамилия</b><span>Наблюдаемост без бюджет</span></a>
+        <a class="speaker" href="speaker.html"><div class="ph">снимка</div><b>Име Фамилия</b><span>Как мигрирахме монолит, без да спираме</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" id="venue">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Място</span><h2>Как да стигнеш</h2></div></div>
+      <div class="venue">
+        <dl>
+          <div><dt>Зала</dt><dd>Колеж по туризъм, Университет „Проф. д-р Асен Златаров“, Бургас</dd></div>
+          <div><dt>Кога</dt><dd>Събота, 25 юли 2026 · вратите отварят в 10:00</dd></div>
+          <div><dt>After party</dt><dd>Мястото ще обявим в деня на събитието</dd></div>
+          <div><dt>Достъпност</dt><dd>Залата е на партерен етаж, с достъп за колички</dd></div>
+          <a class="btn btn-ghost btn-sm" href="#" style="justify-self:start">Отвори в Google Maps ↗</a>
+        </dl>
+        <div class="ph" style="--c:var(--burgas)">карта</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="partners">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Партньори</span><h2>С подкрепата на</h2></div><a class="more" href="sponsors.html">Стани партньор →</a></div>
+      <div class="sponsors">
+        <div class="tier"><span class="t">Спонсори</span><div class="logos"><span class="slogo">StorPool</span><span class="slogo">IntWay</span></div></div>
+        <div class="tier"><span class="t">Медийни партньори</span><div class="logos"><span class="slogo">Dev.bg</span><span class="slogo">Подкрепи БГ</span><span class="slogo">WomenWhoGrow</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt tight" id="editions">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Архив</span><h2>Минали издания на BurgasConf</h2></div></div>
+      <div class="editions"><a class="pill" href="event-ruse.html">2025</a><a class="pill" href="event-ruse.html">2024</a><a class="pill" href="event-ruse.html">2023</a><a class="pill" href="event-ruse.html">2022</a><a class="pill" href="archive.html">Всички години →</a></div>
+    </div>
+  </section>
+
+  <section class="tight">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">IT Tour 2026</span><h2>Другите спирки</h2></div></div>
+      <div class="other-stops">
+        <a class="stop done" href="event-plovdiv.html" style="--c:var(--plovdiv)"><img src="../shared/logos/plovdiv.png" alt=""><div><h3>Пловдив</h3><p>30.05 · мина</p></div></a>
+        <a class="stop done" href="archive.html" style="--c:var(--tarnovo)"><img src="../shared/logos/tarnovo.png" alt=""><div><h3>Търново</h3><p>27.06 · мина</p></div></a>
+        <a class="stop" href="event-varna.html" style="--c:var(--varna)"><img src="../shared/logos/varna.png" alt=""><div><h3>Варна</h3><p>22.08 · предстои</p></div></a>
+        <a class="stop" href="event-ruse.html" style="--c:var(--ruse)"><img src="../shared/logos/ruse.png" alt=""><div><h3>Русе</h3><p>26.09 · предстои</p></div></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-slot="footer"></div>
+</body>
+</html>

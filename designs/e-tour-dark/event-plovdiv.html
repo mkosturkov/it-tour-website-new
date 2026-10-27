@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlovdivConf 2027 · IT Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/mockup.css">
+<link rel="stylesheet" href="site.css">
+<script src="../shared/mockup.js"></script>
+<script src="site.js"></script>
+</head>
+<body data-page="stops" style="--c:var(--plovdiv)">
+<div data-slot="header"></div>
+<div class="mock-note"><div class="wrap"><b>Макет:</b> страница на събитие рано преди конференцията: приемаме кандидатури за лектори, програма още няма. Датите са примерни.</div></div>
+
+<main>
+  <section class="ev-hero">
+    <div class="wrap ev-grid">
+      <div>
+        <div class="ev-brand"><img src="../shared/logos/plovdiv.png" alt="Лого на PlovdivConf"><a class="part-of" href="index.html"><span class="mark"></span>Част от IT Tour 2027 · спирка 1 от 5</a></div>
+        <h1>PlovdivConf <span>2027</span></h1>
+        <span class="state-chip"><span class="dot"></span>Приемаме лектори</span>
+        <div class="ev-facts">
+          <div><b>Май 2027</b>точната дата предстои</div>
+          <div><b>Пловдив</b>залата предстои</div>
+          <div><b>Вход свободен</b>без билети</div>
+        </div>
+        <div class="cta"><a class="btn btn-primary" href="speak.html">Кандидатствай за лектор</a><a class="btn btn-ghost" href="#notify">Уведоми ме за програмата</a></div>
+      </div>
+      <div class="side-card">
+        <h3>Покана за лектори</h3>
+        <p>Търсим практици, които да разкажат какво са построили, счупили и научили. Не е нужно да си говорил досега.</p>
+        <div class="countdown"><div><b>15</b><span>март</span></div><div><b>30</b><span>мин лекция</span></div><div><b>1</b><span>сцена</span></div></div>
+        <a class="btn btn-primary" href="speak.html">Изпрати тема</a>
+        <span style="color:var(--dim);font-size:13px">Отговаряме на всички до края на март.</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="cfp">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">За лектори</span><h2>Какво търсим</h2><p>PlovdivConf е за разработчици, тестери, дизайнери, мениджъри и студенти. Говорим на български, без продажби от сцената.</p></div></div>
+      <div class="cfp">
+        <div class="inv"><b>01</b><h3>Изпращаш тема</h3><p>Заглавие, кратко описание и няколко думи за теб. Отнема десет минути.</p></div>
+        <div class="inv"><b>02</b><h3>Екипът избира</h3><p>Местният екип гледа всички предложения и подрежда програмата до края на март.</p></div>
+        <div class="inv"><b>03</b><h3>Помагаме ти</h3><p>Ако е първата ти лекция, ще ти дадем обратна връзка и репетиция преди събитието.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt tight" id="notify">
+    <div class="wrap">
+      <div class="subscribe" style="--accent:var(--c);--accent-ink:#1d1d05">
+        <div><h2>Програмата излиза през април</h2><p>Остави имейл и ще ти пишем, щом обявим датата, залата и лекторите.</p></div>
+        <form class="field"><input type="email" placeholder="твоят имейл" aria-label="Имейл" id="notify-email"><button class="btn btn-primary">Уведоми ме</button></form>
+      </div>
+    </div>
+  </section>
+
+  <section id="editions">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Архив</span><h2>Последното издание</h2></div><a class="more" href="archive.html">Всички години →</a></div>
+      <div class="news-grid">
+        <a class="card news-feature" href="event-ruse.html"><div class="ph" style="--c:var(--plovdiv)">снимка от PlovdivConf 2026</div><div class="body"><div class="meta"><span class="tag" style="--c:var(--plovdiv)">PlovdivConf 2026</span><span>30.05.2026 · Хотел SPS</span></div><h3>Видеата и снимките от 2026</h3><p>Всички лекции от миналото издание, записани и качени.</p></div></a>
+        <div class="news-side">
+          <a class="card" href="talk.html"><div class="ph" style="--c:var(--plovdiv)">▶</div><div class="body"><div class="meta">PlovdivConf 2025</div><h3>Vibe coding</h3><p>Светлин Наков</p></div></a>
+          <a class="card" href="talk.html"><div class="ph" style="--c:var(--plovdiv)">▶</div><div class="body"><div class="meta">PlovdivConf 2025</div><h3>LLM в базата данни</h3><p>Михаил Петров</p></div></a>
+        </div>
+      </div>
+      <div class="editions" style="margin-top:24px"><a class="pill" href="event-ruse.html">2026</a><a class="pill" href="event-ruse.html">2025</a><a class="pill" href="event-ruse.html">2024</a><a class="pill" href="event-ruse.html">2023</a><a class="pill" href="archive.html">Всички години →</a></div>
+    </div>
+  </section>
+</main>
+
+<div data-slot="footer"></div>
+<div data-slot="status"></div>
+</body>
+</html>

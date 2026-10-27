@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VarnaConf 2026 · IT Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/mockup.css">
+<link rel="stylesheet" href="site.css">
+<script src="../shared/mockup.js"></script>
+<script src="site.js"></script>
+</head>
+<body data-page="stops" style="--c:var(--varna)">
+<div data-slot="header"></div>
+<div class="mock-note"><div class="wrap"><b>Макет:</b> страница на събитие преди конференцията, с публикувана програма. Лекциите и лекторите са примерни.</div></div>
+
+<main>
+  <section class="ev-hero">
+    <div class="wrap ev-grid">
+      <div>
+        <div class="ev-brand"><img src="../shared/logos/varna.png" alt="Лого на VarnaConf"><a class="part-of" href="index.html"><span class="mark"></span>Част от IT Tour 2026 · спирка 4 от 5</a></div>
+        <h1>VarnaConf <span>2026</span></h1>
+        <span class="state-chip"><span class="dot"></span>Програмата е публикувана</span>
+        <div class="ev-facts">
+          <div><b>Събота, 22 август 2026</b>10:30 – 18:00, после after party</div>
+          <div><b>Хотел „Черно море“</b>Варна</div>
+          <div><b>Вход свободен</b>без билети</div>
+        </div>
+        <div class="cta"><a class="btn btn-primary" href="#rsvp">Идвам</a><a class="btn btn-ghost" href="#schedule">Виж програмата</a><a class="btn btn-ghost" href="#">+ Добави в календара</a></div>
+      </div>
+      <div class="side-card" id="rsvp">
+        <h3>Остават</h3>
+        <div class="countdown"><div><b>38</b><span>дни</span></div><div><b>04</b><span>часа</span></div><div><b>32</b><span>минути</span></div></div>
+        <div class="rsvp">
+          <div class="count"><span class="faces"><i></i><i></i><i></i><i></i></span><span><b>41</b> души казаха, че идват</span></div>
+          <a class="btn btn-primary" href="#" data-rsvp>Идвам</a>
+          <span class="done-msg">Записахме те. Ще получиш напомняне седмица преди събитието.</span>
+          <ul class="perks"><li>Напомняне седмица преди събитието</li><li>Записите и слайдовете първи</li><li>Не е задължително, входът е свободен</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="ev-nav" aria-label="Секции на събитието"><div class="wrap"><ul>
+    <li><a href="#schedule">Програма</a></li><li><a href="#speakers">Лектори</a></li><li><a href="#venue">Място</a></li><li><a href="#partners">Партньори</a></li><li><a href="#editions">Минали издания</a></li>
+  </ul></div></nav>
+
+  <section id="schedule">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Програма</span><h2>22 август</h2></div><span class="placeholder-tag">една зала, една сцена</span></div>
+      <div class="schedule">
+        <div class="slot break"><span class="time">10:00</span><div><h3>Регистрация и кафе</h3></div></div>
+        <div class="slot"><span class="time">10:30</span><div><h3>Откриване на VarnaConf 2026</h3><div class="who">Екипът на IT Tour и VarnaLab</div></div></div>
+        <div class="slot"><span class="time">10:45</span><div><h3>Примерна лекция: Rust в продукция, година по-късно</h3><div class="who"><span class="ph"></span>Име Фамилия</div></div></div>
+        <div class="slot"><span class="time">11:35</span><div><h3>Примерна лекция: Дизайн системи за малки екипи</h3><div class="who"><span class="ph"></span>Име Фамилия</div></div></div>
+        <div class="slot break"><span class="time">12:25</span><div><h3>Обедна почивка</h3></div></div>
+        <div class="slot"><span class="time">13:40</span><div><h3>Примерна лекция: Сигурност на веригата за доставки</h3><div class="who"><span class="ph"></span>Име Фамилия</div></div></div>
+        <div class="slot"><span class="time">14:30</span><div><h3>Примерна лекция: LLM агенти, които не чупят нищо</h3><div class="who"><span class="ph"></span>Име Фамилия</div></div></div>
+        <div class="slot"><span class="time">15:20</span><div><h3>Примерна лекция: От стажант до тех лийд</h3><div class="who"><span class="ph"></span>Име Фамилия</div></div></div>
+        <div class="slot break"><span class="time">16:10</span><div><h3>Кафе пауза</h3></div></div>
+        <div class="slot"><span class="time">16:30</span><div><h3>Lightning talks</h3><div class="who">5 минути, записване на място</div></div></div>
+        <div class="slot break"><span class="time">18:30</span><div><h3>After party</h3></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" id="speakers">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Лектори</span><h2>Кой говори</h2></div><a class="more" href="speakers.html">Всички лектори на IT Tour →</a></div>
+      <div class="speakers">
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--varna)">снимка</div><b>Име Фамилия</b><span>Rust в продукция, година по-късно</span></a>
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--varna)">снимка</div><b>Име Фамилия</b><span>Дизайн системи за малки екипи</span></a>
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--varna)">снимка</div><b>Име Фамилия</b><span>Сигурност на веригата за доставки</span></a>
+        <a class="speaker" href="speaker.html"><div class="ph" style="--c:var(--varna)">снимка</div><b>Име Фамилия</b><span>LLM агенти, които не чупят нищо</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="venue">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Място</span><h2>Как да стигнеш</h2></div></div>
+      <div class="venue">
+        <dl>
+          <div><dt>Зала</dt><dd>Хотел „Черно море“, Варна</dd></div>
+          <div><dt>Кога</dt><dd>Събота, 22 август 2026 · вратите отварят в 10:00</dd></div>
+          <div><dt>After party</dt><dd>Ще обявим мястото седмица преди събитието</dd></div>
+          <div><dt>Паркиране</dt><dd>Платен паркинг пред хотела (примерен текст)</dd></div>
+          <a class="btn btn-ghost btn-sm" href="#" style="justify-self:start">Отвори в Google Maps ↗</a>
+        </dl>
+        <div class="ph" style="--c:var(--varna)">карта</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" id="partners">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Партньори</span><h2>С подкрепата на</h2></div><a class="more" href="sponsors.html">Стани партньор →</a></div>
+      <div class="sponsors">
+        <div class="tier"><span class="t">Спонсори</span><div class="logos"><span class="slogo">StorPool</span><span class="slogo">IntWay</span></div></div>
+        <div class="tier"><span class="t">Партньори</span><div class="logos"><span class="slogo">VarnaLab</span></div></div>
+        <div class="tier"><span class="t">Медийни партньори</span><div class="logos"><span class="slogo">Dev.bg</span><span class="slogo">Подкрепи БГ</span><span class="slogo">WomenWhoGrow</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tight" id="editions">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Архив</span><h2>Минали издания на VarnaConf</h2></div></div>
+      <div class="editions"><a class="pill" href="event-ruse.html">2025</a><a class="pill" href="event-ruse.html">2024</a><a class="pill" href="event-ruse.html">2023</a><a class="pill" href="event-ruse.html">2022</a><a class="pill" href="archive.html">Всички години →</a></div>
+    </div>
+  </section>
+</main>
+
+<div data-slot="footer"></div>
+<div data-slot="status"></div>
+</body>
+</html>

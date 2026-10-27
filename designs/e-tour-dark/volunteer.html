@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Доброволци · IT Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/mockup.css">
+<link rel="stylesheet" href="site.css">
+<script src="../shared/mockup.js"></script>
+<script src="site.js"></script>
+</head>
+<body data-page="involve">
+<div data-slot="header"></div>
+<div class="mock-note"><div class="wrap"><b>Макет:</b> формата е временна. Полетата ще решим заедно с екипа.</div></div>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">IT Tour</a><span>/</span><a href="index.html#involve">Включи се</a><span>/</span><span>Доброволци</span></div>
+      <h1>Стани доброволец</h1>
+      <p class="lead">IT Tour се прави изцяло от доброволци. Можеш да помагаш в своя град в деня на събитието или в основния екип през целия сезон.</p>
+    </div>
+  </section>
+
+  <section class="tight" style="padding-top:0">
+    <div class="wrap two-col">
+      <form class="form" id="volunteer-form">
+        <div class="row">
+          <label for="v-name">Име<input id="v-name" type="text" autocomplete="name"></label>
+          <label for="v-email">Имейл<input id="v-email" type="email" autocomplete="email"></label>
+        </div>
+        <label for="v-city">Град<select id="v-city"><option>Пловдив</option><option>Велико Търново</option><option>Бургас</option><option>Варна</option><option>Русе</option><option>Друг</option></select></label>
+        <fieldset>
+          <legend>Как искаш да помагаш?</legend>
+          <label class="check"><input type="radio" name="v-scope" id="v-scope-local" checked> На местното събитие в моя град</label>
+          <label class="check"><input type="radio" name="v-scope" id="v-scope-tour"> В основния екип, през целия сезон</label>
+        </fieldset>
+        <label for="v-note">Нещо за теб <span class="hint">по желание</span><textarea id="v-note"></textarea></label>
+        <label class="check"><input type="checkbox" id="v-consent"> Съгласен съм IT Tour да ме потърси по имейл</label>
+        <button class="btn btn-primary" style="justify-self:start">Изпрати</button>
+        <div class="form-ok" hidden>Благодарим! Някой от екипа ще ти пише до седмица.</div>
+      </form>
+      <aside class="aside-card">
+        <h3>С какво можеш да помогнеш</h3>
+        <ul class="perks" style="--c:var(--accent)"><li>Регистрация и посрещане</li><li>Зала, звук и стрийм</li><li>Снимки и видео</li><li>Социални мрежи и новини</li><li>Търсене на зали и партньори</li></ul>
+        <p>Не е нужен опит. Ще те свържем с местния екип.</p>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<div data-slot="footer"></div>
+<div data-slot="status"></div>
+</body>
+</html>

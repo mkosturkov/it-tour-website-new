@@ -3,268 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IT Tour · E · Tour Dark</title>
+<title>IT Tour · E · Начало</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/mockup.css">
+<link rel="stylesheet" href="site.css">
 <script src="../shared/mockup.js"></script>
-<style>
-:root {
-  --bg: #171c23;
-  --bg-2: #1d232b;
-  --panel: #232a33;
-  --panel-2: #2a323c;
-  --line: #343e4a;
-  --text: #eef1f4;
-  --muted: #a0abb8;
-  --dim: #6f7b88;
-  --accent: #4f8dff;
-  --accent-ink: #08142b;
-  --live: #ff6363;
-
-  --plovdiv: #c8ca08;
-  --tarnovo: #f28c17;
-  --burgas: #f18984;
-  --varna: #6dc4aa;
-  --ruse: #00b3b8;
-
-  --head: "Space Grotesk", system-ui, sans-serif;
-  --body: "Inter", system-ui, sans-serif;
-  --r: 14px;
-}
-/* Accent options, picked with the mockup accent switch */
-[data-accent="blue"]   { --accent: #7aa7ff; --accent-ink: #0c1a33; }
-[data-accent="blue2"]  { --accent: #4f8dff; --accent-ink: #08142b; }
-[data-accent="blue3"]  { --accent: #2f9bff; --accent-ink: #061a30; }
-[data-accent="green"]  { --accent: #7cf2c4; --accent-ink: #0f2a20; }
-[data-accent="green2"] { --accent: #2ee6a0; --accent-ink: #062a1c; }
-[data-accent="green3"] { --accent: #22d47a; --accent-ink: #052615; }
-[data-accent="violet"]  { --accent: #b49cff; --accent-ink: #1d1438; }
-[data-accent="violet2"] { --accent: #9b7bff; --accent-ink: #160d33; }
-[data-accent="violet3"] { --accent: #8a5cff; --accent-ink: #ffffff; }
-[data-accent="teal"]    { --accent: #5fb4c7; --accent-ink: #0b2228; }
-[data-accent="teal2"]   { --accent: #2fc6dd; --accent-ink: #052329; }
-[data-accent="teal3"]   { --accent: #12d6e8; --accent-ink: #032227; }
-[data-accent="white"]   { --accent: #f1ece2; --accent-ink: #171c23; }
-[data-accent="white2"]  { --accent: #ffffff; --accent-ink: #11151b; }
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--body); }
-a { color: inherit; }
-h1, h2, h3 { font-family: var(--head); line-height: 1.12; margin: 0; letter-spacing: -0.01em; }
-.wrap { width: min(1200px, 100% - 32px); margin-inline: auto; }
-section { padding: 88px 0; }
-section.alt { background: var(--bg-2); border-block: 1px solid var(--line); }
-.eyebrow { font: 600 13px var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
-.sec-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 36px; flex-wrap: wrap; }
-.sec-head h2 { font-size: clamp(30px, 4vw, 42px); margin-top: 8px; }
-.sec-head p { color: var(--muted); max-width: 520px; margin: 10px 0 0; }
-.more { color: var(--accent); text-decoration: none; font-weight: 600; white-space: nowrap; }
-.more:hover { text-decoration: underline; }
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; border-radius: 999px; font: 600 15px var(--body); text-decoration: none; border: 1px solid transparent; cursor: pointer; }
-.btn-primary { background: var(--accent); color: var(--accent-ink); }
-.btn-primary:hover { filter: brightness(1.08); }
-.btn-ghost { border-color: var(--line); color: var(--text); background: transparent; }
-.btn-ghost:hover { border-color: var(--muted); }
-.ph { background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--c, var(--accent)) 22%, var(--panel)) 0 14px, color-mix(in srgb, var(--c, var(--accent)) 14%, var(--panel)) 14px 28px); display: grid; place-items: center; color: var(--muted); font-size: 13px; }
-
-/* header */
-header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-.nav { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 20px; }
-.logo { display: flex; align-items: center; gap: 10px; font: 700 20px var(--head); text-decoration: none; }
-.logo .mark { width: 30px; height: 30px; border-radius: 50%; background: conic-gradient(var(--plovdiv) 0 20%, var(--tarnovo) 0 40%, var(--burgas) 0 60%, var(--varna) 0 80%, var(--ruse) 0); position: relative; }
-.logo .mark::after { content: ""; position: absolute; inset: 8px; border-radius: 50%; background: var(--bg); }
-nav ul { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; font-size: 15px; }
-nav ul a { text-decoration: none; color: var(--muted); }
-nav ul a:hover { color: var(--text); }
-.nav-right { display: flex; align-items: center; gap: 14px; }
-.lang { font-size: 13px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
-.lang b { color: var(--text); }
-
-/* hero: what IT Tour is */
-.hero { padding: 96px 0 80px; position: relative; overflow: hidden; }
-.hero::before { content: ""; position: absolute; inset: -40% -10% auto auto; width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 16%, transparent), transparent 65%); pointer-events: none; }
-.hero-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 56px; align-items: center; position: relative; }
-.hero h1 { font-size: clamp(40px, 6vw, 72px); margin: 16px 0 22px; }
-.hero h1 em { font-style: normal; color: var(--accent); }
-.hero .lead { font-size: 19px; color: var(--muted); max-width: 580px; margin: 0 0 32px; }
-.hero .cta { display: flex; gap: 12px; flex-wrap: wrap; }
-.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.fact { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; }
-.fact b { display: block; font: 700 38px var(--head); color: var(--text); }
-.fact span { color: var(--muted); font-size: 14px; }
-.fact.wide { grid-column: span 2; display: flex; gap: 14px; align-items: center; }
-.fact.wide .dots { display: flex; }
-.fact.wide .dots img { width: 38px; height: 38px; border-radius: 50%; margin-left: -8px; border: 2px solid var(--panel); background: #fff; }
-.fact.wide .dots img:first-child { margin-left: 0; }
-
-/* stops */
-.stops-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: stretch; }
-.map-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; }
-.map-card svg { width: 100%; height: auto; display: block; }
-.bg-shape { fill: var(--panel-2); stroke: var(--line); stroke-width: 3; }
-.edge { stroke: var(--text); stroke-width: 3; fill: none; opacity: .75; }
-.edge.todo { stroke: var(--dim); stroke-dasharray: 2 10; stroke-linecap: round; opacity: 1; }
-.node circle.core { stroke: var(--panel); stroke-width: 5; }
-.node .ring { fill: none; stroke-width: 3; }
-.node.next .ring { animation: pulse 2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
-@keyframes pulse { from { transform: scale(.6); opacity: .9; } to { transform: scale(1.7); opacity: 0; } }
-.node text { font: 600 32px var(--head); fill: var(--text); paint-order: stroke; stroke: var(--panel-2); stroke-width: 7px; }
-.node text.d { font: 500 22px var(--body); fill: var(--muted); }
-.node.done text { fill: var(--muted); }
-.node.done circle.core { opacity: .55; }
-.stop-list { display: grid; gap: 10px; }
-.stop { display: grid; grid-template-columns: 52px 1fr auto; gap: 16px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--c); border-radius: var(--r); padding: 14px 18px; text-decoration: none; transition: transform .15s, border-color .15s; }
-.stop:hover { transform: translateX(4px); border-color: var(--muted); border-left-color: var(--c); }
-.stop img { width: 52px; height: 52px; border-radius: 50%; background: #fff; }
-.stop h3 { font-size: 20px; }
-.stop p { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
-.stop .date { text-align: right; font: 600 18px var(--head); }
-.badge { display: inline-block; margin-top: 4px; font: 600 11px var(--body); letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
-.badge.next { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-.badge.live { background: var(--live); color: #fff; border-color: var(--live); }
-.stop.done { opacity: .62; }
-.stop.next { background: color-mix(in srgb, var(--c) 9%, var(--panel)); }
-.archive-link { margin-top: 6px; color: var(--muted); font-size: 14px; }
-
-/* news */
-.news-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; text-decoration: none; display: flex; flex-direction: column; transition: border-color .15s; }
-.card:hover { border-color: var(--muted); }
-.card .body { padding: 20px 22px 22px; display: grid; gap: 8px; }
-.card h3 { font-size: 21px; }
-.card p { margin: 0; color: var(--muted); font-size: 15px; }
-.meta { display: flex; gap: 10px; align-items: center; font-size: 13px; color: var(--dim); }
-.tag { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
-.tag::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--accent)); }
-.news-feature .ph { aspect-ratio: 16/8; }
-.news-side { display: grid; gap: 20px; }
-.news-side .card { flex-direction: row; }
-.news-side .ph { width: 130px; flex: none; }
-
-/* team */
-.team-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
-.person { text-align: center; }
-.person .ph { aspect-ratio: 1; border-radius: 50%; margin-bottom: 12px; border: 3px solid var(--c, var(--line)); font-size: 12px; }
-.person b { display: block; font-family: var(--head); font-size: 16px; }
-.person span { color: var(--muted); font-size: 13px; }
-
-/* videos */
-.video-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-.video .ph { aspect-ratio: 16/9; position: relative; }
-.play { width: 46px; height: 46px; border-radius: 50%; background: rgba(0,0,0,.55); display: grid; place-items: center; }
-.video h3 { font-size: 17px; }
-.video .by { color: var(--muted); font-size: 14px; }
-
-/* involve */
-.involve { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.inv { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 28px; display: grid; gap: 12px; align-content: start; }
-.inv .icon { color: var(--accent); width: 46px; height: 46px; border-radius: 12px; background: color-mix(in srgb, var(--accent) 14%, var(--panel)); display: grid; place-items: center; }
-.inv h3 { font-size: 23px; }
-.inv p { margin: 0; color: var(--muted); }
-.inv .btn { justify-self: start; margin-top: 6px; }
-
-/* sponsors */
-.sponsors { display: grid; gap: 22px; }
-.tier { display: grid; grid-template-columns: 140px 1fr; gap: 20px; align-items: center; }
-.tier .t { color: var(--muted); font-size: 14px; }
-.logos { display: flex; flex-wrap: wrap; gap: 12px; }
-.slogo { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 26px; font: 600 17px var(--head); color: var(--muted); }
-
-/* subscribe */
-.subscribe { background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 18%, var(--panel)), var(--panel)); border: 1px solid var(--line); border-radius: 20px; padding: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
-.subscribe h2 { font-size: 34px; }
-.subscribe p { color: var(--muted); margin: 10px 0 0; }
-.field { display: flex; gap: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 6px; }
-.field input { flex: 1; min-width: 0; background: transparent; border: 0; color: var(--text); font: 16px var(--body); padding: 0 14px; outline: none; }
-
-/* footer */
-footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
-.foot { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 28px; }
-.foot h4 { color: var(--text); font: 600 15px var(--head); margin: 0 0 12px; }
-.foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.foot a { text-decoration: none; }
-.foot a:hover { color: var(--text); }
-.cdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--c); margin-right: 8px; }
-
-/* status pop-up */
-.status { position: fixed; right: 24px; bottom: 76px; z-index: 30; width: 360px; background: var(--panel-2); border: 1px solid var(--line); border-left: 4px solid var(--c, var(--accent)); border-radius: var(--r); box-shadow: 0 18px 50px rgba(0,0,0,.45); padding: 16px 18px 18px; display: grid; gap: 10px; transform: translateY(24px); opacity: 0; animation: slide-in .5s cubic-bezier(.2,.8,.2,1) 1s forwards; }
-@keyframes slide-in { to { transform: none; opacity: 1; } }
-.status.closed { display: none; }
-.status .top { display: flex; justify-content: space-between; align-items: center; }
-.status .kind { font: 600 11px var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
-.status .kind .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-.status .kind .dot.live { background: var(--live); animation: blink 1.2s ease-in-out infinite; }
-@keyframes blink { 50% { opacity: .25; } }
-.status .x { background: none; border: 0; color: var(--muted); font-size: 20px; line-height: 1; cursor: pointer; padding: 2px 4px; }
-.status .x:hover { color: var(--text); }
-.status .main { display: flex; gap: 14px; align-items: center; }
-.status img { width: 46px; height: 46px; border-radius: 50%; background: #fff; flex: none; }
-.status h3 { font-size: 19px; }
-.status p { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
-.status .now { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; }
-.status .now b { color: var(--text); font-weight: 500; }
-.status .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.status .btn { padding: 9px 16px; font-size: 14px; }
-
-/* Mockup-only chrome: accent switch */
-.accent-switch { position: fixed; top: 80px; right: 16px; z-index: 1000; display: flex; flex-wrap: wrap; max-width: 560px; align-items: center; gap: 2px; padding: 6px 6px 6px 12px; border-radius: 16px; background: #111; color: #ddd; font: 500 12px/1 system-ui, sans-serif; box-shadow: 0 6px 24px rgba(0,0,0,.3); }
-.accent-switch span { margin-right: 4px; opacity: .7; }
-.accent-switch button { border: 0; border-radius: 999px; padding: 6px 10px 6px 8px; background: transparent; color: inherit; font: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
-.accent-switch button i { width: 12px; height: 12px; border-radius: 50%; background: var(--sw); }
-.accent-switch button[aria-pressed="true"] { background: #fff; color: #111; }
-
-@media (max-width: 960px) {
-  nav ul { display: none; }
-  .hero-grid, .stops-grid, .news-grid, .subscribe { grid-template-columns: 1fr; }
-  .team-row { grid-template-columns: repeat(3, 1fr); }
-  .video-grid { grid-template-columns: repeat(2, 1fr); }
-  .involve { grid-template-columns: 1fr; }
-  .foot { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 560px) {
-  section { padding: 64px 0; }
-  .hero { padding: 56px 0 56px; }
-  .hero .lead { font-size: 17px; }
-  .fact { padding: 16px; }
-  .fact b { font-size: 30px; }
-  .stop { grid-template-columns: 44px 1fr; }
-  .stop img { width: 44px; height: 44px; }
-  .stop .date { grid-column: 2; text-align: left; font-size: 15px; }
-  .news-side .ph { width: 96px; }
-  .video-grid { grid-template-columns: 1fr; }
-  .tier { grid-template-columns: 1fr; gap: 10px; }
-  .subscribe { padding: 28px 22px; }
-  .status { left: 12px; right: 12px; width: auto; bottom: 72px; padding: 12px 14px 14px; gap: 8px; }
-  .status .now, .status p { display: none; }
-  .status img { width: 36px; height: 36px; }
-  .foot { grid-template-columns: 1fr; }
-  .accent-switch { left: 12px; right: 12px; max-width: none; flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; padding-left: 4px; border-radius: 999px; }
-  .accent-switch button { padding: 6px 8px 6px 6px; font-size: 11px; flex: none; }
-  .accent-switch span { display: none; }
-}
-</style>
+<script src="site.js"></script>
 </head>
-<body>
-
-<header>
-  <div class="wrap nav">
-    <a class="logo" href="#"><span class="mark"></span>IT Tour</a>
-    <nav><ul>
-      <li><a href="#about">За IT Tour</a></li>
-      <li><a href="#stops">Спирки</a></li>
-      <li><a href="#news">Новини</a></li>
-      <li><a href="#team">Екип</a></li>
-      <li><a href="#">Архив</a></li>
-      <li><a href="#involve">Включи се</a></li>
-    </ul></nav>
-    <div class="nav-right">
-      <span class="lang"><b>BG</b> / EN</span>
-      <a class="btn btn-primary" href="#subscribe" style="padding:9px 16px;font-size:14px">Абонирай се</a>
-    </div>
-  </div>
-</header>
+<body data-page="home">
+<div data-slot="header"></div>
 
 <main>
 
@@ -277,7 +26,7 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
         <p class="lead">IT Tour е поредица от еднодневни конференции за програмисти и всички в IT. Всеки месец от май до септември сме в различен град: лекции от практици, разговори в кулоарите и after party. Входът е свободен.</p>
         <div class="cta">
           <a class="btn btn-primary" href="#stops">Виж спирките за 2026</a>
-          <a class="btn btn-ghost" href="#">Повече за нас</a>
+          <a class="btn btn-ghost" href="about.html">Повече за нас</a>
         </div>
       </div>
       <div class="facts">
@@ -304,7 +53,7 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
           <h2>Спирките</h2>
           <p>Пет града, един на месец. Следващата спирка е Бургас.</p>
         </div>
-        <a class="more" href="#">Целият архив от 2012 →</a>
+        <a class="more" href="archive.html">Целият архив от 2012 →</a>
       </div>
       <div class="stops-grid">
         <div class="map-card">
@@ -320,14 +69,14 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
           </svg>
         </div>
         <div class="stop-list">
-          <a class="stop done" href="#" style="--c:var(--plovdiv)"><img src="../shared/logos/plovdiv.png" alt=""><div><h3>PlovdivConf</h3><p>Хотел SPS · видеа и снимки</p></div><div class="date">30.05<br><span class="badge">Мина</span></div></a>
-          <a class="stop done" href="#" style="--c:var(--tarnovo)"><img src="../shared/logos/tarnovo.png" alt=""><div><h3>TarnovoConf</h3><p>ВТУ, Корпус 4 · видеа и снимки</p></div><div class="date">27.06<br><span class="badge">Мина</span></div></a>
-          <a class="stop next" href="#" style="--c:var(--burgas)"><img src="../shared/logos/burgas.png" alt=""><div><h3>BurgasConf</h3><p>Колеж по туризъм, Университет „Проф. д-р Асен Златаров“</p></div><div class="date">25.07<br>
+          <a class="stop done" href="event-plovdiv.html" style="--c:var(--plovdiv)"><img src="../shared/logos/plovdiv.png" alt=""><div><h3>PlovdivConf</h3><p>Хотел SPS · видеа и снимки</p></div><div class="date">30.05<br><span class="badge">Мина</span></div></a>
+          <a class="stop done" href="archive.html" style="--c:var(--tarnovo)"><img src="../shared/logos/tarnovo.png" alt=""><div><h3>TarnovoConf</h3><p>ВТУ, Корпус 4 · видеа и снимки</p></div><div class="date">27.06<br><span class="badge">Мина</span></div></a>
+          <a class="stop next" href="event-burgas.html" style="--c:var(--burgas)"><img src="../shared/logos/burgas.png" alt=""><div><h3>BurgasConf</h3><p>Колеж по туризъм, Университет „Проф. д-р Асен Златаров“</p></div><div class="date">25.07<br>
             <span data-show="upcoming off"><span class="badge next">Следваща</span></span>
             <span data-show="live"><span class="badge live">На живо</span></span>
           </div></a>
-          <a class="stop" href="#" style="--c:var(--varna)"><img src="../shared/logos/varna.png" alt=""><div><h3>VarnaConf</h3><p>Хотел „Черно море“ · програмата е публикувана</p></div><div class="date">22.08<br><span class="badge">Предстои</span></div></a>
-          <a class="stop" href="#" style="--c:var(--ruse)"><img src="../shared/logos/ruse.png" alt=""><div><h3>RuseConf</h3><p>Русенски университет „Ангел Кънчев“, зала 2.101</p></div><div class="date">26.09<br><span class="badge">Предстои</span></div></a>
+          <a class="stop" href="event-varna.html" style="--c:var(--varna)"><img src="../shared/logos/varna.png" alt=""><div><h3>VarnaConf</h3><p>Хотел „Черно море“ · програмата е публикувана</p></div><div class="date">22.08<br><span class="badge">Предстои</span></div></a>
+          <a class="stop" href="event-ruse.html" style="--c:var(--ruse)"><img src="../shared/logos/ruse.png" alt=""><div><h3>RuseConf</h3><p>Русенски университет „Ангел Кънчев“, зала 2.101</p></div><div class="date">26.09<br><span class="badge">Предстои</span></div></a>
         </div>
       </div>
     </div>
@@ -338,10 +87,10 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
     <div class="wrap">
       <div class="sec-head">
         <div><span class="eyebrow">Новини</span><h2>Какво ново</h2></div>
-        <a class="more" href="#">Всички новини →</a>
+        <a class="more" href="news.html">Всички новини →</a>
       </div>
       <div class="news-grid">
-        <a class="card news-feature" href="#">
+        <a class="card news-feature" href="news-article.html">
           <div class="ph" style="--c:var(--burgas)">снимка</div>
           <div class="body">
             <div class="meta"><span class="tag" style="--c:var(--burgas)">Бургас</span><span>Обявление · 10.07.2026</span></div>
@@ -350,8 +99,8 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
           </div>
         </a>
         <div class="news-side">
-          <a class="card" href="#"><div class="ph" style="--c:var(--tarnovo)">снимка</div><div class="body"><div class="meta"><span class="tag" style="--c:var(--tarnovo)">Търново</span><span>01.07.2026</span></div><h3>Как мина TarnovoConf 2026</h3></div></a>
-          <a class="card" href="#"><div class="ph">снимка</div><div class="body"><div class="meta"><span class="tag">IT Tour</span><span>20.06.2026</span></div><h3>Търсим доброволци за целия сезон</h3></div></a>
+          <a class="card" href="news-article.html"><div class="ph" style="--c:var(--tarnovo)">снимка</div><div class="body"><div class="meta"><span class="tag" style="--c:var(--tarnovo)">Търново</span><span>01.07.2026</span></div><h3>Как мина TarnovoConf 2026</h3></div></a>
+          <a class="card" href="volunteer.html"><div class="ph">снимка</div><div class="body"><div class="meta"><span class="tag">IT Tour</span><span>20.06.2026</span></div><h3>Търсим доброволци за целия сезон</h3></div></a>
         </div>
       </div>
     </div>
@@ -362,7 +111,7 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
     <div class="wrap">
       <div class="sec-head">
         <div><span class="eyebrow">Екип</span><h2>Хората зад IT Tour</h2><p>Доброволци от петте града, които организират всичко от залата до кафето.</p></div>
-        <a class="more" href="#">Целият екип →</a>
+        <a class="more" href="team.html">Целият екип →</a>
       </div>
       <div class="team-row">
         <div class="person"><div class="ph">снимка</div><b>Име Фамилия</b><span>Организатор</span></div>
@@ -380,13 +129,13 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
     <div class="wrap">
       <div class="sec-head">
         <div><span class="eyebrow">Записи</span><h2>Гледай лекциите</h2></div>
-        <a class="more" href="#">Всички лекции →</a>
+        <a class="more" href="talks.html">Всички лекции →</a>
       </div>
       <div class="video-grid">
-        <a class="card video" href="#"><div class="ph" style="--c:var(--plovdiv)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">PlovdivConf 2025</span><h3>Vibe coding</h3><span class="by">Светлин Наков</span></div></a>
-        <a class="card video" href="#"><div class="ph" style="--c:var(--plovdiv)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">PlovdivConf 2025</span><h3>Back to the Future of the IT Teams in 30 years from now</h3><span class="by">Никола Богданов</span></div></a>
-        <a class="card video" href="#"><div class="ph" style="--c:var(--plovdiv)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">PlovdivConf 2025</span><h3>Empowering Teams with a Backstage Development Portal</h3><span class="by">Стефан Ангелов</span></div></a>
-        <a class="card video" href="#"><div class="ph" style="--c:var(--plovdiv)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">PlovdivConf 2025</span><h3>LLM в базата данни</h3><span class="by">Михаил Петров</span></div></a>
+        <a class="card video" href="talk.html"><div class="ph" style="--c:var(--plovdiv)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">PlovdivConf 2025</span><h3>Vibe coding</h3><span class="by">Светлин Наков</span></div></a>
+        <a class="card video" href="talk.html"><div class="ph" style="--c:var(--plovdiv)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">PlovdivConf 2025</span><h3>Back to the Future of the IT Teams in 30 years from now</h3><span class="by">Никола Богданов</span></div></a>
+        <a class="card video" href="talk.html"><div class="ph" style="--c:var(--plovdiv)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">PlovdivConf 2025</span><h3>Empowering Teams with a Backstage Development Portal</h3><span class="by">Стефан Ангелов</span></div></a>
+        <a class="card video" href="talk.html"><div class="ph" style="--c:var(--plovdiv)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">PlovdivConf 2025</span><h3>LLM в базата данни</h3><span class="by">Михаил Петров</span></div></a>
       </div>
     </div>
   </section>
@@ -401,17 +150,17 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
         <div class="inv">
           <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
           <h3>Стани лектор</h3><p>Имаш опит, който си струва да се разкаже? Кандидатствай за някой от градовете.</p>
-          <a class="btn btn-ghost" href="#">Кандидатствай</a>
+          <a class="btn btn-ghost" href="speak.html">Кандидатствай</a>
         </div>
         <div class="inv">
           <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></span>
           <h3>Стани спонсор</h3><p>Подкрепи безплатните конференции и се срещни с IT общността в пет града.</p>
-          <a class="btn btn-ghost" href="#">Свържи се с нас</a>
+          <a class="btn btn-ghost" href="sponsors.html">Свържи се с нас</a>
         </div>
         <div class="inv">
           <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M17 11h6M20 8v6"/></svg></span>
           <h3>Стани доброволец</h3><p>Помогни в своя град или за целия сезон: регистрация, зали, стрийм, снимки.</p>
-          <a class="btn btn-ghost" href="#">Запиши се</a>
+          <a class="btn btn-ghost" href="volunteer.html">Запиши се</a>
         </div>
       </div>
     </div>
@@ -433,67 +182,14 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
     <div class="wrap">
       <div class="subscribe">
         <div><h2>Не пропускай спирка</h2><p>Едно писмо преди всяка конференция: дата, програма и линк към стрийма.</p></div>
-        <form class="field" onsubmit="return false"><input type="email" placeholder="твоят имейл" aria-label="Имейл"><button class="btn btn-primary">Абонирай се</button></form>
+        <form class="field"><input type="email" placeholder="твоят имейл" aria-label="Имейл"><button class="btn btn-primary">Абонирай се</button></form>
       </div>
     </div>
   </section>
 
 </main>
 
-<footer>
-  <div class="wrap foot">
-    <div><a class="logo" href="#"><span class="mark"></span>IT Tour</a><p>Безплатни еднодневни IT конференции из България от 2012 г.</p></div>
-    <div><h4>Конференции</h4><ul>
-      <li><a href="#"><span class="cdot" style="--c:var(--plovdiv)"></span>PlovdivConf</a></li><li><a href="#"><span class="cdot" style="--c:var(--tarnovo)"></span>TarnovoConf</a></li><li><a href="#"><span class="cdot" style="--c:var(--burgas)"></span>BurgasConf</a></li><li><a href="#"><span class="cdot" style="--c:var(--varna)"></span>VarnaConf</a></li><li><a href="#"><span class="cdot" style="--c:var(--ruse)"></span>RuseConf</a></li></ul></div>
-    <div><h4>IT Tour</h4><ul><li><a href="#">За нас</a></li><li><a href="#">Екип</a></li><li><a href="#">Новини</a></li><li><a href="#">Архив</a></li><li><a href="#">Кодекс на поведение</a></li></ul></div>
-    <div><h4>Включи се</h4><ul><li><a href="#">Стани лектор</a></li><li><a href="#">Спонсори</a></li><li><a href="#">Доброволци</a></li></ul></div>
-  </div>
-</footer>
-
-<!-- Status pop-up: only before or during an event; nothing off-season -->
-<div data-show="upcoming">
-  <aside class="status" style="--c:var(--burgas)" aria-label="Статус на сезона">
-    <div class="top"><span class="kind"><span class="dot"></span>Следваща спирка</span><button class="x" aria-label="Затвори">×</button></div>
-    <div class="main"><img src="../shared/logos/burgas.png" alt=""><div><h3>BurgasConf · 25.07</h3><p>След 10 дни · Колеж по туризъм</p></div></div>
-    <div class="actions"><a class="btn btn-primary" href="#">Програмата</a><a class="btn btn-ghost" href="#">Идвам</a></div>
-  </aside>
-</div>
-<div data-show="live">
-  <aside class="status" style="--c:var(--live)" aria-label="Статус на сезона">
-    <div class="top"><span class="kind"><span class="dot live"></span>На живо сега</span><button class="x" aria-label="Затвори">×</button></div>
-    <div class="main"><img src="../shared/logos/burgas.png" alt=""><div><h3>BurgasConf 2026</h3><p>Колеж по туризъм, Бургас</p></div></div>
-    <div class="now">На сцената: <b>Смарт хоум: Решенията, които не са за подценяване</b>, Иво Гергов</div>
-    <div class="actions"><a class="btn btn-primary" href="#">▶ Гледай на живо</a><a class="btn btn-ghost" href="#">YouTube</a></div>
-  </aside>
-</div>
-
-<script>
-// Mockup-only: accent colour switch (?accent=blue|blue2|...|white2, see OPTS; remembered per browser)
-(function () {
-  var OPTS = [['blue', 'Синьо 1', '#7aa7ff'], ['blue2', 'Синьо 2', '#4f8dff'], ['blue3', 'Синьо 3', '#2f9bff'], ['green', 'Зелено 1', '#7cf2c4'], ['green2', 'Зелено 2', '#2ee6a0'], ['green3', 'Зелено 3', '#22d47a'], ['violet', 'Виолетово 1', '#b49cff'], ['violet2', 'Виолетово 2', '#9b7bff'], ['violet3', 'Виолетово 3', '#8a5cff'], ['teal', 'Тюркоаз 1', '#5fb4c7'], ['teal2', 'Тюркоаз 2', '#2fc6dd'], ['teal3', 'Тюркоаз 3', '#12d6e8'], ['white', 'Бяло 1', '#f1ece2'], ['white2', 'Бяло 2', '#ffffff']];
-  var KEY = 'ittour-mock-accent';
-  function read() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
-  function save(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
-  var cur = new URLSearchParams(location.search).get('accent') || read() || 'blue2';
-  if (!OPTS.some(function (o) { return o[0] === cur; })) cur = 'blue2';
-  document.documentElement.setAttribute('data-accent', cur);
-  var bar = document.createElement('div');
-  bar.className = 'accent-switch';
-  bar.innerHTML = '<span>Акцент:</span>' + OPTS.map(function (o) {
-    return '<button data-a="' + o[0] + '" style="--sw:' + o[2] + '" aria-pressed="' + (o[0] === cur) + '"><i></i>' + o[1] + '</button>';
-  }).join('');
-  bar.addEventListener('click', function (e) {
-    var b = e.target.closest('button'); if (!b) return;
-    cur = b.dataset.a; save(cur);
-    document.documentElement.setAttribute('data-accent', cur);
-    bar.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
-  });
-  document.body.appendChild(bar);
-})();
-document.addEventListener('click', function (e) {
-  var x = e.target.closest('.status .x');
-  if (x) x.closest('.status').classList.add('closed');
-});
-</script>
+<div data-slot="footer"></div>
+<div data-slot="status"></div>
 </body>
 </html>

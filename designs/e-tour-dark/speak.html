@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Стани лектор · IT Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/mockup.css">
+<link rel="stylesheet" href="site.css">
+<script src="../shared/mockup.js"></script>
+<script src="site.js"></script>
+</head>
+<body data-page="involve">
+<div data-slot="header"></div>
+<div class="mock-note"><div class="wrap"><b>Макет:</b> формата е временна. Полетата и сроковете ще уточним с екипа.</div></div>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">IT Tour</a><span>/</span><a href="index.html#involve">Включи се</a><span>/</span><span>Стани лектор</span></div>
+      <h1>Разкажи какво си построил</h1>
+      <p class="lead">Търсим практици за всеки от петте града. Лекцията е 30 минути плюс въпроси, на български. Ако е първата ти, ще ти помогнем да се подготвиш.</p>
+    </div>
+  </section>
+
+  <section class="tight" style="padding-top:0">
+    <div class="wrap two-col">
+      <form class="form" id="speak-form">
+        <div class="row">
+          <label for="s-name">Име<input id="s-name" type="text" autocomplete="name"></label>
+          <label for="s-email">Имейл<input id="s-email" type="email" autocomplete="email"></label>
+        </div>
+        <fieldset>
+          <legend>В кои градове можеш да говориш?</legend>
+          <div class="chips">
+            <label><input type="checkbox" id="s-plovdiv"> Пловдив</label><label><input type="checkbox" id="s-tarnovo"> Търново</label><label><input type="checkbox" id="s-burgas"> Бургас</label><label><input type="checkbox" id="s-varna"> Варна</label><label><input type="checkbox" id="s-ruse"> Русе</label>
+          </div>
+        </fieldset>
+        <label for="s-title">Заглавие на лекцията<input id="s-title" type="text"></label>
+        <label for="s-abstract">Описание <span class="hint">какво ще научи публиката, 3–5 изречения</span><textarea id="s-abstract"></textarea></label>
+        <label for="s-bio">Кратко за теб <span class="hint">ще се покаже в профила ти</span><textarea id="s-bio" style="min-height:90px"></textarea></label>
+        <label class="check"><input type="checkbox" id="s-first"> Това ще е първата ми лекция</label>
+        <button class="btn btn-primary" style="justify-self:start">Изпрати темата</button>
+        <div class="form-ok" hidden>Получихме темата ти. Местният екип ще отговори до края на поканата.</div>
+      </form>
+      <aside class="aside-card">
+        <h3>Отворени покани</h3>
+        <div class="rowlist" style="border:0">
+          <div style="grid-template-columns:auto 1fr;padding:10px 0"><span class="cdot" style="--c:var(--plovdiv)"></span><div><b>PlovdivConf 2027</b><p>до 15 март</p></div></div>
+          <div style="grid-template-columns:auto 1fr;padding:10px 0"><span class="cdot" style="--c:var(--ruse)"></span><div><b>RuseConf 2026</b><p>до 31 юли</p></div></div>
+        </div>
+        <p>Лекторите не плащат нищо и получават запис на лекцията си.</p>
+        <a class="more" href="code-of-conduct.html">Кодекс на поведение →</a>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<div data-slot="footer"></div>
+<div data-slot="status"></div>
+</body>
+</html>
