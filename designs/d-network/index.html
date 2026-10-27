@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IT Tour · D · Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/mockup.css">
+<script src="../shared/mockup.js"></script>
+<style>
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --ink: #0e1621;
+  --muted: #5a6573;
+  --line: #e2e6eb;
+  --brand: #2449e8;
+  --brand-soft: #e8edff;
+  --live: #e5383b;
+
+  --plovdiv: #c8ca08;
+  --tarnovo: #f28c17;
+  --burgas: #f18984;
+  --varna: #6dc4aa;
+  --ruse: #009195;
+
+  --radius: 14px;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --head: "Space Grotesk", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.55 "Inter", system-ui, sans-serif;
+}
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+.wrap { width: min(1200px, 100% - 32px); margin-inline: auto; }
+.mono { font-family: var(--mono); }
+.label {
+  font: 500 12px/1 var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+h1, h2, h3 { font-family: var(--head); line-height: 1.05; margin: 0; letter-spacing: -.02em; }
+h2 { font-size: clamp(28px, 4vw, 44px); }
+section { padding-block: 56px; }
+.section-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+.section-head .label { display: block; margin-bottom: 10px; }
+.more { font: 500 14px/1 var(--mono); text-decoration: none; color: var(--brand); }
+.more:hover { text-decoration: underline; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 18px; border-radius: 10px;
+  font: 600 15px/1 "Inter", sans-serif; text-decoration: none;
+  border: 1px solid transparent; cursor: pointer;
+}
+.btn-primary { background: var(--ink); color: #fff; }
+.btn-primary:hover { background: #253043; }
+.btn-ghost { border-color: var(--line); background: var(--surface); }
+.btn-ghost:hover { border-color: var(--ink); }
+
+/* Photo placeholder */
+.ph {
+  position: relative;
+  background:
+    repeating-linear-gradient(135deg, rgba(14,22,33,.05) 0 10px, transparent 10px 20px),
+    color-mix(in srgb, var(--c, #8a94a3) 22%, #eef0f3);
+  display: grid; place-items: center;
+  color: rgba(14,22,33,.45);
+  font: 500 12px/1 var(--mono);
+}
+
+/* Header */
+header.top {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.top .wrap { display: flex; align-items: center; gap: 24px; height: 64px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 700 20px/1 var(--head); letter-spacing: -.02em; }
+.logo svg { flex: none; }
+nav.main { display: flex; gap: 22px; margin-left: 16px; }
+nav.main a { text-decoration: none; font-size: 15px; color: var(--muted); }
+nav.main a:hover { color: var(--ink); }
+.top .spacer { flex: 1; }
+.lang { font: 500 12px/1 var(--mono); display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.lang span { padding: 7px 9px; }
+.lang .on { background: var(--ink); color: #fff; }
+.menu-btn { display: none; }
+
+/* Hero */
+.hero { padding-block: 40px 24px; }
+.hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 20px; }
+.hero-copy { padding: 36px; display: flex; flex-direction: column; gap: 22px; }
+.hero-copy h1 { font-size: clamp(44px, 6.4vw, 84px); }
+.hero-copy .lead { font-size: 18px; color: var(--muted); max-width: 46ch; margin: 0; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 11px; border-radius: 8px;
+  background: var(--bg); border: 1px solid var(--line);
+  font: 500 13px/1 var(--mono);
+}
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--brand)); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.going { font: 500 13px/1.3 var(--mono); color: var(--muted); }
+.going b { color: var(--ink); }
+.countdown { display: flex; gap: 8px; }
+.countdown div { background: var(--ink); color: #fff; border-radius: 10px; padding: 10px 12px; min-width: 64px; text-align: center; }
+.countdown b { display: block; font: 600 26px/1 var(--mono); }
+.countdown span { font: 400 11px/1 var(--mono); opacity: .7; }
+.live-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--live); margin-right: 6px; animation: blink 1.4s infinite; }
+@keyframes blink { 50% { opacity: .25; } }
+
+.hero-side { position: relative; overflow: hidden; min-height: 420px; }
+.map-head { position: absolute; top: 20px; left: 22px; right: 22px; display: flex; justify-content: space-between; z-index: 2; }
+.map svg { width: 100%; height: 100%; display: block; }
+.map { position: absolute; inset: 0; padding: 56px 18px 12px; }
+
+/* Network map */
+.bg-shape { fill: #f2f4f7; stroke: #cfd5dd; stroke-width: 2; stroke-linejoin: round; }
+.edge { stroke: var(--ink); stroke-width: 2.5; fill: none; }
+.edge.todo { stroke: #a9b2be; stroke-dasharray: 2 9; stroke-linecap: round; }
+.node circle.core { stroke: #fff; stroke-width: 4; }
+.node .ring { fill: none; stroke-width: 2; opacity: 0; }
+.node.next .ring { opacity: 1; animation: pulse 2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes pulse { from { transform: scale(.6); opacity: .9; } to { transform: scale(1.6); opacity: 0; } }
+.node text { font: 600 32px var(--head); fill: var(--ink); paint-order: stroke; stroke: #f2f4f7; stroke-width: 6px; }
+.node text.d { font: 500 21px var(--mono); fill: var(--muted); }
+.node.done circle.core { opacity: .55; }
+[data-season="off"] .node.next .ring { display: none; }
+[data-season="off"] .edge.todo { stroke: var(--ink); stroke-dasharray: none; }
+[data-season="off"] .node circle.core { opacity: .55; }
+
+/* Live player */
+.player { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.player .screen { flex: 1; --c: var(--burgas); border-radius: var(--radius) var(--radius) 0 0; min-height: 260px; }
+.play { width: 72px; height: 72px; border-radius: 50%; background: var(--ink); display: grid; place-items: center; }
+.player .bar { padding: 16px 20px; display: grid; gap: 12px; }
+.now { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 15px; }
+.now .t { font: 500 13px/1.6 var(--mono); color: var(--muted); }
+.now .cur { font-weight: 600; }
+.stream-links { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Stats ticker */
+.ticker { border-block: 1px solid var(--line); background: var(--surface); }
+.ticker .wrap { display: flex; gap: 32px; overflow-x: auto; padding-block: 16px; font: 500 14px/1 var(--mono); white-space: nowrap; scrollbar-width: none; }
+.ticker b { font-weight: 500; color: var(--brand); }
+
+/* News */
+.news-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px; }
+.news { display: flex; flex-direction: column; overflow: hidden; text-decoration: none; }
+.news .ph { aspect-ratio: 16/9; }
+.news .body { padding: 18px 20px 22px; display: grid; gap: 10px; }
+.news h3 { font-size: 22px; }
+.news p { margin: 0; color: var(--muted); font-size: 15px; }
+.news .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.news:hover h3 { text-decoration: underline; }
+.news.short { justify-content: space-between; }
+
+/* Tour */
+.route { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; position: relative; }
+.route::before {
+  content: ""; position: absolute; left: 6%; right: 6%; top: 40px; height: 2px;
+  background: linear-gradient(90deg, var(--ink) 0 45%, #b8c0cb 45%);
+}
+.stop { position: relative; padding: 0 0 18px; display: flex; flex-direction: column; overflow: hidden; }
+.stop .badge { width: 80px; height: 80px; margin: 0 auto -6px; position: relative; z-index: 1; background: var(--bg); border-radius: 50%; padding: 4px; }
+.stop.done .badge img { filter: grayscale(.6); opacity: .7; }
+.stop .inner { padding: 18px 18px 0; display: grid; gap: 6px; text-align: left; }
+.stop .num { font: 500 12px/1 var(--mono); color: var(--muted); }
+.stop h3 { font-size: 24px; }
+.stop .date { font: 500 14px/1 var(--mono); }
+.stop .venue { color: var(--muted); font-size: 14px; line-height: 1.4; min-height: 3.9em; }
+.status { justify-self: start; font: 500 12px/1 var(--mono); padding: 6px 8px; border-radius: 6px; background: var(--bg); }
+.stop.next { border-color: var(--ink); box-shadow: 0 0 0 3px color-mix(in srgb, var(--burgas) 45%, transparent); }
+.stop.next .status { background: var(--ink); color: #fff; }
+.stop .accent { position: absolute; inset: 0 0 auto; height: 4px; background: var(--c); }
+.stop a.go { margin: 12px 18px 0; font: 500 13px/1 var(--mono); color: var(--brand); text-decoration: none; }
+
+/* About + numbers */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.about { padding: 36px; display: grid; gap: 16px; align-content: start; }
+.about p { margin: 0; font-size: 18px; }
+.about .muted { color: var(--muted); font-size: 16px; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.stat { padding: 22px; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px; }
+.stat b { font: 500 clamp(32px, 4vw, 48px)/1 var(--mono); letter-spacing: -.04em; }
+.stat.hi { background: var(--ink); color: #fff; border-color: var(--ink); }
+.stat.hi .label { color: #aab4c2; }
+
+/* Videos */
+.videos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.video { text-decoration: none; overflow: hidden; }
+.video .ph { aspect-ratio: 16/9; --c: var(--plovdiv); }
+.video .ph .play { width: 48px; height: 48px; }
+.video .body { padding: 14px 16px 18px; display: grid; gap: 6px; }
+.video h3 { font: 600 17px/1.25 "Inter", sans-serif; letter-spacing: 0; }
+.video .by { font-size: 14px; color: var(--muted); }
+
+/* Get involved */
+.involve { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.inv { padding: 28px; display: grid; gap: 14px; align-content: start; text-decoration: none; position: relative; }
+.inv .icon { width: 44px; height: 44px; border-radius: 12px; background: var(--brand-soft); display: grid; place-items: center; }
+.inv h3 { font-size: 26px; }
+.inv p { margin: 0; color: var(--muted); }
+.inv .arrow { font: 500 14px/1 var(--mono); color: var(--brand); }
+.inv:hover { border-color: var(--ink); }
+
+/* Sponsors */
+.sponsors { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+.sp { aspect-ratio: 2/1; display: grid; place-items: center; font: 600 17px/1.1 var(--head); text-align: center; padding: 10px; color: #3a4452; }
+.sp small { display: block; font: 500 10px/1 var(--mono); color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-top: 6px; }
+
+/* Subscribe */
+.subscribe { background: var(--ink); color: #fff; border-radius: 20px; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; }
+.subscribe p { color: #aab4c2; margin: 10px 0 0; }
+.field { display: flex; gap: 8px; }
+.field input {
+  flex: 1; min-width: 0; padding: 14px 16px; border-radius: 10px; border: 1px solid #3a4658;
+  background: #172131; color: #fff; font: 400 16px/1 "Inter", sans-serif;
+}
+.field .btn { background: #fff; color: var(--ink); }
+.field.light input { background: var(--bg); border-color: var(--line); color: var(--ink); }
+.field.light .btn { background: var(--ink); color: #fff; }
+
+/* Footer */
+footer { padding: 48px 0 96px; color: var(--muted); font-size: 14px; }
+.foot { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); padding-top: 32px; }
+.foot h4 { margin: 0 0 12px; font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
+.foot ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.foot a { text-decoration: none; }
+.foot a:hover { color: var(--ink); }
+.city-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; background: var(--c); }
+
+@media (max-width: 1000px) {
+  nav.main { display: none; }
+  .menu-btn { display: inline-flex; }
+  .hero-grid, .about-grid, .subscribe { grid-template-columns: 1fr; }
+  .hero-side { min-height: 0; }
+  .map, .player { position: static; }
+  .map { padding: 52px 8px 8px; }
+  .news-grid { grid-template-columns: 1fr 1fr; }
+  .news-grid .news:first-child { grid-column: 1 / -1; }
+  .route { grid-template-columns: repeat(5, minmax(220px, 1fr)); overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; }
+  .route::before { display: none; }
+  .stop { scroll-snap-align: start; }
+  .videos { grid-template-columns: 1fr 1fr; }
+  .sponsors { grid-template-columns: repeat(3, 1fr); }
+  .foot { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  section { padding-block: 40px; }
+  .hero-copy, .about { padding: 24px; }
+  .top .btn-primary { display: none; }
+  .news-grid, .involve, .videos { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .subscribe { padding: 28px 22px; }
+  .field { flex-direction: column; }
+  .foot { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .node.next .ring, .live-dot { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <path d="M6 22 L14 8 L24 18" fill="none" stroke="#0e1621" stroke-width="2.4" stroke-linecap="round"/>
+        <circle cx="6" cy="22" r="4" fill="#0e1621"/><circle cx="14" cy="8" r="4" fill="#2449e8"/><circle cx="24" cy="18" r="4" fill="#0e1621"/>
+      </svg>
+      IT Tour
+    </a>
+    <nav class="main" aria-label="Основно меню">
+      <a href="#tour">Събития</a>
+      <a href="#videos">Лекции</a>
+      <a href="#">Лектори</a>
+      <a href="#">Архив</a>
+      <a href="#news">Новини</a>
+      <a href="#">Екип</a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="lang" title="Английската версия идва по-късно"><span class="on">BG</span><span>EN</span></div>
+    <a class="btn btn-primary" href="#involve">Включи се</a>
+    <button class="btn btn-ghost menu-btn" type="button" aria-label="Меню">☰</button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO: three season states -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+
+      <div class="card hero-copy">
+        <div data-show="upcoming">
+          <div style="display:grid;gap:22px">
+            <span class="label">Следваща спирка · 03 / 05</span>
+            <h1>BurgasConf 2026</h1>
+            <div class="meta-row">
+              <span class="chip" style="--c:var(--burgas)"><span class="dot"></span>25.07.2026 · събота</span>
+              <span class="chip">10:30 – 18:30</span>
+              <span class="chip">Вход свободен</span>
+            </div>
+            <p class="lead">Колеж по туризъм, Университет „Проф. д-р Асен Златаров“, Бургас. Осем лекции, дискусия и lightning talks, а вечерта афтърпарти.</p>
+            <div class="countdown" aria-label="Остават 10 дни и 4 часа">
+              <div><b>10</b><span>дни</span></div>
+              <div><b>04</b><span>часа</span></div>
+              <div><b>32</b><span>мин</span></div>
+            </div>
+            <div class="actions">
+              <a class="btn btn-primary" href="#">Ще дойда</a>
+              <a class="btn btn-ghost" href="#">Програмата →</a>
+              <span class="going"><b>86</b> души ще дойдат</span>
+            </div>
+          </div>
+        </div>
+
+        <div data-show="live">
+          <div style="display:grid;gap:22px">
+            <span class="label"><span class="live-dot"></span>На живо · Бургас</span>
+            <h1>BurgasConf 2026 тече в момента</h1>
+            <p class="lead">Не си в залата? Гледай потока тук, в YouTube или в любимия си плейър.</p>
+            <div class="meta-row">
+              <span class="chip" style="--c:var(--burgas)"><span class="dot"></span>25.07.2026</span>
+              <span class="chip">Колеж по туризъм, Бургас</span>
+            </div>
+            <div class="actions">
+              <a class="btn btn-primary" href="#">Цялата програма</a>
+              <a class="btn btn-ghost" href="#">Как да стигна</a>
+            </div>
+          </div>
+        </div>
+
+        <div data-show="off">
+          <div style="display:grid;gap:22px">
+            <span class="label">Сезон 2026 · завършен</span>
+            <h1>IT Tour 2027 се подготвя</h1>
+            <p class="lead">Пет града, пет безплатни конференции и стотици хора през 2026. Датите за 2027 идват скоро. Остави имейл и ще ги научиш първи.</p>
+            <form class="field light" onsubmit="return false">
+              <input type="email" placeholder="твоят@имейл.bg" aria-label="Имейл">
+              <button class="btn btn-primary">Абонирай ме</button>
+            </form>
+            <div class="actions">
+              <a class="btn btn-ghost" href="#videos">Гледай лекциите от 2026 →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card hero-side">
+        <div data-show="upcoming off">
+          <div class="map-head">
+            <span class="label">Маршрут 2026</span>
+            <span class="label">5 града · май → септ.</span>
+          </div>
+          <div class="map">
+            <svg viewBox="0 0 1000 680" role="img" aria-label="Карта на България с петте града от сезон 2026, свързани по реда на датите">
+              <path class="bg-shape" d="M72 39 L120 113 L210 125 L315 144 L420 146 L495 156 L565 107 L645 72 L720 55 L780 80 L870 134 L957 136 L960 185 L885 206 L862 247 L855 308 L833 349 L795 397 L825 411 L862 452 L870 493 L810 503 L750 483 L660 503 L623 545 L585 627 L510 633 L450 647 L345 586 L270 606 L210 621 L112 627 L112 575 L83 493 L30 432 L45 390 L38 319 L83 247 L112 185 L45 123 Z"/>
+              <path class="edge" d="M383 462 L514 271 L790 390"/>
+              <path class="edge todo" d="M790 390 L857 245 L565 113"/>
+              <g class="node done"><circle class="core" cx="383" cy="462" r="18" fill="var(--plovdiv)"/><text x="412" y="472">Пловдив</text><text class="d" x="412" y="498">30.05</text></g>
+              <g class="node done"><circle class="core" cx="514" cy="271" r="18" fill="var(--tarnovo)"/><text x="542" y="281">Търново</text><text class="d" x="542" y="307">27.06</text></g>
+              <g class="node next"><circle class="ring" cx="790" cy="390" r="34" stroke="var(--burgas)"/><circle class="core" cx="790" cy="390" r="22" fill="var(--burgas)"/><text x="660" y="460">Бургас</text><text class="d" x="660" y="486">25.07</text></g>
+              <g class="node"><circle class="core" cx="857" cy="245" r="18" fill="var(--varna)"/><text x="735" y="208">Варна</text><text class="d" x="735" y="234">22.08</text></g>
+              <g class="node"><circle class="core" cx="565" cy="113" r="18" fill="var(--ruse)"/><text x="597" y="123">Русе</text><text class="d" x="597" y="149">26.09</text></g>
+            </svg>
+          </div>
+        </div>
+        <div data-show="live">
+          <div class="player">
+            <div class="ph screen" role="img" aria-label="Вграден YouTube плейър (заместител)">
+              <div class="play"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div>
+            </div>
+            <div class="bar">
+              <div class="now">
+                <span class="t">Сега</span><span class="cur">Смарт хоум: Решенията, които не са за подценяване. Иво Гергов</span>
+                <span class="t">15:20</span><span>Coding в ерата на AI. Росен Иванов</span>
+              </div>
+              <div class="stream-links">
+                <a class="btn btn-ghost" href="#">▶ Гледай в YouTube</a>
+                <a class="btn btn-ghost" href="#">Линк за външен плейър</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="ticker">
+    <div class="wrap">
+      <span><b>62</b> конференции</span>
+      <span><b>6</b> града</span>
+      <span>от <b>2012</b></span>
+      <span><b>230+</b> лектори</span>
+      <span><b>350+</b> лекции</span>
+      <span>вход <b>0 лв.</b></span>
+      <span>правени от <b>общността</b></span>
+    </div>
+  </div>
+
+  <!-- NEWS -->
+  <section id="news">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="label">Новини</span><h2>Какво ново</h2></div>
+        <a class="more" href="#">Всички новини →</a>
+      </div>
+      <div class="news-grid">
+        <a class="card news" href="#">
+          <div class="ph" style="--c:var(--tarnovo)">снимка от събитието</div>
+          <div class="body">
+            <div class="tags"><span class="chip" style="--c:var(--tarnovo)"><span class="dot"></span>Търново</span><span class="chip">Разказ</span></div>
+            <h3>Как мина TarnovoConf 2026</h3>
+            <p>Пълна зала във ВТУ, пет лекции и разгорещена дискусия за AI. Разказваме какво се случи и къде да гледаш записите.</p>
+            <span class="label">01.07.2026</span>
+          </div>
+        </a>
+        <a class="card news short" href="#">
+          <div class="body">
+            <div class="tags"><span class="chip" style="--c:var(--burgas)"><span class="dot"></span>Бургас</span><span class="chip">Обявление</span></div>
+            <h3>Програмата на BurgasConf 2026 е готова</h3>
+            <p>Осем лекции, дискусия за последните 20 години в бранша и lightning talks.</p>
+            <span class="label">10.07.2026</span>
+          </div>
+        </a>
+        <a class="card news short" href="#">
+          <div class="body">
+            <div class="tags"><span class="chip">Целия тур</span><span class="chip">Обявление</span></div>
+            <h3>Търсим доброволци за Варна и Русе</h3>
+            <p>Регистрация, сцена, стрийм, снимки. Ела да помогнеш един ден и стани част от екипа.</p>
+            <span class="label">20.06.2026</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOUR -->
+  <section id="tour" style="padding-top:8px">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="label">Сезон 2026</span><h2>Петте спирки</h2></div>
+        <a class="more" href="#">Архив 2012 – 2025 →</a>
+      </div>
+      <div class="route">
+        <article class="card stop done" style="--c:var(--plovdiv)">
+          <span class="accent"></span>
+          <div class="badge"><img src="../shared/logos/plovdiv.png" alt="PlovdivConf 2026"></div>
+          <div class="inner"><span class="num">01 · PlovdivConf</span><h3>Пловдив</h3><span class="date">30.05.2026</span><span class="venue">Хотел SPS</span><span class="status">✓ Отминала</span></div>
+          <a class="go" href="#">Записи и снимки →</a>
+        </article>
+        <article class="card stop done" style="--c:var(--tarnovo)">
+          <span class="accent"></span>
+          <div class="badge"><img src="../shared/logos/tarnovo.png" alt="TarnovoConf 2026"></div>
+          <div class="inner"><span class="num">02 · TarnovoConf</span><h3>Велико Търново</h3><span class="date">27.06.2026</span><span class="venue">ВТУ, Корпус 4</span><span class="status">✓ Отминала</span></div>
+          <a class="go" href="#">Записи и снимки →</a>
+        </article>
+        <article class="card stop next" style="--c:var(--burgas)">
+          <span class="accent"></span>
+          <div class="badge"><img src="../shared/logos/burgas.png" alt="BurgasConf 2026"></div>
+          <div class="inner"><span class="num">03 · BurgasConf</span><h3>Бургас</h3><span class="date">25.07.2026</span><span class="venue">Колеж по туризъм, Университет „Проф. д-р Асен Златаров“</span><span class="status">● Следваща</span></div>
+          <a class="go" href="#">Към събитието →</a>
+        </article>
+        <article class="card stop" style="--c:var(--varna)">
+          <span class="accent"></span>
+          <div class="badge"><img src="../shared/logos/varna.png" alt="VarnaConf 2026"></div>
+          <div class="inner"><span class="num">04 · VarnaConf</span><h3>Варна</h3><span class="date">22.08.2026</span><span class="venue">Хотел „Черно море“</span><span class="status">Предстои</span></div>
+          <a class="go" href="#">Към събитието →</a>
+        </article>
+        <article class="card stop" style="--c:var(--ruse)">
+          <span class="accent"></span>
+          <div class="badge"><img src="../shared/logos/ruse.png" alt="RuseConf 2026"></div>
+          <div class="inner"><span class="num">05 · RuseConf</span><h3>Русе</h3><span class="date">26.09.2026</span><span class="venue">Зала 2.101, Русенски университет „Ангел Кънчев“</span><span class="status">Предстои</span></div>
+          <a class="go" href="#">Към събитието →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section>
+    <div class="wrap about-grid">
+      <div class="card about">
+        <span class="label">Какво е IT Tour</span>
+        <h2>Конференция, която идва при теб</h2>
+        <p>IT Tour е поредица от безплатни еднодневни технически конференции, които всяка година обикалят България.</p>
+        <p class="muted">Започнахме във Варна през 2012 г. като група ентусиасти. Оттогава всеки сезон събираме програмисти, студенти и всички, които се интересуват от технологии, в техния град. Една зала, един ден, вход свободен и много разговори след лекциите.</p>
+        <div><a class="btn btn-ghost" href="#">Нашата история →</a></div>
+      </div>
+      <div class="stats">
+        <div class="card stat hi"><span class="label">Издания</span><b>62</b></div>
+        <div class="card stat"><span class="label">Години</span><b>15</b></div>
+        <div class="card stat"><span class="label">Града</span><b>6</b></div>
+        <div class="card stat"><span class="label">Лектори</span><b>230+</b></div>
+        <div class="card stat"><span class="label">Лекции</span><b>350+</b></div>
+        <div class="card stat"><span class="label">Цена</span><b>0 лв.</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEOS -->
+  <section id="videos" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="label">Лекции</span><h2>Гледай последните записи</h2></div>
+        <a class="more" href="#">Всички 350+ лекции →</a>
+      </div>
+      <div class="videos">
+        <a class="card video" href="#"><div class="ph"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="label">PlovdivConf 2025</span><h3>Vibe coding</h3><span class="by">Светлин Наков</span></div></a>
+        <a class="card video" href="#"><div class="ph"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="label">PlovdivConf 2025</span><h3>Back to the Future of the IT Teams in 30 years from now</h3><span class="by">Никола Богданов</span></div></a>
+        <a class="card video" href="#"><div class="ph"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="label">PlovdivConf 2025</span><h3>Empowering Teams with a Backstage Development Portal</h3><span class="by">Стефан Ангелов</span></div></a>
+        <a class="card video" href="#"><div class="ph"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="label">PlovdivConf 2025</span><h3>LLM в базата данни</h3><span class="by">Михаил Петров</span></div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GET INVOLVED -->
+  <section id="involve" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="label">Включи се</span><h2>IT Tour се прави от общността</h2></div>
+      </div>
+      <div class="involve">
+        <a class="card inv" href="#">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2449e8" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
+          <h3>Стани лектор</h3>
+          <p>Имаш какво да разкажеш? Търсим лекции от 30–40 минути за всеки от петте града.</p>
+          <span class="arrow">Кандидатствай →</span>
+        </a>
+        <a class="card inv" href="#">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2449e8" stroke-width="2"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></span>
+          <h3>Стани спонсор</h3>
+          <p>Срещни се с програмисти и студенти в шест града. Входът остава безплатен благодарение на теб.</p>
+          <span class="arrow">Свържи се с нас →</span>
+        </a>
+        <a class="card inv" href="#">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2449e8" stroke-width="2"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M17 11h6M20 8v6"/></svg></span>
+          <h3>Стани доброволец</h3>
+          <p>Помогни с организацията на целия тур или само на събитието в твоя град.</p>
+          <span class="arrow">Запиши се →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPONSORS -->
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="label">Сезон 2026</span><h2>Благодарим на</h2></div>
+        <a class="more" href="#">Стани спонсор →</a>
+      </div>
+      <div class="sponsors">
+        <div class="card sp"><div>StorPool<small>Спонсор</small></div></div>
+        <div class="card sp"><div>IntWay<small>Спонсор</small></div></div>
+        <div class="card sp"><div>VarnaLab<small>Партньор</small></div></div>
+        <div class="card sp"><div>Dev.bg<small>Медия</small></div></div>
+        <div class="card sp"><div>Подкрепи БГ<small>Медия</small></div></div>
+        <div class="card sp"><div>WomenWhoGrow<small>Медия</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBSCRIBE -->
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="subscribe">
+        <div>
+          <span class="label" style="color:#aab4c2">Бюлетин</span>
+          <h2 style="margin-top:10px">Научи първи за новите дати</h2>
+          <p>Няколко имейла на година: датите, отворените покани за лектори и записите. Без спам.</p>
+        </div>
+        <form class="field" onsubmit="return false">
+          <input type="email" placeholder="твоят@имейл.bg" aria-label="Имейл">
+          <button class="btn">Абонирай ме</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a class="logo" href="#" style="margin-bottom:12px">IT Tour</a>
+      <p style="margin:12px 0">Безплатни еднодневни IT конференции из България от 2012 г.</p>
+      <p style="margin:0">info@it-tour.bg</p>
+    </div>
+    <div>
+      <h4>Градове</h4>
+      <ul>
+        <li><a href="#"><span class="city-dot" style="--c:var(--plovdiv)"></span>PlovdivConf</a></li>
+        <li><a href="#"><span class="city-dot" style="--c:var(--tarnovo)"></span>TarnovoConf</a></li>
+        <li><a href="#"><span class="city-dot" style="--c:var(--burgas)"></span>BurgasConf</a></li>
+        <li><a href="#"><span class="city-dot" style="--c:var(--varna)"></span>VarnaConf</a></li>
+        <li><a href="#"><span class="city-dot" style="--c:var(--ruse)"></span>RuseConf</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>IT Tour</h4>
+      <ul><li><a href="#">За нас</a></li><li><a href="#">Екип</a></li><li><a href="#">Новини</a></li><li><a href="#">Архив</a></li><li><a href="#">Кодекс на поведение</a></li></ul>
+    </div>
+    <div>
+      <h4>Последвай ни</h4>
+      <ul><li><a href="#">YouTube</a></li><li><a href="#">Facebook</a></li><li><a href="#">X / Twitter</a></li></ul>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:24px">© 2026 IT Tour · CC BY-NC-ND 4.0</div>
+</footer>
+
+</body>
+</html>

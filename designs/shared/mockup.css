@@ -1,0 +1,37 @@
+/* Mockup-only chrome: the season switch. Not part of any design direction. */
+.mock-switch {
+  position: fixed;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 4px 4px 12px;
+  border-radius: 999px;
+  background: #111;
+  color: #ddd;
+  font: 500 12px/1 system-ui, sans-serif;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .3);
+  max-width: calc(100vw - 24px);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.mock-switch span { margin-right: 4px; opacity: .7; }
+.mock-switch button {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.mock-switch button[aria-pressed="true"] { background: #fff; color: #111; }
+
+/* Banner variants: pages mark each with data-show="upcoming|live|off". */
+[data-show] { display: none !important; }
+[data-season="upcoming"] [data-show~="upcoming"],
+[data-season="live"] [data-show~="live"],
+[data-season="off"] [data-show~="off"] { display: revert !important; }

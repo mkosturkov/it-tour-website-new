@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IT Tour · Design directions</title>
+<style>
+:root { --bg: #f6f6f4; --ink: #151515; --muted: #666; --line: #e2e2dd; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 system-ui, sans-serif; }
+.wrap { width: min(960px, 100% - 32px); margin: 48px auto; }
+h1 { font-size: 32px; margin: 0 0 8px; }
+p { color: var(--muted); margin: 0 0 28px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px; display: grid; gap: 10px; }
+.card h2 { margin: 0; font-size: 20px; }
+.card p { margin: 0; font-size: 15px; }
+.card a.open { font-weight: 600; color: var(--ink); }
+.states { display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px; }
+.states a { color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; text-decoration: none; }
+.states a:hover { color: var(--ink); border-color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>IT Tour: homepage directions</h1>
+  <p>Step 1: four directions for the homepage. Each page has a switch at the bottom that changes the season banner between upcoming, live and off-season.</p>
+  <div class="grid">
+    <div class="card"><h2>A · The Tour</h2><p>Tour-poster energy: a road route on the map, ticket-style city cards, bold condensed type.</p><a class="open" href="a-tour/index.html">Open →</a><div class="states"><a href="a-tour/index.html?season=upcoming">upcoming</a><a href="a-tour/index.html?season=live">live</a><a href="a-tour/index.html?season=off">off-season</a></div></div>
+    <div class="card"><h2>B · Hackerspace</h2><p>Dark, monospace, the schedule as a terminal log, news as a git log.</p><a class="open" href="b-hackerspace/index.html">Open →</a><div class="states"><a href="b-hackerspace/index.html?season=upcoming">upcoming</a><a href="b-hackerspace/index.html?season=live">live</a><a href="b-hackerspace/index.html?season=off">off-season</a></div></div>
+    <div class="card"><h2>C · Editorial</h2><p>Light, large serif headlines, lots of white space, led by photos.</p><a class="open" href="c-editorial/index.html">Open →</a><div class="states"><a href="c-editorial/index.html?season=upcoming">upcoming</a><a href="c-editorial/index.html?season=live">live</a><a href="c-editorial/index.html?season=off">off-season</a></div></div>
+    <div class="card"><h2>D · Network</h2><p>The blend: light cards on a grid, the tour as a network map, small monospace touches.</p><a class="open" href="d-network/index.html">Open →</a><div class="states"><a href="d-network/index.html?season=upcoming">upcoming</a><a href="d-network/index.html?season=live">live</a><a href="d-network/index.html?season=off">off-season</a></div></div>
+  </div>
+</div>
+</body>
+</html>
