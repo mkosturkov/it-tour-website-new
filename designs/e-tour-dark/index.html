@@ -19,8 +19,8 @@
   --text: #eef1f4;
   --muted: #a0abb8;
   --dim: #6f7b88;
-  --accent: #7aa7ff;
-  --accent-ink: #0c1a33;
+  --accent: #4f8dff;
+  --accent-ink: #08142b;
   --live: #ff6363;
 
   --plovdiv: #c8ca08;
@@ -35,10 +35,11 @@
 }
 /* Accent options, picked with the mockup accent switch */
 [data-accent="blue"]   { --accent: #7aa7ff; --accent-ink: #0c1a33; }
-[data-accent="violet"] { --accent: #b49cff; --accent-ink: #1d1438; }
-[data-accent="white"]  { --accent: #f1ece2; --accent-ink: #171c23; }
-[data-accent="teal"]   { --accent: #5fb4c7; --accent-ink: #0b2228; }
-[data-accent="mint"]   { --accent: #7cf2c4; --accent-ink: #0f2a20; }
+[data-accent="blue2"]  { --accent: #4f8dff; --accent-ink: #08142b; }
+[data-accent="blue3"]  { --accent: #2f9bff; --accent-ink: #061a30; }
+[data-accent="green"]  { --accent: #7cf2c4; --accent-ink: #0f2a20; }
+[data-accent="green2"] { --accent: #2ee6a0; --accent-ink: #062a1c; }
+[data-accent="green3"] { --accent: #22d47a; --accent-ink: #052615; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--body); }
@@ -459,14 +460,14 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
 </div>
 
 <script>
-// Mockup-only: accent colour switch (?accent=blue|violet|white|teal|mint, remembered per browser)
+// Mockup-only: accent colour switch (?accent=blue|blue2|blue3|green|green2|green3, remembered per browser)
 (function () {
-  var OPTS = [['blue', 'Синьо', '#7aa7ff'], ['violet', 'Виолетово', '#b49cff'], ['white', 'Бяло', '#f1ece2'], ['teal', 'Тюркоаз', '#5fb4c7'], ['mint', 'Зелено', '#7cf2c4']];
+  var OPTS = [['blue', 'Синьо 1', '#7aa7ff'], ['blue2', 'Синьо 2', '#4f8dff'], ['blue3', 'Синьо 3', '#2f9bff'], ['green', 'Зелено 1', '#7cf2c4'], ['green2', 'Зелено 2', '#2ee6a0'], ['green3', 'Зелено 3', '#22d47a']];
   var KEY = 'ittour-mock-accent';
   function read() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
   function save(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
-  var cur = new URLSearchParams(location.search).get('accent') || read() || 'blue';
-  if (!OPTS.some(function (o) { return o[0] === cur; })) cur = 'blue';
+  var cur = new URLSearchParams(location.search).get('accent') || read() || 'blue2';
+  if (!OPTS.some(function (o) { return o[0] === cur; })) cur = 'blue2';
   document.documentElement.setAttribute('data-accent', cur);
   var bar = document.createElement('div');
   bar.className = 'accent-switch';
