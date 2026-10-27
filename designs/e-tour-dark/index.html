@@ -40,6 +40,14 @@
 [data-accent="green"]  { --accent: #7cf2c4; --accent-ink: #0f2a20; }
 [data-accent="green2"] { --accent: #2ee6a0; --accent-ink: #062a1c; }
 [data-accent="green3"] { --accent: #22d47a; --accent-ink: #052615; }
+[data-accent="violet"]  { --accent: #b49cff; --accent-ink: #1d1438; }
+[data-accent="violet2"] { --accent: #9b7bff; --accent-ink: #160d33; }
+[data-accent="violet3"] { --accent: #8a5cff; --accent-ink: #ffffff; }
+[data-accent="teal"]    { --accent: #5fb4c7; --accent-ink: #0b2228; }
+[data-accent="teal2"]   { --accent: #2fc6dd; --accent-ink: #052329; }
+[data-accent="teal3"]   { --accent: #12d6e8; --accent-ink: #032227; }
+[data-accent="white"]   { --accent: #f1ece2; --accent-ink: #171c23; }
+[data-accent="white2"]  { --accent: #ffffff; --accent-ink: #11151b; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--body); }
@@ -201,7 +209,7 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
 .status .btn { padding: 9px 16px; font-size: 14px; }
 
 /* Mockup-only chrome: accent switch */
-.accent-switch { position: fixed; top: 80px; right: 16px; z-index: 1000; display: flex; align-items: center; gap: 2px; padding: 4px 4px 4px 12px; border-radius: 999px; background: #111; color: #ddd; font: 500 12px/1 system-ui, sans-serif; box-shadow: 0 6px 24px rgba(0,0,0,.3); }
+.accent-switch { position: fixed; top: 80px; right: 16px; z-index: 1000; display: flex; flex-wrap: wrap; max-width: 560px; align-items: center; gap: 2px; padding: 6px 6px 6px 12px; border-radius: 16px; background: #111; color: #ddd; font: 500 12px/1 system-ui, sans-serif; box-shadow: 0 6px 24px rgba(0,0,0,.3); }
 .accent-switch span { margin-right: 4px; opacity: .7; }
 .accent-switch button { border: 0; border-radius: 999px; padding: 6px 10px 6px 8px; background: transparent; color: inherit; font: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
 .accent-switch button i { width: 12px; height: 12px; border-radius: 50%; background: var(--sw); }
@@ -232,7 +240,7 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
   .status .now, .status p { display: none; }
   .status img { width: 36px; height: 36px; }
   .foot { grid-template-columns: 1fr; }
-  .accent-switch { left: 12px; right: 12px; overflow-x: auto; white-space: nowrap; padding-left: 4px; }
+  .accent-switch { left: 12px; right: 12px; max-width: none; flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; padding-left: 4px; border-radius: 999px; }
   .accent-switch button { padding: 6px 8px 6px 6px; font-size: 11px; flex: none; }
   .accent-switch span { display: none; }
 }
@@ -460,9 +468,9 @@ footer { padding: 56px 0 120px; border-top: 1px solid var(--line); color: var(--
 </div>
 
 <script>
-// Mockup-only: accent colour switch (?accent=blue|blue2|blue3|green|green2|green3, remembered per browser)
+// Mockup-only: accent colour switch (?accent=blue|blue2|...|white2, see OPTS; remembered per browser)
 (function () {
-  var OPTS = [['blue', 'Синьо 1', '#7aa7ff'], ['blue2', 'Синьо 2', '#4f8dff'], ['blue3', 'Синьо 3', '#2f9bff'], ['green', 'Зелено 1', '#7cf2c4'], ['green2', 'Зелено 2', '#2ee6a0'], ['green3', 'Зелено 3', '#22d47a']];
+  var OPTS = [['blue', 'Синьо 1', '#7aa7ff'], ['blue2', 'Синьо 2', '#4f8dff'], ['blue3', 'Синьо 3', '#2f9bff'], ['green', 'Зелено 1', '#7cf2c4'], ['green2', 'Зелено 2', '#2ee6a0'], ['green3', 'Зелено 3', '#22d47a'], ['violet', 'Виолетово 1', '#b49cff'], ['violet2', 'Виолетово 2', '#9b7bff'], ['violet3', 'Виолетово 3', '#8a5cff'], ['teal', 'Тюркоаз 1', '#5fb4c7'], ['teal2', 'Тюркоаз 2', '#2fc6dd'], ['teal3', 'Тюркоаз 3', '#12d6e8'], ['white', 'Бяло 1', '#f1ece2'], ['white2', 'Бяло 2', '#ffffff']];
   var KEY = 'ittour-mock-accent';
   function read() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
   function save(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }

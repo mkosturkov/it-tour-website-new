@@ -136,6 +136,7 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later
 4. Volunteer form: which fields do we need?
 5. Sponsors: are we sure about no public prices?
 6. Numbers: the mockups say 230+ speakers and 350+ talks. These are estimates (from the highest speaker ID on the old site, and roughly 6 talks per edition). What are the real counts? The 62 editions and the 2012 start are exact.
+7. Accent colour for version E. Try the switch in the top right of designs/e-tour-dark (blue, green, violet, teal, white; 1 = soft, higher = more vivid). Default is Blue 2.
 
 ## Homepage feedback (round 1)
 - ✅ C (Editorial) dropped. A: clean and easy to follow, but no paper or road-trip look. B: colours liked, terminal style too generic. D: section order confusing.
