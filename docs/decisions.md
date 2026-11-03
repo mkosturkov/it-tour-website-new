@@ -65,6 +65,7 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later
 - ✅ **Archive:** filter by city and year. Each past edition is the "after" event page, kept permanently.
 - ✅ **Talks library:** every talk from every year. Search plus city and year filters. Video and slides where available.
 - ✅ **Speaker directory:** a profile for each speaker with photo, bio, links, and all their talks across cities and years.
+- ✅ Every talk shows a short summary: under its title in the programme, on the speaker profile and on the talk page. The text comes from the "Описание" field of the speaker form. The mockups use placeholder summaries.
 - ✅ No topic tags for now.
 - 🔜 Topic tags (AI, web, security…) could be added later.
 
