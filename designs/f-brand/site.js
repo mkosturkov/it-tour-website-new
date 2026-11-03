@@ -39,7 +39,7 @@
   function header(page) {
     return '<div class="cbar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>' +
       '<header><div class="wrap nav">' +
-      '<a class="logo" href="index.html" aria-label="IT Tour, начало"><span class="mark"></span></a>' +
+      '<a class="logo" href="index.html"><img class="mark" src="img/it-tour-dark.svg" alt="IT Tour, начало"></a>' +
       '<nav id="main-nav"><ul>' + NAV.map(function (n) {
         return '<li><a href="' + n[1] + '"' + (n[0] === page ? ' aria-current="page"' : '') + '>' + n[2] + '</a></li>';
       }).join('') + '</ul></nav>' +
@@ -53,7 +53,7 @@
 
   function footer() {
     return '<footer><div class="wrap foot">' +
-      '<div><a class="logo" href="index.html" aria-label="IT Tour, начало"><span class="mark"></span></a><p>Безплатни еднодневни IT конференции из България от 2012 г.</p></div>' +
+      '<div><a class="logo" href="index.html"><img class="mark" src="img/it-tour-dark.svg" alt="IT Tour, начало"></a><p>Безплатни еднодневни IT конференции из България от 2012 г.</p></div>' +
       '<div><h4>Конференции</h4><ul>' + CITIES.map(function (c) {
         return '<li><a href="' + c[2] + '"><span class="cdot" style="--c:var(--' + c[0] + ')"></span>' + c[1] + '</a></li>';
       }).join('') + '</ul></div>' +

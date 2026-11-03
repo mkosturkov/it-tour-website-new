@@ -67,7 +67,7 @@ F uses the real IT Tour logo, the five city badges, the dotted wave backgrounds 
 - Each event page takes its city's colour (the VarnaConf visuals are mint, for example). The accent switch only changes the hub pages.
 - Event details shown as a code comment: `/** * 22 август 2026 … */`.
 - Round photos with a white ring, and the programme as a striped table.
-- The wordmark font from the visuals ("Back In The USSR DL") is not on Google Fonts. Until we have the font file, Montserrat stands in.
+- The wordmark font from the visuals ("Back In The USSR DL") is in `designs/f-brand/fonts`. It has no Cyrillic letters, so it is only used for Latin wordmarks like "it tour 2026" and "varna conf 2026".
 
 The original Figma exports are about 50 MB, so they are not in the repo.
 

@@ -138,7 +138,7 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later
 6. Numbers: the mockups say 230+ speakers and 350+ talks. These are estimates (from the highest speaker ID on the old site, and roughly 6 talks per edition). What are the real counts? The 62 editions and the 2012 start are exact.
 7. Accent colour for version E. Try the switch in the top right of designs/e-tour-dark (blue, green, violet, teal, white; 1 = soft, higher = more vivid). Default is Blue 2.
 8. E or F? Compare `designs/e-tour-dark` and `designs/f-brand`.
-9. Who has the "Back In The USSR DL" font file, and can we use it on the web?
+9. The "Back In The USSR DL" font came without a licence file. Can we use it on a public website?
 
 
 ## Version F (brand visuals)
@@ -147,7 +147,8 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later
 - ✅ Each conference page uses its city colour. The VarnaConf visuals are mint (#6ec3aa).
 - ✅ City colours updated to the badge values: Plovdiv #c8cc05, Tarnovo #f38c16, Burgas #f18a85, Varna #6ec3aa, Ruse #019295.
 - ❓ E (dark) or F (light, brand)?
-- ❓ Wordmark font "Back In The USSR DL": we need the font file and a licence check to use it on the web. Montserrat stands in until then.
+- ✅ Wordmark font "Back In The USSR DL" added. It has Latin letters only, so it is used for the Latin wordmarks.
+- ❓ The font came without a licence file. We need to confirm it can be used on a website.
 
 ## Homepage feedback (round 1)
 - ✅ C (Editorial) dropped. A: clean and easy to follow, but no paper or road-trip look. B: colours liked, terminal style too generic. D: section order confusing.

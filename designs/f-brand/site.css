@@ -1,3 +1,5 @@
+/* Wordmark font from the visuals. It has Latin letters only, so use it for Latin wordmarks like "it tour 2026". */
+@font-face { font-family: "Back In The USSR DL"; src: url(fonts/back-in-the-ussr-dl.ttf) format("truetype"); font-display: swap; }
 /* Version F: version E's layout in the look of the IT Tour 2026 social visuals (light, city colours, badges) */
 :root {
   --bg: #e8ecf5;
@@ -23,7 +25,7 @@
 
   --head: "Montserrat", system-ui, sans-serif;
   --body: "Montserrat", system-ui, sans-serif;
-  /* Wordmark font from the visuals; falls back to Montserrat until we have the font file */
+  /* Wordmark font from the visuals, Latin only */
   --display: "Back In The USSR DL", "Montserrat", system-ui, sans-serif;
   --r: 12px;
   color-scheme: light;
@@ -66,7 +68,7 @@ section.alt { background: var(--bg-2); border-block: 1px solid var(--line); }
 header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 20px; }
 .logo { display: flex; align-items: center; gap: 10px; font: 700 20px var(--head); text-decoration: none; }
-.logo .mark { width: 36px; height: 44px; background: currentColor; -webkit-mask: url(img/it-tour.svg) center / contain no-repeat; mask: url(img/it-tour.svg) center / contain no-repeat; }
+.logo .mark { height: 44px; width: auto; display: block; }
 nav ul { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; font-size: 15px; }
 nav ul a { text-decoration: none; color: var(--muted); }
 nav ul a:hover { color: var(--text); }
@@ -317,7 +319,8 @@ section.tight { padding: 48px 0; }
 .ev-brand { display: flex; align-items: center; gap: 14px; }
 .ev-brand img { width: 72px; height: 72px; border-radius: 50%; background: #fff; }
 .part-of { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px 5px 6px; text-decoration: none; }
-.part-of .mark { width: 16px; height: 20px; background: currentColor; -webkit-mask: url(img/it-tour.svg) center / contain no-repeat; mask: url(img/it-tour.svg) center / contain no-repeat; }
+.part-of .mark { width: 16px; height: 20px; background: url(img/it-tour.svg) center / contain no-repeat; }
+body[style*="--plovdiv"] .part-of .mark { background-image: url(img/it-tour-dark.svg); }
 .ev-hero h1 { font-size: clamp(40px, 6vw, 68px); margin: 18px 0 8px; }
 .ev-hero h1 span { color: var(--c); }
 .ev-facts { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 18px 0 26px; color: var(--muted); }
@@ -496,8 +499,8 @@ section.alt { background: var(--bg-2); border-block: 0; }
 
 /* Dotted wave textures, tinted like the visuals */
 .page-hero::before, .ev-hero::before, footer::before, .hero::after {
-  content: ""; position: absolute; pointer-events: none; background: #c3cce1;
-  -webkit-mask: url(img/dots-b.webp) center top / cover no-repeat; mask: url(img/dots-b.webp) center top / cover no-repeat;
+  content: ""; position: absolute; pointer-events: none;
+  background: url(img/dots-b.webp) center top / cover no-repeat;
 }
 .page-hero::before { inset: 0 0 auto auto; width: min(1100px, 100%); height: 100%; border-radius: 0; opacity: .8; }
 .page-hero > .wrap, .ev-hero > .wrap { position: relative; }
@@ -510,12 +513,12 @@ section.alt { background: var(--bg-2); border-block: 0; }
 /* Homepage hero: audience photo with a curved, white-ringed edge and the IT Tour logo */
 .hero { padding: 0 0 72px; }
 .hero::before { display: none; }
-.hero::after { inset: auto 0 0 0; height: 60%; -webkit-mask-image: url(img/dots-a.webp); mask-image: url(img/dots-a.webp); -webkit-mask-position: center bottom; mask-position: center bottom; opacity: .7; }
+.hero::after { inset: auto 0 0 0; height: 60%; background-image: url(img/dots-a.webp); background-position: center bottom; opacity: .7; }
 .hero > .wrap { position: relative; z-index: 1; }
 .hero-photo { position: relative; height: clamp(240px, 32vw, 420px); margin: 0 -12% 56px; border-radius: 0 0 50% 50% / 0 0 46% 46%; overflow: hidden; box-shadow: 0 0 0 12px #fff, 0 0 0 30px rgba(255, 255, 255, .45), var(--shadow); }
 .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; }
 .hero-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20, 35, 70, .25), rgba(20, 35, 70, .55)); }
-.hero-logo { position: absolute; z-index: 1; left: 50%; top: 46%; transform: translate(-50%, -50%); width: clamp(84px, 9vw, 130px); aspect-ratio: 151 / 183; background: #fdfefa; -webkit-mask: url(img/it-tour.svg) center / contain no-repeat; mask: url(img/it-tour.svg) center / contain no-repeat; }
+.hero-photo .hero-logo { position: absolute; z-index: 1; left: 50%; top: 46%; transform: translate(-50%, -50%); width: clamp(84px, 9vw, 130px); height: auto; object-fit: contain; }
 .wordmark { font: 400 clamp(40px, 6vw, 72px)/1 var(--display); margin: 0 0 10px; display: flex; gap: .35em; flex-wrap: wrap; }
 .wordmark span:nth-child(1) { color: var(--plovdiv); } .wordmark span:nth-child(2) { color: var(--burgas); } .wordmark span:nth-child(3) { color: var(--ruse); }
 .hero h1 { font-size: clamp(32px, 4.4vw, 52px); margin: 8px 0 18px; }
@@ -547,6 +550,8 @@ section.alt { background: var(--bg-2); border-block: 0; }
 .ev-hero::before { inset: 0 0 auto auto; width: 70%; height: 100%; opacity: .7; }
 .ev-brand { background: var(--c); color: #fff; border-radius: 0 999px 999px 0; padding: 10px 26px 10px 10px; margin-left: calc((100vw - 100%) / -2); padding-left: calc((100vw - 100%) / 2 + 4px); width: fit-content; max-width: calc(100% + (100vw - 100%) / 2); flex-wrap: wrap; }
 .ev-brand img { width: 84px; height: 84px; }
+.ev-word { font: 400 30px/1 var(--display); color: #fff; }
+body[style*="--plovdiv"] .ev-word { color: #26270a; }
 .part-of { color: #fff; border-color: rgba(255, 255, 255, .6); font-weight: 600; }
 body[style*="--plovdiv"] .ev-brand .part-of { color: #26270a; border-color: rgba(0, 0, 0, .3); }
 .ev-hero h1 { margin-top: 26px; }
@@ -575,9 +580,9 @@ body[style*="--plovdiv"] .schedule-head { color: #26270a; }
 
 /* Footer: map-grey band with dots, colour bar at the very bottom */
 footer { position: relative; background: var(--map); border-top: 0; padding-bottom: 0; color: var(--muted); }
-footer::before { inset: 0; -webkit-mask-image: url(img/dots-a.webp); mask-image: url(img/dots-a.webp); -webkit-mask-position: center bottom; mask-position: center bottom; background: #c9d1e3; }
+footer::before { inset: 0; background-image: url(img/dots-a.webp); background-position: center bottom; }
 footer .foot { position: relative; padding-bottom: 56px; }
-footer .logo .mark { width: 48px; height: 58px; }
+footer .logo .mark { height: 58px; }
 footer .cbar { position: relative; margin-bottom: 0; height: 10px; }
 
 /* Season pop-up: white card with the city colour on top */
@@ -597,6 +602,8 @@ footer .cbar { position: relative; margin-bottom: 0; height: 10px; }
   .badges span { font-size: 13px; margin-top: -10px; white-space: nowrap; width: auto; min-width: 100%; padding: 6px 8px; }
   .ev-brand { flex-wrap: nowrap; border-radius: 0 40px 40px 0; padding-right: 14px; }
   .ev-brand .part-of { font-size: 12px; border: 0; padding: 0; }
+  .ev-brand { flex-wrap: wrap; }
+  .ev-word { font-size: 22px; }
   .ev-brand img { width: 60px; height: 60px; }
   .schedule-head { display: none; }
   .slot { grid-template-columns: 64px minmax(0, 1fr); padding: 14px; }
