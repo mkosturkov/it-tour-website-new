@@ -17,8 +17,9 @@ Today there is a hub site (it-tour.bg) plus a separate site per city (plovdivcon
 
 1. **Requirements.** Agreed scope, page list and open questions are in [docs/decisions.md](docs/decisions.md). Read it before suggesting changes.
 2. **Step 1: homepage in several directions.** Versions A–D. After feedback, C was dropped and the others were merged into version E.
-3. **Step 2: full page set in version E.** Done. This is the current direction.
-4. **Next:** team feedback on E, the open questions below, then the real logo and photos.
+3. **Step 2: full page set in version E.** Done.
+4. **Version F.** The same pages in the look of our IT Tour 2026 social media visuals. Done.
+5. **Next:** choose between E and F, answer the open questions below, then collect photos.
 
 ## The versions
 
@@ -28,11 +29,12 @@ Today there is a hub site (it-tour.bg) plus a separate site per city (plovdivcon
 | `designs/b-hackerspace` | B, Hackerspace | Homepage only. Kept for reference. |
 | `designs/c-editorial` | C, Editorial | Homepage only. Dropped. |
 | `designs/d-network` | D, Network | Homepage only. Kept for reference. |
-| `designs/e-tour-dark` | **E, Tour Dark** | **Current direction. Full page set.** |
+| `designs/e-tour-dark` | **E, Tour Dark** | **Full page set.** Dark, accent colour still open. |
+| `designs/f-brand` | **F, Brand** | **Full page set.** Light, based on the 2026 social media visuals. |
 
 Older versions are kept on purpose. Don't delete them.
 
-## Version E pages
+## Pages (E and F have the same set)
 
 - **Homepage** (`index.html`). What IT Tour is → this year's stops on a map → news → team → videos → get involved → sponsors → subscribe. The season status (next stop, or live now) slides in as a small pop-up after load.
 - **Event pages.** One per city, each showing a different stage of an event:
@@ -56,10 +58,23 @@ These exist only to review the mockups. They won't be on the real site.
 
 Both can also be set in the URL, for example `?season=live&accent=green2`.
 
+## Version F and the brand assets
+
+F uses the real IT Tour logo, the five city badges, the dotted wave backgrounds and the audience photo, all taken from the Figma exports of the 2026 visuals. They are in `designs/f-brand/img`. The rules F follows from the visuals:
+
+- Light grey-blue background (`#e8ecf5`), Montserrat for text.
+- The five-colour bar at the top and bottom of every page.
+- Each event page takes its city's colour (the VarnaConf visuals are mint, for example). The accent switch only changes the hub pages.
+- Event details shown as a code comment: `/** * 22 август 2026 … */`.
+- Round photos with a white ring, and the programme as a striped table.
+- The wordmark font from the visuals ("Back In The USSR DL") is not on Google Fonts. Until we have the font file, Montserrat stands in.
+
+The original Figma exports are about 50 MB, so they are not in the repo.
+
 ## What is real and what is placeholder
 
-- **Real:** city names, logos and colours; the 2026 dates; the BurgasConf 2026 and PlovdivConf 2025 talks shown; 2026 sponsors and partners; "62 editions since 2012".
-- **Placeholder:** most other talks and speakers, all team members, the Varna programme, photos, form fields, and the IT Tour logo (a ring placeholder until we have the real one). Pages with sample content have a thin "Макет" note at the top.
+- **Real:** city names, logos and colours; the 2026 dates; in F, the full VarnaConf 2026 programme, speakers and after party; the BurgasConf 2026 and PlovdivConf 2025 talks shown; 2026 sponsors and partners; "62 editions since 2012".
+- **Placeholder:** most other talks and speakers, all team members, the Varna programme in E, photos, form fields, and the IT Tour logo in E (a ring placeholder; F has the real one). Pages with sample content have a thin "Макет" note at the top.
 - **Estimates:** "230+ speakers" and "350+ talks". We need the real counts.
 - The mockups pretend it is mid-July 2026, with BurgasConf (25 July) as the next stop.
 
@@ -68,7 +83,7 @@ Both can also be set in the URL, for example `?season=live&accent=green2`.
 The full list is at the end of [docs/decisions.md](docs/decisions.md). The main ones:
 
 1. Team page: grouped by city, or one flat list?
-2. Which accent colour for E?
+2. E or F? And which accent colour?
 3. Which ideas should we use to get people to register (optional "I'm coming")?
 4. Who has the past event photos?
 5. What are the real speaker and talk counts?

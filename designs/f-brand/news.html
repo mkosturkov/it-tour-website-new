@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Новини · IT Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/mockup.css">
+<link rel="stylesheet" href="site.css">
+<script src="../shared/mockup.js"></script>
+<script src="site.js"></script>
+</head>
+<body data-page="news">
+<div data-slot="header"></div>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">IT Tour</a><span>/</span><span>Новини</span></div>
+      <h1>Новини</h1>
+      <p class="lead">Кратки обявления за програми, дати и зали, и по-дълги разкази след всяко събитие.</p>
+    </div>
+  </section>
+
+  <section class="tight" style="padding-top:0">
+    <div class="wrap">
+      <div class="filters">
+        <div class="pills" role="group" aria-label="Вид">
+          <button class="pill on">Всички</button><button class="pill">Обявления</button><button class="pill">Разкази</button>
+        </div>
+        <div class="pills" role="group" aria-label="Град">
+          <button class="pill"><span class="cdot" style="--c:var(--plovdiv)"></span>Пловдив</button><button class="pill"><span class="cdot" style="--c:var(--tarnovo)"></span>Търново</button><button class="pill"><span class="cdot" style="--c:var(--burgas)"></span>Бургас</button><button class="pill"><span class="cdot" style="--c:var(--varna)"></span>Варна</button><button class="pill"><span class="cdot" style="--c:var(--ruse)"></span>Русе</button>
+        </div>
+      </div>
+
+      <div class="news-grid" style="margin-bottom:20px">
+        <a class="card news-feature" href="news-article.html">
+          <div class="ph" style="--c:var(--burgas)">снимка</div>
+          <div class="body"><div class="meta"><span class="tag" style="--c:var(--burgas)">Бургас</span><span>Обявление · 10.07.2026</span></div><h3>Програмата на BurgasConf 2026 е готова</h3><p>Осем лекции, дискусия и lightning talks. Вижте кой говори и кога.</p></div>
+        </a>
+        <div class="news-side">
+          <a class="card" href="news-article.html"><div class="ph" style="--c:var(--tarnovo)">снимка</div><div class="body"><div class="meta"><span class="tag" style="--c:var(--tarnovo)">Търново</span><span>Разказ · 01.07.2026</span></div><h3>Как мина TarnovoConf 2026</h3></div></a>
+          <a class="card" href="volunteer.html"><div class="ph">снимка</div><div class="body"><div class="meta"><span class="tag">IT Tour</span><span>Обявление · 20.06.2026</span></div><h3>Търсим доброволци за целия сезон</h3></div></a>
+        </div>
+      </div>
+
+      <div class="rowlist">
+        <a href="news-article.html"><span class="when">12.06.2026</span><div><div class="meta"><span class="tag" style="--c:var(--varna)">Варна</span><span>Обявление</span></div><h3>Примерно обявление: VarnaConf 2026 ще е в Хотел „Черно море“</h3></div><span class="end more">→</span></a>
+        <a href="news-article.html"><span class="when">04.06.2026</span><div><div class="meta"><span class="tag" style="--c:var(--plovdiv)">Пловдив</span><span>Разказ</span></div><h3>Примерен разказ: PlovdivConf 2026 в снимки</h3></div><span class="end more">→</span></a>
+        <a href="news-article.html"><span class="when">15.05.2026</span><div><div class="meta"><span class="tag" style="--c:var(--tarnovo)">Търново</span><span>Обявление</span></div><h3>Примерно обявление: Приемаме лектори за TarnovoConf</h3></div><span class="end more">→</span></a>
+        <a href="news-article.html"><span class="when">02.04.2026</span><div><div class="meta"><span class="tag">IT Tour</span><span>Обявление</span></div><h3>Примерно обявление: Датите за сезон 2026</h3></div><span class="end more">→</span></a>
+      </div>
+      <div class="pager"><a class="pill on" href="#">1</a><a class="pill" href="#">2</a><a class="pill" href="#">3</a><a class="pill" href="#">Напред →</a></div>
+    </div>
+  </section>
+</main>
+
+<div data-slot="footer"></div>
+<div data-slot="status"></div>
+</body>
+</html>

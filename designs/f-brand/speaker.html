@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Профил на лектор · IT Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/mockup.css">
+<link rel="stylesheet" href="site.css">
+<script src="../shared/mockup.js"></script>
+<script src="site.js"></script>
+</head>
+<body data-page="talks">
+<div data-slot="header"></div>
+<div class="mock-note"><div class="wrap"><b>Макет:</b> профил на лектор. Човекът и лекциите са примерни.</div></div>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">IT Tour</a><span>/</span><a href="speakers.html">Лектори</a><span>/</span><span>Име Фамилия</span></div>
+      <div class="profile" style="margin-top:24px">
+        <div class="ph" style="--c:var(--varna)">снимка</div>
+        <div>
+          <span class="eyebrow">Лектор на IT Tour · 3 лекции</span>
+          <h1 style="margin-top:8px">Име Фамилия</h1>
+          <p class="lead">Кратка биография, подадена от лектора: с какво се занимава, къде работи и какво обича да споделя. Две-три изречения стигат.</p>
+          <div class="links"><a class="pill" href="#">Уебсайт ↗</a><a class="pill" href="#">GitHub ↗</a><a class="pill" href="#">LinkedIn ↗</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tight">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Лекции</span><h2>Всички лекции на IT Tour</h2></div></div>
+      <div class="video-grid" style="grid-template-columns:repeat(3,1fr)">
+        <a class="card video" href="talk.html"><div class="ph" style="--c:var(--ruse)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">RuseConf 2025</span><h3>Примерна лекция: PostgreSQL трикове от продукция</h3></div></a>
+        <a class="card video" href="talk.html"><div class="ph" style="--c:var(--varna)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">VarnaConf 2023</span><h3>Примерна лекция: Индекси, които забравихме</h3></div></a>
+        <a class="card video" href="talk.html"><div class="ph" style="--c:var(--varna)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">VarnaConf 2019</span><h3>Примерна лекция: Първата ми година като backend разработчик</h3></div></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-slot="footer"></div>
+<div data-slot="status"></div>
+</body>
+</html>

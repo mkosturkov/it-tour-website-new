@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IT Tour · F · Начало</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/mockup.css">
+<link rel="stylesheet" href="site.css">
+<script src="../shared/mockup.js"></script>
+<script src="site.js"></script>
+</head>
+<body data-page="home">
+<div data-slot="header"></div>
+
+<main>
+
+  <!-- 1. What IT Tour is -->
+  <section class="hero" id="about">
+    <div class="hero-photo"><img src="img/audience.jpg" alt="Публика на IT Tour конференция"><span class="hero-logo" role="img" aria-label="IT Tour"></span></div>
+    <div class="wrap hero-grid">
+      <div>
+        <p class="wordmark" aria-label="IT Tour 2026"><span>it</span><span>tour</span><span>2026</span></p>
+        <h1>Една конференция. <em>Пет града.</em> Всяко лято.</h1>
+        <p class="lead">IT Tour е поредица от еднодневни конференции за програмисти и всички в IT. Всеки месец от май до септември сме в различен град: лекции от практици, разговори в кулоарите и after party. Входът е свободен.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#stops">Виж спирките за 2026</a>
+          <a class="btn btn-ghost" href="about.html">Повече за нас</a>
+        </div>
+      </div>
+      <div class="facts">
+        <div class="fact"><b>62</b><span>проведени конференции</span></div>
+        <div class="fact"><b>от 2012</b><span>всяка година</span></div>
+        <div class="fact"><b>230+</b><span>лектори</span></div>
+        <div class="fact"><b>0 лв.</b><span>вход, винаги</span></div>
+      </div>
+    </div>
+    <div class="wrap badges">
+      <a class="done" href="event-plovdiv.html"><img src="img/plovdiv.svg" alt="PlovdivConf 2026"><span>30 май</span></a>
+      <a class="done" href="archive.html"><img src="img/tarnovo.svg" alt="TarnovoConf 2026"><span>27 юни</span></a>
+      <a href="event-burgas.html"><img src="img/burgas.svg" alt="BurgasConf 2026"><span>25 юли</span></a>
+      <a href="event-varna.html"><img src="img/varna.svg" alt="VarnaConf 2026"><span>22 август</span></a>
+      <a href="event-ruse.html"><img src="img/ruse.svg" alt="RuseConf 2026"><span>26 септември</span></a>
+    </div>
+  </section>
+
+  <!-- 2. Stops -->
+  <section class="alt" id="stops">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Сезон 2026</span>
+          <h2>Спирките</h2>
+          <p>Пет града, един на месец. Следващата спирка е Бургас.</p>
+        </div>
+        <a class="more" href="archive.html">Целият архив от 2012 →</a>
+      </div>
+      <div class="stops-grid">
+        <div class="map-card">
+          <svg viewBox="0 0 1000 680" role="img" aria-label="Карта на България с петте града от сезон 2026, свързани по реда на датите">
+            <path class="bg-shape" d="M72 39 L120 113 L210 125 L315 144 L420 146 L495 156 L565 107 L645 72 L720 55 L780 80 L870 134 L957 136 L960 185 L885 206 L862 247 L855 308 L833 349 L795 397 L825 411 L862 452 L870 493 L810 503 L750 483 L660 503 L623 545 L585 627 L510 633 L450 647 L345 586 L270 606 L210 621 L112 627 L112 575 L83 493 L30 432 L45 390 L38 319 L83 247 L112 185 L45 123 Z"/>
+            <path class="edge" d="M383 462 L514 271 L790 390"/>
+            <path class="edge todo" d="M790 390 L857 245 L565 113"/>
+            <g class="node done"><circle class="core" cx="383" cy="462" r="18" fill="var(--plovdiv)"/><text x="412" y="472">Пловдив</text><text class="d" x="412" y="500">30.05</text></g>
+            <g class="node done"><circle class="core" cx="514" cy="271" r="18" fill="var(--tarnovo)"/><text x="542" y="281">Търново</text><text class="d" x="542" y="309">27.06</text></g>
+            <g class="node next"><circle class="ring" cx="790" cy="390" r="34" stroke="var(--burgas)"/><circle class="core" cx="790" cy="390" r="22" fill="var(--burgas)"/><text x="660" y="462">Бургас</text><text class="d" x="660" y="490">25.07</text></g>
+            <g class="node"><circle class="core" cx="857" cy="245" r="18" fill="var(--varna)"/><text x="735" y="208">Варна</text><text class="d" x="735" y="236">22.08</text></g>
+            <g class="node"><circle class="core" cx="565" cy="113" r="18" fill="var(--ruse)"/><text x="597" y="123">Русе</text><text class="d" x="597" y="151">26.09</text></g>
+          </svg>
+        </div>
+        <div class="stop-list">
+          <a class="stop done" href="event-plovdiv.html" style="--c:var(--plovdiv)"><img src="img/plovdiv.svg" alt=""><div><h3>PlovdivConf</h3><p>Хотел SPS · видеа и снимки</p></div><div class="date">30.05<br><span class="badge">Мина</span></div></a>
+          <a class="stop done" href="archive.html" style="--c:var(--tarnovo)"><img src="img/tarnovo.svg" alt=""><div><h3>TarnovoConf</h3><p>ВТУ, Корпус 4 · видеа и снимки</p></div><div class="date">27.06<br><span class="badge">Мина</span></div></a>
+          <a class="stop next" href="event-burgas.html" style="--c:var(--burgas)"><img src="img/burgas.svg" alt=""><div><h3>BurgasConf</h3><p>Колеж по туризъм, Университет „Проф. д-р Асен Златаров“</p></div><div class="date">25.07<br>
+            <span data-show="upcoming off"><span class="badge next">Следваща</span></span>
+            <span data-show="live"><span class="badge live">На живо</span></span>
+          </div></a>
+          <a class="stop" href="event-varna.html" style="--c:var(--varna)"><img src="img/varna.svg" alt=""><div><h3>VarnaConf</h3><p>Хотел „Черно море“ · програмата е публикувана</p></div><div class="date">22.08<br><span class="badge">Предстои</span></div></a>
+          <a class="stop" href="event-ruse.html" style="--c:var(--ruse)"><img src="img/ruse.svg" alt=""><div><h3>RuseConf</h3><p>Русенски университет „Ангел Кънчев“, зала 2.101</p></div><div class="date">26.09<br><span class="badge">Предстои</span></div></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. News -->
+  <section id="news">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Новини</span><h2>Какво ново</h2></div>
+        <a class="more" href="news.html">Всички новини →</a>
+      </div>
+      <div class="news-grid">
+        <a class="card news-feature" href="news-article.html">
+          <div class="ph" style="--c:var(--burgas)">снимка</div>
+          <div class="body">
+            <div class="meta"><span class="tag" style="--c:var(--burgas)">Бургас</span><span>Обявление · 10.07.2026</span></div>
+            <h3>Програмата на BurgasConf 2026 е готова</h3>
+            <p>Осем лекции, дискусия за последните 20 години в бранша и lightning talks. Вижте кой говори и кога.</p>
+          </div>
+        </a>
+        <div class="news-side">
+          <a class="card" href="news-article.html"><div class="ph" style="--c:var(--tarnovo)">снимка</div><div class="body"><div class="meta"><span class="tag" style="--c:var(--tarnovo)">Търново</span><span>01.07.2026</span></div><h3>Как мина TarnovoConf 2026</h3></div></a>
+          <a class="card" href="volunteer.html"><div class="ph">снимка</div><div class="body"><div class="meta"><span class="tag">IT Tour</span><span>20.06.2026</span></div><h3>Търсим доброволци за целия сезон</h3></div></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Team -->
+  <section class="alt" id="team">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Екип</span><h2>Хората зад IT Tour</h2><p>Доброволци от петте града, които организират всичко от залата до кафето.</p></div>
+        <a class="more" href="team.html">Целият екип →</a>
+      </div>
+      <div class="team-row">
+        <div class="person"><div class="ph">снимка</div><b>Име Фамилия</b><span>Организатор</span></div>
+        <div class="person" style="--c:var(--plovdiv)"><div class="ph" style="--c:var(--plovdiv)">снимка</div><b>Име Фамилия</b><span>Пловдив</span></div>
+        <div class="person" style="--c:var(--tarnovo)"><div class="ph" style="--c:var(--tarnovo)">снимка</div><b>Име Фамилия</b><span>Търново</span></div>
+        <div class="person" style="--c:var(--burgas)"><div class="ph" style="--c:var(--burgas)">снимка</div><b>Име Фамилия</b><span>Бургас</span></div>
+        <div class="person" style="--c:var(--varna)"><div class="ph" style="--c:var(--varna)">снимка</div><b>Име Фамилия</b><span>Варна</span></div>
+        <div class="person" style="--c:var(--ruse)"><div class="ph" style="--c:var(--ruse)">снимка</div><b>Име Фамилия</b><span>Русе</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Videos -->
+  <section id="videos">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Записи</span><h2>Гледай лекциите</h2></div>
+        <a class="more" href="talks.html">Всички лекции →</a>
+      </div>
+      <div class="video-grid">
+        <a class="card video" href="talk.html"><div class="ph" style="--c:var(--plovdiv)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">PlovdivConf 2025</span><h3>Vibe coding</h3><span class="by">Светлин Наков</span></div></a>
+        <a class="card video" href="talk.html"><div class="ph" style="--c:var(--plovdiv)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">PlovdivConf 2025</span><h3>Back to the Future of the IT Teams in 30 years from now</h3><span class="by">Никола Богданов</span></div></a>
+        <a class="card video" href="talk.html"><div class="ph" style="--c:var(--plovdiv)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">PlovdivConf 2025</span><h3>Empowering Teams with a Backstage Development Portal</h3><span class="by">Стефан Ангелов</span></div></a>
+        <a class="card video" href="talk.html"><div class="ph" style="--c:var(--plovdiv)"><div class="play"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div><div class="body"><span class="meta">PlovdivConf 2025</span><h3>LLM в базата данни</h3><span class="by">Михаил Петров</span></div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Get involved -->
+  <section class="alt" id="involve">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Включи се</span><h2>IT Tour се прави от общността</h2></div>
+      </div>
+      <div class="involve">
+        <div class="inv">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
+          <h3>Стани лектор</h3><p>Имаш опит, който си струва да се разкаже? Кандидатствай за някой от градовете.</p>
+          <a class="btn btn-ghost" href="speak.html">Кандидатствай</a>
+        </div>
+        <div class="inv">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></span>
+          <h3>Стани спонсор</h3><p>Подкрепи безплатните конференции и се срещни с IT общността в пет града.</p>
+          <a class="btn btn-ghost" href="sponsors.html">Свържи се с нас</a>
+        </div>
+        <div class="inv">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M17 11h6M20 8v6"/></svg></span>
+          <h3>Стани доброволец</h3><p>Помогни в своя град или за целия сезон: регистрация, зали, стрийм, снимки.</p>
+          <a class="btn btn-ghost" href="volunteer.html">Запиши се</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Sponsors + subscribe -->
+  <section id="sponsors">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Партньори 2026</span><h2>С подкрепата на</h2></div></div>
+      <div class="sponsors">
+        <div class="tier"><span class="t">Спонсори</span><div class="logos"><span class="slogo">StorPool</span><span class="slogo">IntWay</span></div></div>
+        <div class="tier"><span class="t">Партньори</span><div class="logos"><span class="slogo">VarnaLab</span></div></div>
+        <div class="tier"><span class="t">Медийни партньори</span><div class="logos"><span class="slogo">Dev.bg</span><span class="slogo">Подкрепи БГ</span><span class="slogo">WomenWhoGrow</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="subscribe" style="padding-top:0">
+    <div class="wrap">
+      <div class="subscribe">
+        <div><h2>Не пропускай спирка</h2><p>Едно писмо преди всяка конференция: дата, програма и линк към стрийма.</p></div>
+        <form class="field"><input type="email" placeholder="твоят имейл" aria-label="Имейл"><button class="btn btn-primary">Абонирай се</button></form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div data-slot="footer"></div>
+<div data-slot="status"></div>
+</body>
+</html>

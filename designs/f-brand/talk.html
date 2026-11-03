@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vibe coding · IT Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/mockup.css">
+<link rel="stylesheet" href="site.css">
+<script src="../shared/mockup.js"></script>
+<script src="site.js"></script>
+</head>
+<body data-page="talks" style="--c:var(--plovdiv)">
+<div data-slot="header"></div>
+<div class="mock-note"><div class="wrap"><b>Макет:</b> страница на една лекция. Заглавието и лекторът са истински, описанието е примерно.</div></div>
+
+<main>
+  <section class="page-hero" style="--glow:var(--plovdiv)">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">IT Tour</a><span>/</span><a href="talks.html">Лекции</a><span>/</span><span>PlovdivConf 2025</span></div>
+      <h1>Vibe coding</h1>
+      <div class="meta" style="font-size:15px"><span class="tag" style="--c:var(--plovdiv)">PlovdivConf 2025</span><span>Пловдив</span></div>
+    </div>
+  </section>
+
+  <section class="tight" style="padding-top:0">
+    <div class="wrap two-col">
+      <div style="display:grid;gap:28px">
+        <div class="talk-video"><div class="ph" role="img" aria-label="Вграден YouTube плейър (заместител)"><div class="play"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div></div></div>
+        <div class="prose">
+          <h2 style="margin-top:0">За лекцията</h2>
+          <p>Тук стои описанието на лекцията, както е подадено от лектора. Примерен текст: какво е vibe coding, къде помага, къде вреди и как да го ползваме отговорно в реални проекти.</p>
+          <div class="links"><a class="btn btn-ghost btn-sm" href="#">Гледай в YouTube ↗</a><a class="btn btn-ghost btn-sm" href="#">Слайдове ↗</a></div>
+        </div>
+      </div>
+      <aside class="aside-card">
+        <span class="eyebrow">Лектор</span>
+        <a href="speaker.html" style="display:flex;gap:12px;align-items:center;text-decoration:none"><span class="ph" style="width:56px;height:56px;border-radius:50%;font-size:0;--c:var(--plovdiv)"></span><span><b style="font-family:var(--head);font-size:18px">Светлин Наков</b><br><span style="color:var(--muted);font-size:14px">Всички лекции →</span></span></a>
+        <hr style="border:0;border-top:1px solid var(--line);width:100%">
+        <span class="eyebrow">Още от PlovdivConf 2025</span>
+        <a class="more" href="talk.html" style="font-weight:500;white-space:normal">Back to the Future of the IT Teams in 30 years from now</a>
+        <a class="more" href="talk.html" style="font-weight:500;white-space:normal">Empowering Teams with a Backstage Development Portal</a>
+        <a class="more" href="talk.html" style="font-weight:500;white-space:normal">LLM в базата данни</a>
+        <a class="btn btn-ghost btn-sm" href="event-ruse.html" style="justify-self:start">Към изданието</a>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<div data-slot="footer"></div>
+<div data-slot="status"></div>
+</body>
+</html>

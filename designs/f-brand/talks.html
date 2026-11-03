@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Лекции · IT Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/mockup.css">
+<link rel="stylesheet" href="site.css">
+<script src="../shared/mockup.js"></script>
+<script src="site.js"></script>
+</head>
+<body data-page="talks">
+<div data-slot="header"></div>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">IT Tour</a><span>/</span><span>Лекции</span></div>
+      <h1>Библиотека с лекции</h1>
+      <p class="lead">Над 350 лекции от всички градове и години, повечето със запис. Търси по заглавие или лектор и филтрирай по град и година.</p>
+    </div>
+  </section>
+
+  <section class="tight" style="padding-top:0">
+    <div class="wrap">
+      <form class="filters" role="search">
+        <input type="search" id="talk-q" placeholder="Търси лекция или лектор" aria-label="Търсене">
+        <select aria-label="Град" id="talk-city"><option>Всички градове</option><option>Пловдив</option><option>Търново</option><option>Бургас</option><option>Варна</option><option>Русе</option><option>Благоевград</option></select>
+        <select aria-label="Година" id="talk-year"><option>Всички години</option><option>2026</option><option>2025</option><option>2024</option><option>…</option><option>2012</option></select>
+        <label class="check" style="display:flex;gap:8px;align-items:center;color:var(--muted);font-size:14px"><input type="checkbox" id="talk-video" checked style="accent-color:var(--accent)"> Само със запис</label>
+      </form>
+      <p class="count-line">Показани 10 от 350+ (примерни данни)</p>
+
+      <div class="rowlist">
+        <a href="talk.html"><span class="when"><span class="cdot" style="--c:var(--tarnovo)"></span>2026</span><div><h3>Примерна лекция от TarnovoConf 2026</h3><p>Име Фамилия · TarnovoConf 2026</p></div><span class="end more">▶ 38 мин</span></a>
+        <a href="talk.html"><span class="when"><span class="cdot" style="--c:var(--plovdiv)"></span>2026</span><div><h3>Примерна лекция от PlovdivConf 2026</h3><p>Име Фамилия · PlovdivConf 2026</p></div><span class="end more">▶ 41 мин</span></a>
+        <a href="talk.html"><span class="when"><span class="cdot" style="--c:var(--plovdiv)"></span>2025</span><div><h3>Vibe coding</h3><p>Светлин Наков · PlovdivConf 2025</p></div><span class="end more">▶ запис</span></a>
+        <a href="talk.html"><span class="when"><span class="cdot" style="--c:var(--plovdiv)"></span>2025</span><div><h3>Back to the Future of the IT Teams in 30 years from now</h3><p>Никола Богданов · PlovdivConf 2025</p></div><span class="end more">▶ запис</span></a>
+        <a href="talk.html"><span class="when"><span class="cdot" style="--c:var(--plovdiv)"></span>2025</span><div><h3>Empowering Teams with a Backstage Development Portal</h3><p>Стефан Ангелов · PlovdivConf 2025</p></div><span class="end more">▶ запис</span></a>
+        <a href="talk.html"><span class="when"><span class="cdot" style="--c:var(--plovdiv)"></span>2025</span><div><h3>LLM в базата данни</h3><p>Михаил Петров · PlovdivConf 2025</p></div><span class="end more">▶ запис</span></a>
+        <a href="talk.html"><span class="when"><span class="cdot" style="--c:var(--ruse)"></span>2025</span><div><h3>Примерна лекция: PostgreSQL трикове от продукция</h3><p>Име Фамилия · RuseConf 2025</p></div><span class="end more">▶ 44 мин</span></a>
+        <a href="talk.html"><span class="when"><span class="cdot" style="--c:var(--varna)"></span>2025</span><div><h3>Примерна лекция: Как да не изгориш на on-call</h3><p>Име Фамилия · VarnaConf 2025</p></div><span class="end more">▶ 35 мин</span></a>
+        <a href="talk.html"><span class="when"><span class="cdot" style="--c:var(--burgas)"></span>2025</span><div><h3>Примерна лекция: Kubernetes за малки екипи</h3><p>Име Фамилия · BurgasConf 2025</p></div><span class="end more">▶ 40 мин</span></a>
+        <a href="talk.html"><span class="when"><span class="cdot" style="--c:var(--tarnovo)"></span>2024</span><div><h3>Примерна лекция: Достъпност, която не е последна задача</h3><p>Име Фамилия · TarnovoConf 2024</p></div><span class="end more">▶ 37 мин</span></a>
+      </div>
+      <div class="pager"><a class="pill on" href="#">1</a><a class="pill" href="#">2</a><a class="pill" href="#">3</a><span class="pill" style="border:0">…</span><a class="pill" href="#">35</a><a class="pill" href="#">Напред →</a></div>
+    </div>
+  </section>
+</main>
+
+<div data-slot="footer"></div>
+<div data-slot="status"></div>
+</body>
+</html>
