@@ -93,8 +93,7 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 ## 7. Attendance and registration
 
 - 🔜 **Optional registration: parked (November 2026), not in the first version.** An "I'm coming" button with name and email. Entry stays free and nobody is turned away; registration gives us a headcount and lets us send reminders.
-- ✅ **At launch:**
-  - An "add to calendar" button, available to everyone and not only to people who register. It goes on each event page and next to each stop in the homepage's stops list.
+- 🔜 **"Add to calendar" button: next version** (moved November 2026), to be rethought together with the calendar feed. The planned placement: each event page, and next to each stop in the homepage's stops list, available to everyone.
 - ❓ **After the first version, to discuss with the team:**
   - A reminder the day before, plus the stream link if they can't make it.
   - A raffle among registered people, with prizes from sponsors.
@@ -141,7 +140,7 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 ## Questions for the team call
 
 1. ~~Team page: grouped or flat list?~~ Decided: flat list.
-2. Registration: is it worth having at all, with the "N people are coming" counter? It is parked for now. If yes, which incentives: the reminder, the raffle, emailing slides and videos (section 7)? The "add to calendar" button is decided.
+2. Registration: is it worth having at all, with the "N people are coming" counter? It is parked for now. If yes, which incentives: the reminder, the raffle, emailing slides and videos (section 7)? The "add to calendar" button moves to the next version.
 3. Photos: who has the past event photos, and can we use them? Until we know, the photo section is parked (section 8).
 4. ~~Volunteer form: which fields do we need?~~ Decided (section 6).
 5. Sponsors: are we sure about no public prices? The first version has none (section 6).
@@ -169,6 +168,21 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 - ✅ Dark theme, a bit lighter than B, not terminal-styled. Built as version E (designs/e-tour-dark).
 
 ## The real site (planning started November 2026)
+- ✅ **Version 1 is everything we have enough information to build.** Anything that still needs decisions moves to the next version.
+  - **In version 1:**
+    - homepage and event pages
+    - archive page with filters
+    - talks library and talk pages
+    - speaker directory and profiles
+    - team page (the "about" texts stay empty until we have the bios)
+    - sponsor lists on the homepage and event pages
+  - **Next version:**
+    - volunteer form (where it goes and how it works)
+    - news
+    - about page (with general text pages)
+    - the "become a sponsor" pitch page
+    - "add to calendar", the calendar feed and RSS
+  - **Knock-on in version 1:** the menu hides Новини and За IT Tour, and the homepage hides the news block and the volunteer and sponsor cards.
 - ✅ Editors change these settings themselves, without a developer: the hub accent colour, and each city's colour and logo.
 - ✅ Editors can change the homepage tagline.
 - ✅ **Season state is automatic, from the event dates and times** (Bulgarian time):
@@ -368,13 +382,17 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
       - free Let's Encrypt certificates, renewed automatically (the host's "AutoSSL" or `certbot`), for all domains including the admin subdomain and blagoevgradconf.com
       - every `http://` address permanently redirected to `https://`
     - **No `www`:** every domain uses the form without `www`, and `www.` is permanently redirected to it. Today both forms work and neither redirects. All of roughly 2,900 links in the 73 old pages we scanned use the form without `www`; the footer only shows the text "www.it-tour.bg", and even that links to `http://it-tour.bg`.
-    - security headers, including a Content Security Policy that allows only our own scripts
+    - **Security headers:**
+      - `Content-Security-Policy`: only our own scripts and styles, plus YouTube and Google Maps for the click-to-load embeds. It includes `frame-ancestors`, so other sites can't frame our pages.
+      - `X-Content-Type-Options: nosniff`
+      - `Referrer-Policy: strict-origin-when-cross-origin`
+      - `Permissions-Policy`, switching off camera, microphone and location. "Directions" links open Google Maps, which asks for location itself.
+      - The admin gets the same headers, set stricter, plus "don't index" and "never cache".
   - **Accessibility:**
     - animations such as the pop-up's slide-in are turned off for people who ask for reduced motion
     - English text (talk titles, Latin wordmarks) is marked as English for screen readers
-  - **Machine-readable:**
-    - an RSS feed for news
-    - a calendar feed for the whole season that people can subscribe to
+    - **Reduced motion:** for people whose system asks for less motion (`prefers-reduced-motion`), the status pop-up appears without sliding in, and smooth scrolling and animations are off.
+    - **Language marks:** English text is marked (`lang="en"`) so screen readers switch pronunciation. Talk titles get a language field in the admin. Fixed Latin text such as the wordmarks is marked in the templates.
   - **Basics:**
     - favicons and home-screen icons
     - a helpful 404 page with search and links
@@ -383,6 +401,12 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 - 🔜 **Cleanup of unused media files later, if ever needed.** Rough estimate: a few hundred MB over ten years, which cheap hosting easily holds.
 
 - 🔜 **HSTS later.** The header `Strict-Transport-Security` makes browsers use HTTPS only for a domain, which closes the gap a plain redirect leaves on the first request (SSL stripping). The risk is that if a certificate breaks, visitors can't get in at all. Plan: enable it per domain once HTTPS and renewals work, start with a short time (one day) and raise it to a year. No "preload".
+
+- ❓ **Content language, to think through later.** Some talks, summaries and speaker bios are in English rather than Bulgarian. Options: translate everything into the page's language, or allow a language to be set on every piece of content. Mixed titles also need a solution, such as "Vibe coding: новият модел на програмиране", where only part is English.
+
+- 🔜 **RSS feed, next version.** Default idea: news articles plus automatic event updates written by the site (new event announced, call for speakers open, programme published, videos published), with one full feed on it-tour.bg and one per city domain. To design in both back-end and front-end terms.
+
+- 🔜 **Calendar feed, next version.** One address (`it-tour.bg/calendar.ics`) that people subscribe to in Google Calendar, Apple Calendar or Outlook. Their calendar then checks it by itself, so new events and changes such as a new date or venue appear automatically. It uses the same event data and `.ics` format as the "add to calendar" button, which moves to the next version too and is rethought together with it.
 
 ### Images
 - ✅ **Formats:**
