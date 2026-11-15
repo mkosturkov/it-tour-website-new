@@ -448,3 +448,4 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
   - **settings:** editor switches and texts
   - **redirects, missed_urls**
   - **admin_users**
+- ✅ **PHP version: the latest stable release,** which is 8.5 as of November 2026. We move to each new release once it's out and our code passes on it. The host must offer the latest version.
