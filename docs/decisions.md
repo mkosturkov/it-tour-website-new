@@ -353,6 +353,24 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
   - YouTube and map embeds load only on click, behind a preview picture, because a single YouTube embed is about 1 MB
 - 📝 **Reminder for the admin panel discussion:** a tool for generating visuals for social networks. Not discussed yet.
 
+- ✅ **Further quality defaults:**
+  - **Speed:**
+    - the server compresses pages and files
+    - CSS, JS and fonts are cached for a long time, with a version in the file name so changes still reach visitors at once
+  - **Security:**
+    - HTTPS everywhere, with one canonical form of each address (with or without `www`)
+    - security headers, including a Content Security Policy that allows only our own scripts
+  - **Accessibility:**
+    - animations such as the pop-up's slide-in are turned off for people who ask for reduced motion
+    - English text (talk titles, Latin wordmarks) is marked as English for screen readers
+  - **Machine-readable:**
+    - an RSS feed for news
+    - a calendar feed for the whole season that people can subscribe to
+  - **Basics:**
+    - favicons and home-screen icons
+    - a helpful 404 page with search and links
+    - no cookies on the public site, so no cookie banner
+
 ### Images
 - ✅ **Formats:**
   - SVG for logos and badges: smaller than PNG for this kind of drawing (the Varna badge is about 5 KB compressed) and sharp at any size.
