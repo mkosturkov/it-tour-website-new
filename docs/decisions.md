@@ -449,3 +449,12 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
   - **redirects, missed_urls**
   - **admin_users**
 - ✅ **PHP version: the latest stable release,** which is 8.5 as of November 2026. We move to each new release once it's out and our code passes on it. The host must offer the latest version.
+- ✅ **Folder layout:**
+  - `public/`: the only folder the web server exposes (`index.php`, CSS, JS, fonts, uploaded images)
+  - `src/`: router, database code, helpers
+  - `templates/`: pages, layouts, partials
+  - `migrations/`: numbered SQL files that change the database step by step
+  - `bin/`: command-line scripts (import, migrations, escaping check)
+  - `data/`: the SQLite file and logs, outside `public/`
+  - `vendor/`: Composer libraries, if any
+- ✅ **We avoid Composer dependencies,** but there is a `composer.json` declaring the project name, description, the PHP version and any libraries we do need.
