@@ -457,4 +457,4 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
   - `bin/`: command-line scripts (import, migrations, escaping check)
   - `data/`: the SQLite file and logs, outside `public/`
   - `vendor/`: Composer libraries, if any
-- ✅ **We avoid Composer dependencies,** but there is a `composer.json` declaring the project name, description, the PHP version and any libraries we do need.
+- ✅ **We avoid Composer dependencies, and there is no `composer.json` until we actually need a library.** The project's requirements (PHP version, PHP extensions, any libraries) are still written down in one place for people to read; it doesn't have to be machine-readable.
