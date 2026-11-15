@@ -470,3 +470,9 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
   - As the visitor types or picks a city or year, a small script asks the server for the matching results after a short pause, swaps in the list and updates the address, so results can be shared.
   - Without JavaScript the same filters are an ordinary form that returns a filtered page (`?q=наков&city=varna&year=2024`).
   - Matching ignores capital letters and works in Latin or Cyrillic: each talk and speaker has a hidden search text with the title and names in lowercase plus their Latin transliteration. An English version would later add its texts to it.
+- ✅ **No translation helper for now.** Fixed interface text stays in the templates. If an English version is ever needed, AI can find and extract it. Content translation (separate versions or translated fields, and how search handles it) is a version 2 question, if it comes up at all.
+- ✅ **One date helper,** because Bulgarian month and weekday names ("събота, 25 юли") are used everywhere.
+- ✅ **Instant results return partial HTML.** The script calls the same address with a request header (for example `X-Partial: results`), and the server renders only the results block (list plus page numbers) with the same partial template the full page uses, so results are rendered in one place only.
+- ✅ **Each handler builds plain data first, then renders it.** Public endpoints support a full page and a partial for now. JSON can be added later in a few lines.
+- ✅ **Public site and admin are separate.** The admin API has its own endpoints on `admin.it-tour.bg`. The two share the database, and possibly some query code, but not addresses or data shapes. Admin-only fields such as the published flag are never sent by the public site.
+- 📝 Leaning: the admin panel as a single-page app. To settle when we discuss the admin.
