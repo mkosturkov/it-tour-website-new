@@ -240,6 +240,7 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 - ✅ **Venue and after party:** each has a name, an address, optional "how to get there" text and an embedded map. The editor copies the embed link from Google Maps (Share → Embed a map). It needs no API key.
 - ✅ **The after party is optional and has a visibility switch.** It can be fully set up but hidden from the public until the editor shows it.
 - ✅ **The after party is its own section on the event page and appears nowhere else.** It is not a slot in the schedule and not part of the venue details. (The Burgas and Varna mockups show it in both places; the real site won't.)
+- ✅ **The after party also has a start time** (for example 20:00), shown in its section. **While hidden, the section disappears completely,** with no "coming soon" text.
 - ✅ **Live block,** shown only while the event is live:
   - the embedded YouTube player and a "watch on YouTube" button, from the live link the editor pastes
   - the link for external players (a direct stream address, for apps like VLC), shown when the editor fills it in
