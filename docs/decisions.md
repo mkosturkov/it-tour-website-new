@@ -433,3 +433,18 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 - ✅ **Alt text is required** in the admin, except for images marked as decorative.
 - ✅ **Loading:** images below the first screen use the browser's built-in `loading="lazy"`, with no JavaScript. Every image has its width and height set, so the page doesn't jump while it loads.
 - ✅ **Cropping:** when uploading a speaker photo (shown round), the editor drags and resizes a square crop box to frame the face. The crop is stored and the sizes are produced from it. The original stays untouched.
+
+### Public back end
+
+- ✅ **Data model (overview).** One SQLite database with these tables:
+  - **cities:** name, domain, active
+  - **events:** one per city per year; full name, date, colour, badge, venue (name, address, directions, map, latitude and longitude), after party (name, address, directions, map, start time, visibility switch), call for speakers deadline, live link
+  - **slots:** event, start and end time, type (talk, break, other), title, and the talk if there is one
+  - **talks:** title, description, video, slides, event
+  - **talk_speakers:** links talks to speakers, so a talk can have several speakers
+  - **speakers:** name, photo, one current bio, role and company, links, old ID (so old URLs keep working)
+  - **sponsors** (name, logo, link, optional about) and **sponsorships** (sponsor, event or season homepage, free-text type, order)
+  - **news, team_members, media**
+  - **settings:** editor switches and texts
+  - **redirects, missed_urls**
+  - **admin_users**
