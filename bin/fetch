@@ -1,0 +1,218 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Downloads the old IT Tour sites (it-tour.bg and the city domains) into
+ * data/import/, untouched, so bin/import can run offline as often as needed.
+ *
+ * It starts from each domain's homepage and follows links to edition pages
+ * (/archive/<year>) and speaker profiles (/speakers/<id>), then downloads the
+ * uploaded images those pages use, at full size where possible.
+ *
+ * Re-running skips anything already downloaded. Options:
+ *   --refresh   download the pages again (images are still skipped)
+ *   --delay=MS  pause between requests, default 300
+ */
+
+declare(strict_types=1);
+
+const HOSTS = [
+    'it-tour.bg', 'plovdivconf.com', 'tarnovoconf.com', 'burgasconf.com',
+    'varnaconf.com', 'ruseconf.com', 'blagoevgradconf.com',
+];
+const USER_AGENT = 'IT-Tour-Importer/1.0 (moving it-tour.bg to a new site)';
+
+$root = dirname(__DIR__) . '/data/import';
+$opts = getopt('', ['refresh', 'delay:']);
+$refresh = isset($opts['refresh']);
+$delayMs = (int) ($opts['delay'] ?? 300);
+
+$manifestFile = "$root/manifest.json";
+$manifest = is_file($manifestFile) ? json_decode(file_get_contents($manifestFile), true) : [];
+$saveManifest = function () use (&$manifest, $manifestFile): void {
+    ksort($manifest);
+    file_put_contents($manifestFile, json_encode($manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n");
+};
+
+$curl = curl_init();
+curl_setopt_array($curl, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_MAXREDIRS => 5,
+    CURLOPT_TIMEOUT => 60,
+    CURLOPT_CONNECTTIMEOUT => 15,
+    CURLOPT_USERAGENT => USER_AGENT,
+    CURLOPT_ENCODING => '',
+]);
+
+/** Downloads one URL to $file. Returns the HTTP status (0 on network error). */
+function download(CurlHandle $curl, string $url, string $file, int $delayMs): array
+{
+    static $first = true;
+    if (!$first) {
+        usleep($delayMs * 1000);
+    }
+    $first = false;
+
+    for ($try = 1; $try <= 3; $try++) {
+        // Some old uploads have spaces in their names.
+        curl_setopt($curl, CURLOPT_URL, str_replace(' ', '%20', $url));
+        $body = curl_exec($curl);
+        $status = (int) curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+        if ($body !== false && $status < 500) {
+            break;
+        }
+        fwrite(STDERR, "  retry $try: $url (" . ($body === false ? curl_error($curl) : "HTTP $status") . ")\n");
+        sleep(2 * $try);
+    }
+    $info = [
+        'status' => $body === false ? 0 : $status,
+        'type' => (string) curl_getinfo($curl, CURLINFO_CONTENT_TYPE),
+        'final_url' => (string) curl_getinfo($curl, CURLINFO_EFFECTIVE_URL),
+        'fetched_at' => date('c'),
+    ];
+    if ($info['status'] === 200) {
+        @mkdir(dirname($file), 0777, true);
+        file_put_contents($file, $body);
+        $info['bytes'] = strlen($body);
+    }
+    return $info;
+}
+
+/** Normalises a link found on $baseHost to https://<old host>/<path>, or null if it isn't ours. */
+function normalise(string $href, string $baseHost): ?array
+{
+    $href = html_entity_decode(trim($href), ENT_QUOTES | ENT_HTML5);
+    if ($href === '' || $href[0] === '#') {
+        return null;
+    }
+    if (str_starts_with($href, '//')) {
+        $href = 'https:' . $href;
+    }
+    if ($href[0] === '/') {
+        $host = $baseHost;
+        $path = $href;
+    } else {
+        $parts = parse_url($href);
+        if (!isset($parts['host'])) {
+            return null;
+        }
+        $host = preg_replace('/^www\./', '', strtolower($parts['host']));
+        $path = ($parts['path'] ?? '/') ?: '/';
+    }
+    if (!in_array($host, HOSTS, true)) {
+        return null;
+    }
+    $path = preg_replace('/[?#].*$/', '', $path);
+    return [$host, $path];
+}
+
+function pageFile(string $root, string $host, string $path): string
+{
+    $p = trim($path, '/');
+    return "$root/pages/$host/" . ($p === '' ? 'index' : $p) . '.html';
+}
+
+// ---- 1. Pages: homepages, editions and speaker profiles -------------------
+
+$queue = [];
+$seen = [];
+$speakerIds = [];
+$enqueue = function (string $host, string $path) use (&$queue, &$seen, &$speakerIds): void {
+    if (preg_match('#^/speakers/(\d+)$#', $path, $m)) {
+        // The same profile answers on every domain; fetch each one once.
+        if (isset($speakerIds[$m[1]])) {
+            return;
+        }
+        $speakerIds[$m[1]] = true;
+    } elseif (!preg_match('#^/(archive/\d{4})?$#', $path)) {
+        return;
+    }
+    $key = "$host$path";
+    if (!isset($seen[$key])) {
+        $seen[$key] = true;
+        $queue[] = [$host, $path];
+    }
+};
+foreach (HOSTS as $host) {
+    $enqueue($host, '/');
+}
+
+$images = [];
+$counts = ['pages' => 0, 'pages_new' => 0, 'pages_failed' => 0];
+while ($queue) {
+    [$host, $path] = array_shift($queue);
+    $url = "https://$host$path";
+    $file = pageFile($root, $host, $path);
+    $counts['pages']++;
+
+    if ($refresh || !isset($manifest[$url]) || ($manifest[$url]['status'] ?? 0) >= 500 || ($manifest[$url]['status'] ?? 0) === 0) {
+        echo "page  $url\n";
+        $manifest[$url] = download($curl, $url, $file, $delayMs) + ['file' => substr($file, strlen($root) + 1)];
+        $counts['pages_new']++;
+        $saveManifest();
+    }
+    if ($manifest[$url]['status'] !== 200) {
+        $counts['pages_failed']++;
+        fwrite(STDERR, "  failed: $url (HTTP {$manifest[$url]['status']})\n");
+        continue;
+    }
+
+    $html = file_get_contents($file);
+    preg_match_all('/\bhref\s*=\s*["\']([^"\']+)["\']/i', $html, $m);
+    foreach ($m[1] as $href) {
+        if ($n = normalise($href, $host)) {
+            $enqueue(...$n);
+        }
+    }
+    // Uploaded images: <img src>, favicons and inline background images.
+    preg_match_all('#(?:src|href)\s*=\s*["\']([^"\']*?/system/uploads/[^"\']+)["\']|url\(\s*["\']?([^"\')]*?/system/uploads/[^"\')]+)#i', $html, $m);
+    foreach (array_merge($m[1], $m[2]) as $src) {
+        if ($src !== '' && ($n = normalise($src, $host))) {
+            // Uploads are shared by all domains; keep one copy per path.
+            $images[$n[1]] ??= $n[0];
+        }
+    }
+}
+
+// ---- 2. Images, at full size where possible --------------------------------
+
+ksort($images);
+$counts += ['images' => count($images), 'images_new' => 0, 'images_full' => 0, 'images_thumb_only' => 0, 'images_failed' => 0];
+foreach ($images as $path => $host) {
+    // thumb_image.jpg is a small copy; image.jpg is the original upload.
+    $candidates = [$path];
+    $full = preg_replace('#/thumb_([^/]+)$#', '/$1', $path);
+    if ($full !== $path) {
+        array_unshift($candidates, $full);
+    }
+    $got = null;
+    foreach ($candidates as $candidate) {
+        $url = "https://$host$candidate";
+        $file = "$root/files" . $candidate;
+        if (!isset($manifest[$url]) || in_array($manifest[$url]['status'], [0, 500, 502, 503, 504], true)) {
+            echo "image $url\n";
+            $manifest[$url] = download($curl, $url, $file, $delayMs) + ['file' => substr($file, strlen($root) + 1)];
+            $counts['images_new']++;
+            $saveManifest();
+        }
+        if ($manifest[$url]['status'] === 200) {
+            $got = $candidate;
+            break;
+        }
+    }
+    if ($got === null) {
+        $counts['images_failed']++;
+        fwrite(STDERR, "  failed: https://$host$path\n");
+    } elseif ($got === $full && $full !== $path) {
+        $counts['images_full']++;
+    } elseif ($full !== $path) {
+        $counts['images_thumb_only']++;
+    }
+}
+
+$saveManifest();
+echo "\nDone.\n";
+foreach ($counts as $k => $v) {
+    printf("  %-18s %d\n", $k, $v);
+}
+echo '  speaker profiles   ' . count($speakerIds) . "\n";
