@@ -477,3 +477,6 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 - ✅ **Public site and admin are separate.** The admin API has its own endpoints on `admin.it-tour.bg`. The two share the database, and possibly some query code, but not addresses or data shapes. Admin-only fields such as the published flag are never sent by the public site.
 - 📝 Leaning: the admin panel as a single-page app. To settle when we discuss the admin.
 - ✅ **Errors:** visitors see a plain Bulgarian error page with a 500 status code, never PHP error text. Errors are written to a log file in `data/logs/`, one file per day, deleted after 30 days. **No error emails.**
+- ✅ **"Errors" page in the admin,** read straight from the log files (errors are not stored in the database). It groups the most frequent recent errors with counts and last time seen. Protection against huge logs:
+  - it reads only the last 7 days, and at most the last 2 MB of each day's file
+  - each day's log stops taking detailed entries at 10 MB and writes one "log full" line instead, so a loop of errors can't fill the disk
