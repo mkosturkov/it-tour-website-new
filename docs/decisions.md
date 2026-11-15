@@ -480,3 +480,8 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 - ✅ **"Errors" page in the admin,** read straight from the log files (errors are not stored in the database). It groups the most frequent recent errors with counts and last time seen. Protection against huge logs:
   - it reads only the last 7 days, and at most the last 2 MB of each day's file
   - each day's log stops taking detailed entries at 10 MB and writes one "log full" line instead, so a loop of errors can't fill the disk
+
+### Build order (changed 2026-11-15)
+
+- ✅ **Build a working public site before discussing the admin.** Order: an import script in PHP (downloads everything including images, fills SQLite, can be re-run, lists possible duplicate speakers) → the public pages as designed → a local demo with PHP's built-in server. Content goes straight into the database until the admin exists. The admin panel, operations and the rest of the discussion continue afterwards.
+- ✅ **Documentation stays light for now:** decisions in this file, `AGENTS.md` updated for the new code.
