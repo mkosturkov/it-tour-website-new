@@ -75,7 +75,7 @@ The original Figma exports are about 50 MB, so they are not in the repo.
 
 - **Real:** city names, logos and colours; the 2026 dates; in F, the full VarnaConf 2026 programme, speakers and after party; the BurgasConf 2026 and PlovdivConf 2025 talks shown; 2026 sponsors and partners; "62 editions since 2012".
 - **Placeholder:** most other talks and speakers, all team members, the Varna programme in E, photos, form fields, and the IT Tour logo in E (a ring placeholder; F has the real one). Pages with sample content have a thin "Макет" note at the top.
-- **Estimates:** "230+ speakers" and "350+ talks". We need the real counts.
+- **Estimates:** "230+ speakers" and "350+ talks". The old sites list 438 talks and 221 speakers. The real site will count them from its content.
 - The mockups pretend it is mid-July 2026, with BurgasConf (25 July) as the next stop.
 
 ## Open questions for the team
@@ -86,7 +86,6 @@ The full list is at the end of [docs/decisions.md](docs/decisions.md). The main 
 2. E or F? And which accent colour?
 3. Which ideas should we use to get people to register (optional "I'm coming")?
 4. Who has the past event photos?
-5. What are the real speaker and talk counts?
 
 ## How to suggest changes
 
