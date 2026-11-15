@@ -465,3 +465,8 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
   - **Preview:** a "Preview" button in the admin opens the page at `admin.it-tour.bg/preview/...`, built with the same templates as the public page but including unpublished content, with a bar saying "Чернова, не е публикувано". The public address keeps returning a 404 for everyone.
   - The flag is on **events** (while unpublished, the city domain keeps showing the previous edition), **the schedule** (one switch per event, so the whole programme goes live at once), **talks, speakers, news posts, sponsors and team members**.
   - An unpublished item doesn't appear in published pages: a published talk doesn't show an unpublished co-speaker, and an event's sponsor list leaves out unpublished sponsors.
+- ✅ **Talks library and speaker directory: numbered pages with instant server-side filtering.**
+  - Numbered pages (for example 24 per page, `?page=2`), not endless scroll, which hides the footer, loses the place on Back and is harder for screen readers and search engines.
+  - As the visitor types or picks a city or year, a small script asks the server for the matching results after a short pause, swaps in the list and updates the address, so results can be shared.
+  - Without JavaScript the same filters are an ordinary form that returns a filtered page (`?q=наков&city=varna&year=2024`).
+  - Matching ignores capital letters and works in Latin or Cyrillic: each talk and speaker has a hidden search text with the title and names in lowercase plus their Latin transliteration. An English version would later add its texts to it.
