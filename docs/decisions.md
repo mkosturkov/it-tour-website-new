@@ -317,6 +317,9 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 - ✅ **The admin lives on its own subdomain, `admin.it-tour.bg`.** That keeps its login cookies and rules separate from the public site. The name doesn't need to be hidden, because the protection comes from the login, not the address.
 - ❓ **Admin login, default to revisit:** strong passwords with PHP's built-in hashing, two-factor login with an authenticator app, rate limiting after a few wrong tries, and no shared second password on the subdomain.
 
+- ✅ **Server configuration is kept minimal.** We ship an `.htaccess` for Apache and LiteSpeed (most cheap hosts) and an nginx configuration example in the deployment notes, because nginx ignores `.htaccess`. Only these need the server: routing every address that isn't a real file to `index.php`, compression, long caching for files, HTTPS and the `www` redirect. Everything else (redirects table, 404 page) lives in PHP.
+- ✅ **Compression is done by the web server only,** with no PHP fallback, because PHP can't compress static files. Deployment checks that it works.
+
 ### Front end
 - ✅ **Machine-readable:**
   - Content is in the HTML from the server, with semantic elements.
@@ -356,9 +359,15 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 - ✅ **Further quality defaults:**
   - **Speed:**
     - the server compresses pages and files
-    - CSS, JS and fonts are cached for a long time, with a version in the file name so changes still reach visitors at once
+    - CSS, JS, fonts and images are cached by browsers for a year
+    - **Our CSS and JS:** a PHP helper adds the file's modification time to the address (`site.css?v=1731600000`). It changes whenever the file changes, with no build step.
+    - **Uploaded images:** each file is named from a hash of its contents, plus a readable part and the size (`svetlin-nakov-3f9a1c2b-800.webp`). Files are written once and never overwritten, so they can be cached forever; replacing a photo makes a new file and the old one stays (undo is possible).
+    - **Media library from the start:** every upload is a row in a `media` table (file, alt text, crop). Everything refers to media by number, including images inside articles (`media:123`, not a file path); saving an article records which media it uses. Deleting unused files is then one query.
   - **Security:**
-    - HTTPS everywhere, with one canonical form of each address (with or without `www`)
+    - **HTTPS everywhere,** set up on the web server and recorded in the deployment notes:
+      - free Let's Encrypt certificates, renewed automatically (the host's "AutoSSL" or `certbot`), for all domains including the admin subdomain and blagoevgradconf.com
+      - every `http://` address permanently redirected to `https://`
+    - **No `www`:** every domain uses the form without `www`, and `www.` is permanently redirected to it. Today both forms work and neither redirects. All of roughly 2,900 links in the 73 old pages we scanned use the form without `www`; the footer only shows the text "www.it-tour.bg", and even that links to `http://it-tour.bg`.
     - security headers, including a Content Security Policy that allows only our own scripts
   - **Accessibility:**
     - animations such as the pop-up's slide-in are turned off for people who ask for reduced motion
@@ -370,6 +379,10 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
     - favicons and home-screen icons
     - a helpful 404 page with search and links
     - no cookies on the public site, so no cookie banner
+
+- 🔜 **Cleanup of unused media files later, if ever needed.** Rough estimate: a few hundred MB over ten years, which cheap hosting easily holds.
+
+- 🔜 **HSTS later.** The header `Strict-Transport-Security` makes browsers use HTTPS only for a domain, which closes the gap a plain redirect leaves on the first request (SSL stripping). The risk is that if a certificate breaks, visitors can't get in at all. Plan: enable it per domain once HTTPS and renewals work, start with a short time (one day) and raise it to a year. No "preload".
 
 ### Images
 - ✅ **Formats:**
