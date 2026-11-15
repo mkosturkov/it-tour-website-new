@@ -78,6 +78,26 @@ The original Figma exports are about 50 MB, so they are not in the repo.
 - **Estimates:** "230+ speakers" and "350+ talks". The old sites list 438 talks and 221 speakers. The real site will count them from its content.
 - The mockups pretend it is mid-July 2026, with BurgasConf (25 July) as the next stop.
 
+## The real site (in progress)
+
+The new site is PHP and SQLite, with no framework. See `docs/decisions.md`.
+
+### Requirements
+
+- PHP 8.5 (the latest stable release)
+- PHP extensions: PDO SQLite, GD with WebP support, mbstring, intl, fileinfo, exif, DOM, cURL (cURL only for `bin/fetch`)
+- No libraries and no Composer for now
+
+### Importing the old sites
+
+```
+bin/fetch     # downloads the old sites into data/import/ (once; re-run to resume)
+bin/import    # builds data/site.sqlite and the images from data/import/ (offline, re-runnable)
+bin/migrate   # applies new files in migrations/ to an existing database
+```
+
+`data/` and the generated `public/media/` and `public/files/` are not committed.
+
 ## Open questions for the team
 
 The full list is at the end of [docs/decisions.md](docs/decisions.md). The main ones:

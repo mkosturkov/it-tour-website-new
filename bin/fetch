@@ -106,6 +106,13 @@ function normalise(string $href, string $baseHost): ?array
     return [$host, $path];
 }
 
+/** Local path for a file from another site: host plus path, query dropped. */
+function externalPath(string $url): string
+{
+    $p = parse_url($url);
+    return ($p['host'] ?? 'unknown') . rawurldecode($p['path'] ?? '/');
+}
+
 function pageFile(string $root, string $host, string $path): string
 {
     $p = trim($path, '/');
@@ -138,6 +145,7 @@ foreach (HOSTS as $host) {
 }
 
 $images = [];
+$external = [];
 $counts = ['pages' => 0, 'pages_new' => 0, 'pages_failed' => 0];
 while ($queue) {
     [$host, $path] = array_shift($queue);
@@ -166,11 +174,37 @@ while ($queue) {
     }
     // Uploaded images: <img src>, favicons and inline background images.
     preg_match_all('#(?:src|href)\s*=\s*["\']([^"\']*?/system/uploads/[^"\']+)["\']|url\(\s*["\']?([^"\')]*?/system/uploads/[^"\')]+)#i', $html, $m);
-    foreach (array_merge($m[1], $m[2]) as $src) {
+    // Slides hosted on the old sites themselves (PDF, PowerPoint and similar).
+    preg_match_all('#href\s*=\s*["\']([^"\']+\.(?:pdf|pptx?|ppsx?|odp|key|zip))["\']#i', $html, $s);
+    foreach (array_merge($m[1], $m[2], $s[1]) as $src) {
         if ($src !== '' && ($n = normalise($src, $host))) {
             // Uploads are shared by all domains; keep one copy per path.
             $images[$n[1]] ??= $n[0];
         }
+    }
+    // Sponsor logos hosted elsewhere.
+    if (preg_match('#<article id="sponsors">(.*?)</article>#s', $html, $sp)) {
+        preg_match_all('#<img[^>]+src\s*=\s*["\'](https?://[^"\']+)["\']#i', $sp[1], $m);
+        foreach ($m[1] as $src) {
+            $src = html_entity_decode($src);
+            if (!normalise($src, $host)) {
+                $external[$src] = true;
+            }
+        }
+    }
+}
+
+// ---- 1b. Sponsor logos on other sites (some are gone already) -------------
+
+foreach (array_keys($external) as $url) {
+    $file = "$root/files/external/" . externalPath($url);
+    if (!isset($manifest[$url])) {
+        echo "image $url\n";
+        $manifest[$url] = download($curl, $url, $file, $delayMs) + ['file' => substr($file, strlen($root) + 1)];
+        $saveManifest();
+    }
+    if ($manifest[$url]['status'] !== 200) {
+        fwrite(STDERR, "  failed: $url (HTTP {$manifest[$url]['status']})\n");
     }
 }
 

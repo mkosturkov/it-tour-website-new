@@ -1,0 +1,576 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Builds data/site.sqlite and the media library from the old sites saved by
+ * bin/fetch in data/import/. Works offline and can be re-run: it starts from
+ * an empty database every time.
+ *
+ * What it reads:
+ *   pages/<domain>/archive/<year>.html  one page per edition (all of them, 2026 too)
+ *   pages/<domain>/speakers/<id>.html   speaker profiles (latest bio, links)
+ *   files/system/uploads/...            photos, logos, sponsor logos, slides
+ *
+ * At the end it prints a report, including possible duplicate speakers.
+ */
+
+declare(strict_types=1);
+
+require dirname(__DIR__) . '/src/autoload.php';
+
+use ItTour\Db;
+use ItTour\Media;
+use ItTour\Text;
+
+ini_set('memory_limit', '1G');
+
+const CITIES = [
+    // slug, name, domain, order in the season
+    ['plovdiv', 'Пловдив', 'plovdivconf.com', 1],
+    ['tarnovo', 'Велико Търново', 'tarnovoconf.com', 2],
+    ['burgas', 'Бургас', 'burgasconf.com', 3],
+    ['varna', 'Варна', 'varnaconf.com', 4],
+    ['ruse', 'Русе', 'ruseconf.com', 5],
+    ['blagoevgrad', 'Благоевград', 'blagoevgradconf.com', 6],
+];
+const OLD_HOSTS = ['it-tour.bg', 'plovdivconf.com', 'tarnovoconf.com', 'burgasconf.com', 'varnaconf.com', 'ruseconf.com', 'blagoevgradconf.com'];
+const MONTHS = ['януари' => 1, 'февруари' => 2, 'март' => 3, 'април' => 4, 'май' => 5, 'юни' => 6,
+    'юли' => 7, 'август' => 8, 'септември' => 9, 'октомври' => 10, 'ноември' => 11, 'декември' => 12];
+
+$in = APP_ROOT . '/data/import';
+if (!is_dir("$in/pages")) {
+    fwrite(STDERR, "Nothing to import: run bin/fetch first.\n");
+    exit(1);
+}
+
+$warnings = [];
+$warn = function (string $msg) use (&$warnings): void {
+    $warnings[] = $msg;
+};
+
+// ---- Start clean -----------------------------------------------------------
+
+Db::close();
+foreach (['', '-wal', '-shm'] as $suffix) {
+    @unlink(Db::path() . $suffix);
+}
+foreach ([Media::originalsDir(), Media::publicDir(), APP_ROOT . '/public/files'] as $dir) {
+    foreach (glob("$dir/*") ?: [] as $f) {
+        unlink($f);
+    }
+}
+Db::migrate();
+$pdo = Db::pdo();
+$pdo->beginTransaction();
+
+// ---- Helpers ---------------------------------------------------------------
+
+function parse(string $file): Dom\HTMLDocument
+{
+    return Dom\HTMLDocument::createFromString(file_get_contents($file), LIBXML_NOERROR, 'UTF-8');
+}
+
+function text(?Dom\Node $el): string
+{
+    return $el ? trim(preg_replace('/\s+/u', ' ', $el->textContent)) : '';
+}
+
+/** Paragraphs of an element as plain text, separated by blank lines. */
+function paragraphs(?Dom\Element $el): string
+{
+    if (!$el) {
+        return '';
+    }
+    $ps = $el->querySelectorAll('p');
+    if ($ps->length === 0) {
+        return text($el);
+    }
+    $out = [];
+    foreach ($ps as $p) {
+        if (($t = text($p)) !== '') {
+            $out[] = $t;
+        }
+    }
+    return implode("\n\n", $out);
+}
+
+/** Path of an old upload ("/system/uploads/...?123") without the query. */
+function uploadPath(string $src): ?string
+{
+    $src = html_entity_decode($src);
+    if (!preg_match('#/system/uploads/[^?"\']+#', $src, $m)) {
+        return null;
+    }
+    return rawurldecode($m[0]);
+}
+
+/**
+ * The best downloaded copy of an upload: the largest image in the same
+ * folder (the original upload rather than a thumbnail), ignoring favicons.
+ */
+function bestLocal(string $in, ?string $path, ?string $src = null): ?string
+{
+    if ($path === null) {
+        // A file from another site, saved by bin/fetch under files/external/.
+        if ($src && preg_match('#^https?://#', $src = html_entity_decode($src))) {
+            $p = parse_url($src);
+            $f = "$in/files/external/" . ($p['host'] ?? '') . rawurldecode($p['path'] ?? '');
+            return is_file($f) ? $f : null;
+        }
+        return null;
+    }
+    $dir = dirname("$in/files$path");
+    $best = null;
+    $bestArea = 0;
+    foreach (glob("$dir/*") ?: [] as $f) {
+        if (str_contains(basename($f), 'favicon')) {
+            continue;
+        }
+        $size = @getimagesize($f);
+        $area = $size ? $size[0] * $size[1] : 0;
+        if ($area > $bestArea) {
+            [$best, $bestArea] = [$f, $area];
+        }
+    }
+    // Sponsor logos share one folder, so use the exact file there.
+    if (str_starts_with($path, '/system/uploads/sponsors/')) {
+        $exact = "$in/files$path";
+        return is_file($exact) ? $exact : null;
+    }
+    return $best;
+}
+
+function cleanUrl(?string $url): ?string
+{
+    $url = trim(html_entity_decode((string) $url));
+    if ($url === '' || $url === '#') {
+        return null;
+    }
+    // Old profiles put a full address where a handle was expected:
+    // https://twitter.com/https://x.com/name
+    if (preg_match('#^https?://[^/]+/(https?://.+)$#', $url, $m)) {
+        $url = $m[1];
+    }
+    // A trailing "?" was left on some YouTube links.
+    $url = rtrim($url, '?');
+    if (preg_match('#^https?://(www\.)?(twitter|x|facebook|youtube)\.com/?$#', $url)) {
+        return null;    // no handle
+    }
+    if (!preg_match('#^https?://#', $url)) {
+        $url = 'https://' . ltrim($url, '/');
+    }
+    return $url;
+}
+
+function videoUrl(?string $url): ?string
+{
+    $url = cleanUrl($url);
+    if ($url && preg_match('#youtu\.be/([\w-]{11})#', $url, $m)) {
+        return "https://www.youtube.com/watch?v={$m[1]}";
+    }
+    if ($url && preg_match('#youtube\.com/watch\?v=([\w-]{11})#', $url, $m)) {
+        return "https://www.youtube.com/watch?v={$m[1]}";
+    }
+    return $url;
+}
+
+/** Copies slides hosted on the old sites into public/files/. Returns the new URL or null. */
+function localSlides(string $in, string $url, string $title): ?string
+{
+    $host = preg_replace('/^www\./', '', (string) parse_url($url, PHP_URL_HOST));
+    if (!in_array($host, OLD_HOSTS, true)) {
+        return $url;
+    }
+    $path = rawurldecode((string) parse_url($url, PHP_URL_PATH));
+    $src = "$in/files$path";
+    if (!is_file($src)) {
+        // bin/fetch kept encoded names such as "Keeping%20secrets.pdf".
+        $src = "$in/files" . (string) parse_url($url, PHP_URL_PATH);
+    }
+    if (!is_file($src)) {
+        return null;
+    }
+    $bytes = file_get_contents($src);
+    $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+    $name = Text::slug($title, 40) . '-' . substr(sha1($bytes), 0, 8) . ".$ext";
+    @mkdir(APP_ROOT . '/public/files', 0777, true);
+    file_put_contents(APP_ROOT . "/public/files/$name", $bytes);
+    return "/files/$name";
+}
+
+/** "17 Август 2024" → "2024-08-17" */
+function bgDate(string $s): ?string
+{
+    if (!preg_match('/(\d{1,2})\s+(\p{L}+)\s+(\d{4})/u', $s, $m)) {
+        return null;
+    }
+    $month = MONTHS[mb_strtolower($m[2])] ?? null;
+    return $month ? sprintf('%04d-%02d-%02d', $m[3], $month, $m[1]) : null;
+}
+
+/** Latitude and longitude from a Google Maps embed address, if it has them. */
+function coordinates(?string $url): array
+{
+    $url = html_entity_decode((string) $url);
+    if (preg_match('/!2d(-?[\d.]+)!3d(-?[\d.]+)/', $url, $m)) {
+        return [(float) $m[2], (float) $m[1]];
+    }
+    // "ll=" is the map centre; "sll=" is a default left in old links and is ignored.
+    if (preg_match('/[?&]ll=(-?[\d.]+),(-?[\d.]+)/', $url, $m)) {
+        return [(float) $m[1], (float) $m[2]];
+    }
+    return [null, null];
+}
+
+/** Venue or after party block: name, link, address, directions, map. */
+function place(?Dom\Element $article): array
+{
+    if (!$article) {
+        return [];
+    }
+    $a = $article->querySelector('section > a');
+    $addresses = $article->querySelectorAll('section > address');
+    $map = $article->querySelector('.map iframe');
+    $mapUrl = $map ? html_entity_decode($map->getAttribute('src')) : null;
+    [$lat, $lng] = coordinates($mapUrl);
+    return [
+        'name' => text($a) ?: null,
+        'url' => cleanUrl($a?->getAttribute('href')),
+        'address' => $addresses->length > 0 ? (text($addresses->item(0)) ?: null) : null,
+        'directions' => $addresses->length > 1 ? (paragraphs($addresses->item(1)) ?: null) : null,
+        'map_url' => $mapUrl,
+        'lat' => $lat,
+        'lng' => $lng,
+    ];
+}
+
+// ---- Cities ----------------------------------------------------------------
+
+$cityIds = [];
+$cityByHost = [];
+foreach (CITIES as [$slug, $name, $domain, $order]) {
+    $cityIds[$slug] = Db::insert('cities', ['slug' => $slug, 'name' => $name, 'domain' => $domain, 'sort_order' => $order, 'active' => 0]);
+    $cityByHost[$domain] = $slug;
+}
+
+// ---- Speakers, from their profiles ----------------------------------------
+
+$speakers = [];     // old id => ['name' => ..., 'media' => ...]
+$profiles = [];
+foreach (glob("$in/pages/*/speakers/*.html") as $file) {
+    $profiles[(int) basename($file, '.html')] = $file;
+}
+ksort($profiles);
+
+$addSpeaker = function (int $id, string $name, string $bio, ?string $photoSrc, array $links) use ($in, &$speakers, $warn): void {
+    $mediaId = null;
+    $photo = bestLocal($in, uploadPath((string) $photoSrc));
+    if ($photo) {
+        try {
+            $mediaId = Media::add($photo, $name, $name, true, $photoSrc);
+        } catch (Throwable $e) {
+            $warn("Speaker $id ($name): photo skipped: {$e->getMessage()}");
+        }
+    } else {
+        $warn("Speaker $id ($name): no photo");
+    }
+    Db::insert('speakers', [
+        'id' => $id,
+        'name' => $name,
+        'photo_media_id' => $mediaId,
+        'bio' => $bio,
+        'links' => json_encode(array_values(array_unique($links)), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+        'search_text' => Text::searchText($name),
+        'published' => 1,
+    ]);
+    $speakers[$id] = ['name' => $name];
+};
+
+foreach ($profiles as $id => $file) {
+    $doc = parse($file);
+    $article = $doc->querySelector('article#speaker');
+    if (!$article) {
+        $warn("Speaker $id: profile page has no speaker block");
+        continue;
+    }
+    $links = [];
+    foreach ($article->querySelectorAll('ul.links a, a.avatar') as $a) {
+        if ($url = cleanUrl($a->getAttribute('href'))) {
+            $links[] = $url;
+        }
+    }
+    $addSpeaker(
+        $id,
+        text($article->querySelector('h2')),
+        paragraphs($article->querySelector('.description')),
+        $article->querySelector('img')?->getAttribute('src'),
+        $links,
+    );
+}
+
+// ---- Editions ---------------------------------------------------------------
+
+$editions = [];
+foreach (glob("$in/pages/*/archive/*.html") as $file) {
+    $host = basename(dirname($file, 2));
+    $year = (int) basename($file, '.html');
+    if (!isset($cityByHost[$host])) {
+        $warn("Skipped $host/archive/$year: not a city domain");
+        continue;
+    }
+    $editions[] = [$year, $host, $file];
+}
+sort($editions);    // oldest first, so later years update shared sponsors
+
+$sponsorIds = [];   // lowercase name => id
+$report = [];
+$latestYear = max(array_column($editions, 0));
+
+foreach ($editions as [$year, $host, $file]) {
+    $doc = parse($file);
+    $city = $cityByHost[$host];
+    $label = "$host/archive/$year";
+
+    // Name, logo and colour.
+    $name = null;
+    $logoSrc = null;
+    foreach ($doc->querySelectorAll('#archive li') as $li) {
+        $link = $li->querySelector('a:not(.logo)');
+        if ($link && str_ends_with(rtrim($link->getAttribute('href'), '/'), "/archive/$year")) {
+            $name = text($link);
+            $logoSrc = $li->querySelector('img')?->getAttribute('src');
+        }
+    }
+    $name ??= ($doc->querySelector('header img')?->getAttribute('alt') ?? ucfirst($city) . 'Conf') . " $year";
+    $logoSrc ??= $doc->querySelector('header img')?->getAttribute('src');
+    preg_match('/border-top-color:\s*(#[0-9a-f]{3,6})/i', (string) $doc->querySelector('nav')?->getAttribute('style'), $m);
+    $colour = isset($m[1]) ? strtoupper($m[1]) : null;
+    preg_match('/url\(([^)]+)\)/', (string) $doc->querySelector('header div')?->getAttribute('style'), $m);
+    $coverSrc = $m[1] ?? null;
+
+    $date = bgDate(text($doc->querySelector('#when h2')));
+    if (!$date) {
+        $warn("$label: no date found");
+        $date = "$year-01-01";
+    }
+
+    $media = function (?string $src, string $what) use ($in, $name, $label, $warn): ?int {
+        $file = bestLocal($in, uploadPath((string) $src));
+        if (!$file) {
+            return null;
+        }
+        try {
+            return Media::add($file, "$name $what", "$name $what", false, $src);
+        } catch (Throwable $e) {
+            $warn("$label: $what skipped: {$e->getMessage()}");
+            return null;
+        }
+    };
+
+    $venue = place($doc->querySelector('article#venue'));
+    $party = place($doc->querySelector('article#after-party'));
+    preg_match('#/event/logo/(\d+)/#', (string) $logoSrc, $m);
+
+    $eventId = Db::insert('events', [
+        'city_id' => $cityIds[$city],
+        'year' => $year,
+        'name' => $name,
+        'date' => $date,
+        'colour' => $colour,
+        'logo_media_id' => $media($logoSrc, 'лого'),
+        'cover_media_id' => $media($coverSrc, 'корица'),
+        'venue_name' => $venue['name'] ?? null,
+        'venue_url' => $venue['url'] ?? null,
+        'venue_address' => $venue['address'] ?? null,
+        'venue_directions' => $venue['directions'] ?? null,
+        'venue_map_url' => $venue['map_url'] ?? null,
+        'venue_lat' => $venue['lat'] ?? null,
+        'venue_lng' => $venue['lng'] ?? null,
+        'party_name' => $party['name'] ?? null,
+        'party_url' => $party['url'] ?? null,
+        'party_address' => $party['address'] ?? null,
+        'party_directions' => $party['directions'] ?? null,
+        'party_map_url' => $party['map_url'] ?? null,
+        'party_visible' => empty($party['name']) ? 0 : 1,
+        'facebook_url' => cleanUrl($doc->querySelector('#when a.facebook')?->getAttribute('href')),
+        'published' => 1,
+        'schedule_published' => 1,
+        'old_id' => isset($m[1]) ? (int) $m[1] : null,
+    ]);
+    if ($year === $latestYear) {
+        Db::run('UPDATE cities SET active = 1 WHERE id = ?', [$cityIds[$city]]);
+    }
+
+    // Speakers only listed on the edition page (no profile downloaded).
+    foreach ($doc->querySelectorAll('#speakers section[id^="speaker-"]') as $sec) {
+        $id = (int) substr($sec->getAttribute('id'), 8);
+        if (!isset($speakers[$id])) {
+            $warn("Speaker $id: no profile page, taken from $label");
+            $addSpeaker($id, text($sec->querySelector('h3')), paragraphs($sec->querySelector('.content')), $sec->querySelector('img')?->getAttribute('src'), []);
+        }
+    }
+
+    // Schedule: talks, breaks and other slots.
+    $items = [];
+    foreach ($doc->querySelectorAll('#schedule li') as $li) {
+        $title = text($li->querySelector('summary strong'));
+        $speakerIds = [];
+        foreach ($li->querySelectorAll('a.speaker') as $a) {
+            if (preg_match('/#speaker-(\d+)/', $a->getAttribute('href'), $mm)) {
+                $speakerIds[] = (int) $mm[1];
+            }
+        }
+        $description = '';
+        $details = $li->querySelector('details');
+        if ($details) {
+            $parts = [];
+            foreach ($details->children as $child) {
+                if ($child->localName !== 'summary' && ($t = paragraphs($child)) !== '') {
+                    $parts[] = $t;
+                }
+            }
+            $description = implode("\n\n", $parts);
+        }
+        $items[] = [
+            'time' => text($li->querySelector('time')),
+            'title' => $title,
+            'speakers' => array_values(array_unique($speakerIds)),
+            'description' => $description,
+            'video' => videoUrl($li->querySelector('a.video')?->getAttribute('href')),
+            'slides' => cleanUrl($li->querySelector('a.slides')?->getAttribute('href')),
+        ];
+    }
+
+    $counts = ['talks' => 0, 'videos' => 0, 'slides' => 0, 'slots' => 0, 'sponsors' => 0];
+    $slots = [];
+    foreach ($items as $item) {
+        if (preg_match('/after\s*-?\s*party|афтър/iu', $item['title'])) {
+            // The after party isn't part of the schedule; keep only its time.
+            Db::run('UPDATE events SET party_starts_at = ? WHERE id = ?', [$item['time'] ?: null, $eventId]);
+            continue;
+        }
+        $isBreak = (bool) preg_match('/^(кафе|обяд|обедна|почивка|break|coffee|lunch)/iu', $item['title']);
+        $isTalk = $item['speakers'] || (!$isBreak && ($item['video'] || $item['slides'] || $item['description']));
+        $talkId = null;
+        if ($isTalk) {
+            $names = [];
+            foreach ($item['speakers'] as $sid) {
+                if (!isset($speakers[$sid])) {
+                    $warn("$label: talk \"{$item['title']}\" names unknown speaker $sid");
+                    continue;
+                }
+                $names[] = $speakers[$sid]['name'];
+            }
+            $slides = $item['slides'];
+            if ($slides) {
+                $slides = localSlides($in, $slides, $item['title']);
+                if ($slides === null) {
+                    $warn("$label: slides for \"{$item['title']}\" are lost ({$item['slides']})");
+                }
+            }
+            $talkId = Db::insert('talks', [
+                'event_id' => $eventId,
+                'title' => $item['title'],
+                'slug' => Text::slug($item['title']),
+                'description' => $item['description'],
+                'video_url' => $item['video'],
+                'slides_url' => $slides,
+                'search_text' => Text::searchText($item['title'], ...$names),
+                'published' => 1,
+            ]);
+            foreach ($item['speakers'] as $i => $sid) {
+                if (isset($speakers[$sid])) {
+                    Db::insert('talk_speakers', ['talk_id' => $talkId, 'speaker_id' => $sid, 'sort_order' => $i]);
+                }
+            }
+            $counts['talks']++;
+            $counts['videos'] += $item['video'] ? 1 : 0;
+            $counts['slides'] += $slides ? 1 : 0;
+        }
+        $slots[] = [
+            'event_id' => $eventId,
+            'starts_at' => $item['time'],
+            'kind' => $isTalk ? 'talk' : ($isBreak ? 'break' : 'other'),
+            'title' => $isTalk ? '' : $item['title'],
+            'talk_id' => $talkId,
+        ];
+    }
+    foreach ($slots as $i => $slot) {
+        $slot['ends_at'] = $slots[$i + 1]['starts_at'] ?? null;
+        Db::insert('slots', $slot);
+        $counts['slots']++;
+    }
+    if ($slots) {
+        Db::run('UPDATE events SET starts_at = ? WHERE id = ?', [$slots[0]['starts_at'], $eventId]);
+    }
+
+    // Sponsors: free-form HTML; headings give the type, linked logos the sponsors.
+    $type = '';
+    $order = 0;
+    foreach ($doc->querySelectorAll('article#sponsors h2, article#sponsors h3, article#sponsors h4, article#sponsors img') as $el) {
+        if ($el->localName !== 'img') {
+            $type = text($el);
+            continue;
+        }
+        $src = $el->getAttribute('src');
+        $sponsorName = trim($el->getAttribute('alt')) ?: pathinfo((string) uploadPath($src), PATHINFO_FILENAME);
+        $key = mb_strtolower($sponsorName);
+        $url = cleanUrl($el->closest('a')?->getAttribute('href'));
+        $logo = null;
+        if ($file = bestLocal($in, uploadPath($src), $src)) {
+            try {
+                $logo = Media::add($file, $sponsorName, $sponsorName, false, $src);
+            } catch (Throwable $e) {
+                $warn("$label: logo of $sponsorName skipped: {$e->getMessage()}");
+            }
+        } else {
+            $warn("$label: logo of $sponsorName not downloaded ($src)");
+        }
+        if (isset($sponsorIds[$key])) {
+            // Seen before: newer editions update the logo and link.
+            Db::run('UPDATE sponsors SET logo_media_id = COALESCE(?, logo_media_id), url = COALESCE(?, url) WHERE id = ?', [$logo, $url, $sponsorIds[$key]]);
+        } else {
+            $sponsorIds[$key] = Db::insert('sponsors', ['name' => $sponsorName, 'logo_media_id' => $logo, 'url' => $url, 'published' => 1]);
+        }
+        Db::insert('sponsorships', ['sponsor_id' => $sponsorIds[$key], 'event_id' => $eventId, 'type' => $type, 'sort_order' => $order++]);
+        $counts['sponsors']++;
+    }
+
+    $report[$label] = $counts;
+    echo sprintf("%-32s %2d talks, %2d videos, %2d slides, %2d slots, %2d sponsors\n", $label, ...array_values(array_intersect_key($counts, array_flip(['talks', 'videos', 'slides', 'slots', 'sponsors']))));
+}
+
+$pdo->commit();
+
+// ---- Report ----------------------------------------------------------------
+
+echo "\nTotals\n";
+foreach (['cities', 'events', 'talks', 'slots', 'speakers', 'sponsors', 'sponsorships', 'media'] as $t) {
+    printf("  %-13s %d\n", $t, Db::value("SELECT COUNT(*) FROM $t"));
+}
+printf("  %-13s %d\n", 'with video', Db::value('SELECT COUNT(*) FROM talks WHERE video_url IS NOT NULL'));
+printf("  %-13s %d\n", 'no talks', Db::value('SELECT COUNT(*) FROM speakers s WHERE NOT EXISTS (SELECT 1 FROM talk_speakers ts WHERE ts.speaker_id = s.id)'));
+
+echo "\nPossible duplicate speakers (same name, different numbers)\n";
+$byName = [];
+foreach (Db::all('SELECT id, name FROM speakers ORDER BY id') as $s) {
+    $byName[mb_strtolower(preg_replace('/\s+/u', ' ', trim($s['name'])))][] = $s['id'];
+}
+$dups = array_filter($byName, fn ($ids) => count($ids) > 1);
+foreach ($dups as $n => $ids) {
+    $where = [];
+    foreach ($ids as $id) {
+        $eds = Db::all('SELECT DISTINCT e.name FROM talk_speakers ts JOIN talks t ON t.id = ts.talk_id JOIN events e ON e.id = t.event_id WHERE ts.speaker_id = ? ORDER BY e.date', [$id]);
+        $where[] = "#$id (" . implode(', ', array_column($eds, 'name')) . ')';
+    }
+    echo "  $n: " . implode('; ', $where) . "\n";
+}
+if (!$dups) {
+    echo "  none\n";
+}
+
+if ($warnings) {
+    echo "\nWarnings (" . count($warnings) . ")\n";
+    foreach ($warnings as $w) {
+        echo "  $w\n";
+    }
+}

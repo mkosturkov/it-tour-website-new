@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+/** Applies new files from migrations/ to data/site.sqlite. */
+
+declare(strict_types=1);
+
+require dirname(__DIR__) . '/src/autoload.php';
+
+$applied = ItTour\Db::migrate();
+echo $applied ? 'Applied: ' . implode(', ', $applied) . "\n" : "Nothing to apply.\n";
