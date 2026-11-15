@@ -319,7 +319,7 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 - ✅ **Redirects:** requests that match no page go to PHP, which checks a redirects table editors can manage, then shows a 404 page.
 - ✅ **No framework and no Symfony components.** The router (about 15 URL patterns, plus picking the city from the domain) and the maintenance command-line scripts are our own small code.
 - ✅ **Templates are plain PHP files,** with our own small `render()` function, layouts and partials, and an `e()` escaping helper. A check script fails if any `<?= $...` output isn't wrapped in `e()`. It runs before every deploy. Rejected: Twig (a whole engine just for escaping), League Plates (quiet since 2024) and Laminas View (brings too much of Laminas).
-- ✅ **Libraries only where mistakes are dangerous.** They are installed with Composer, and the `vendor` folder is committed so deploying stays "copy the files". Built-in PHP covers the rest: PDO for SQLite, password hashing, sessions, and GD for images.
+- ✅ **Libraries only where mistakes are dangerous.** If we ever need one, we start using Composer then and add a build step for it (see Public back end). Built-in PHP covers the rest: PDO for SQLite, password hashing, sessions, and GD for images.
 - ❓ Formatted text for editors (Markdown or a WYSIWYG editor, and which library): decided later.
 - ✅ **Domains mirror today's structure.** No old address is redirected. New pages go where they fit.
   - **City domains** keep exactly what they have today:
@@ -456,5 +456,6 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
   - `migrations/`: numbered SQL files that change the database step by step
   - `bin/`: command-line scripts (import, migrations, escaping check)
   - `data/`: the SQLite file and logs, outside `public/`
-  - `vendor/`: Composer libraries, if any
-- ✅ **We avoid Composer dependencies, and there is no `composer.json` until we actually need a library.** The project's requirements (PHP version, PHP extensions, any libraries) are still written down in one place for people to read; it doesn't have to be machine-readable.
+- ✅ **We avoid Composer dependencies, and there is no `composer.json` until we actually need a library.** The project's requirements (PHP version, PHP extensions, any libraries) are still written down in one place for people to read; it doesn't have to be machine-readable. They go in a "Requirements" section of `README.md`: PHP 8.5, the PDO SQLite, GD (with WebP) and mbstring extensions, and any library if one is added.
+- ✅ **If we ever need a library,** we start using Composer at that point and add a build step for it.
+- ✅ **Class loading:** a small loader of our own (about ten lines), since there is no Composer autoloader.
