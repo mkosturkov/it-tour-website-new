@@ -181,8 +181,9 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
     - news
     - about page (with general text pages)
     - the "become a sponsor" pitch page
+    - the homepage's "get involved" section and the Включи се menu item
     - "add to calendar", the calendar feed and RSS
-  - **Knock-on in version 1:** the menu hides Новини and За IT Tour, and the homepage hides the news block and the volunteer and sponsor cards.
+  - **Knock-on in version 1:** the menu hides Новини, За IT Tour and Включи се, and the homepage hides the news block and the "get involved" section.
 - ✅ Editors change these settings themselves, without a developer: the hub accent colour, and each city's colour and logo.
 - ✅ Editors can change the homepage tagline.
 - ✅ **Season state is automatic, from the event dates and times** (Bulgarian time):
@@ -394,8 +395,15 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
     - **Reduced motion:** for people whose system asks for less motion (`prefers-reduced-motion`), the status pop-up appears without sliding in, and smooth scrolling and animations are off.
     - **Language marks:** English text is marked (`lang="en"`) so screen readers switch pronunciation. Talk titles get a language field in the admin. Fixed Latin text such as the wordmarks is marked in the templates.
   - **Basics:**
-    - favicons and home-screen icons
-    - a helpful 404 page with search and links
+    - **Favicons per site:** the IT Tour logo on it-tour.bg, and each city's badge in that year's colour on its domain, generated from the badge files.
+    - **`apple-touch-icon`** (180×180 PNG) on every site, for "Add to Home Screen" on iPhones. No web app manifest.
+    - **404 page:**
+      - a real 404 status code
+      - the site's usual header, menu and footer, in the city's colours on city domains
+      - a short friendly message in Bulgarian
+      - links to this season's events, the archive, talks and speakers
+      - no search box
+    - **Missed addresses are logged,** and the admin lists the most-hit ones so an editor can add redirects. Most useful in the first months after launch, to catch old links we didn't know about.
     - no cookies on the public site, so no cookie banner
 
 - 🔜 **Cleanup of unused media files later, if ever needed.** Rough estimate: a few hundred MB over ten years, which cheap hosting easily holds.
@@ -415,6 +423,7 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
   - A generated PNG wherever SVG isn't accepted, such as social previews.
   - The uploaded original is kept on the server.
 - ✅ **Badges have each year's colour baked into the file.** The server produces one file per event (for example `varna-2026.svg`), so a badge looks right everywhere, including search results, previews and saved copies.
+- ✅ **SVG to PNG happens in the editor's browser.** PHP's GD can't render SVG, so when an editor saves a badge or an event colour, the browser draws the coloured SVG and uploads PNG versions (favicons, home-screen icons, social previews) with it.
 - ✅ **Processing:** PHP's built-in GD makes the sizes once, on upload. To keep within cheap hosts' memory limits, the editor's browser shrinks large photos to about 2,500 px before uploading.
 - 🔜 **After launch, research AVIF:** a newer format, about 20–30% smaller than WebP and well supported by browsers, but slow to produce and often missing from GD on cheap hosts.
 - ✅ **Sizes:** each photo is saved at about 400, 800 and 1,600 px wide, and the browser picks the right one (`srcset`).
