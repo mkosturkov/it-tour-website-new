@@ -23,7 +23,7 @@ $isYoutube = $t['video_url'] && preg_match('#youtube\.com|youtu\.be#', $t['video
   <div class="wrap two-col">
     <div class="talk-main">
       <?php if ($isYoutube): ?>
-      <?= partial('embed', ['url' => $t['video_url'], 'still' => $t['still'], 'title' => 'Видео: ' . $t['title'], 'label' => 'Гледай лекцията']) ?>
+      <?= partial('embed', ['url' => $t['video_url'], 'still' => $t['still'], 'title' => 'Видео: ' . $t['title']]) ?>
       <?php elseif ($upcoming): ?>
       <p class="talk-note">Лекцията предстои на <?= e(date_bg($event['date'])) ?>. Видеото ще се появи тук след събитието.</p>
       <?php endif ?>
@@ -33,9 +33,9 @@ $isYoutube = $t['video_url'] && preg_match('#youtube\.com|youtu\.be#', $t['video
         <?= raw(text_html($t['description'])) ?>
       </div>
       <?php endif ?>
-      <?php if ($t['video_url'] || $t['slides_url']): ?>
+      <?php if (($t['video_url'] && !$isYoutube) || $t['slides_url']): ?>
       <div class="links">
-        <?php if ($t['video_url']): ?><a class="btn btn-ghost btn-sm" href="<?= e($t['video_url']) ?>"><?= e($isYoutube ? 'Гледай в YouTube ↗' : 'Видео ↗') ?></a><?php endif ?>
+        <?php if ($t['video_url'] && !$isYoutube): ?><a class="btn btn-ghost btn-sm" href="<?= e($t['video_url']) ?>">Видео ↗</a><?php endif ?>
         <?php if ($t['slides_url']): ?><a class="btn btn-ghost btn-sm" href="<?= e(str_starts_with($t['slides_url'], '/') ? main_url($t['slides_url']) : $t['slides_url']) ?>">Слайдове ↗</a><?php endif ?>
       </div>
       <?php endif ?>

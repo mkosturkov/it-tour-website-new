@@ -61,6 +61,19 @@ return [
         ok(!str_contains($res->body, 'Богомил Шопов'), 'unpublished speaker shown');
         ok(str_contains($res->body, 'Два проекта с отворен код'), 'the talk itself should stay');
     },
+    'live block: watch here or on YouTube, external player link, now on stage' => function () use ($varna) {
+        putenv('IT_TOUR_NOW=2026-08-22 11:20');
+        try {
+            $res = page_with("UPDATE events SET live_url = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', stream_url = 'https://stream.example/live.m3u8' WHERE year = 2026", $varna, '/');
+        } finally {
+            putenv('IT_TOUR_NOW');
+        }
+        ok(str_contains($res->body, 'id="live"'), 'no live block');
+        ok(str_contains($res->body, 'data-embed="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"'), 'player address (no autoplay)');
+        ok(str_contains($res->body, 'Гледай в YouTube'), 'no YouTube link');
+        ok(str_contains($res->body, 'https://stream.example/live.m3u8'), 'no external player link');
+        ok(str_contains($res->body, 'class="onstage"'), 'no now on stage');
+    },
     'text from the database is escaped' => function () use ($varna) {
         $res = page_with("UPDATE talks SET title = '<script>alert(1)</script>' WHERE id = (SELECT talk_id FROM slots s JOIN events e ON e.id = s.event_id JOIN cities c ON c.id = e.city_id WHERE e.year = 2024 AND c.slug = 'varna' AND talk_id IS NOT NULL LIMIT 1)", $varna, '/archive/2024');
         ok(!str_contains($res->body, '<script>alert(1)'), 'not escaped');

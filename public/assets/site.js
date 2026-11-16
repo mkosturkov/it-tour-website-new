@@ -20,7 +20,9 @@
   });
 })();
 
-// Click-to-load embeds (YouTube, Google Maps): [data-embed] becomes an iframe on click.
+// Click-to-load embeds (YouTube, Google Maps): [data-embed] becomes an iframe when its
+// .embed-play button is clicked. No autoplay: YouTube counts a view only when its own play
+// button is pressed. The "watch on YouTube" link is left alone.
 document.addEventListener('click', function (e) {
   var a = e.target.closest('[data-embed] .embed-play');
   if (!a) return;

@@ -99,14 +99,13 @@ $stateText = [
     <div class="player-wrap">
       <div class="player">
         <?php if ($e['live_url']): ?>
-        <?= partial('embed', ['url' => $e['live_url'], 'title' => 'Излъчване на живо: ' . $e['name'], 'label' => 'Пусни излъчването']) ?>
+        <?= partial('embed', ['url' => $e['live_url'], 'title' => 'Излъчване на живо: ' . $e['name']]) ?>
         <?php endif ?>
+        <?php if ($e['stream_url']): ?>
         <div class="bar">
-          <div class="stream-links">
-            <?php if ($e['live_url']): ?><a class="btn btn-ghost btn-sm" href="<?= e($e['live_url']) ?>">Гледай в YouTube</a><?php endif ?>
-            <?php if ($e['stream_url']): ?><a class="btn btn-ghost btn-sm" href="<?= e($e['stream_url']) ?>">Адрес за външен плейър (VLC)</a><?php endif ?>
-          </div>
+          <div class="stream-links"><a class="btn btn-ghost btn-sm" href="<?= e($e['stream_url']) ?>">Адрес за външен плейър (VLC)</a></div>
         </div>
+        <?php endif ?>
       </div>
       <?php if ($onStage): ?>
       <div class="onstage">

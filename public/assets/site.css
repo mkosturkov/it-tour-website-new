@@ -647,6 +647,9 @@ footer .cbar { position: relative; margin-bottom: 0; height: 10px; }
 .embed-play { position: relative; display: inline-flex; align-items: center; gap: 10px; background: rgba(20, 35, 70, .78); color: #fff; padding: 10px 18px 10px 10px; border-radius: 999px; text-decoration: none; font-weight: 700; }
 .embed-play .play { width: 36px; height: 36px; background: var(--accent); color: var(--accent-ink); font-size: 14px; }
 .embed-play:hover { background: rgba(20, 35, 70, .92); }
+.embed-actions { position: relative; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; padding: 12px; }
+.embed-out { display: inline-flex; align-items: center; background: rgba(255, 255, 255, .92); color: #1d1d1d; padding: 10px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; }
+.embed-out:hover { background: #fff; }
 .player .embed { border-radius: 0; }
 .place-open { margin: 18px 0 0; }
 

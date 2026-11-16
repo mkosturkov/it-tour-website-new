@@ -169,3 +169,13 @@ The user decided (2026-11-16) that no colour is corrected for contrast for now, 
 - **No videos are linked for 2018 or 2022–2026**, and 2019 has only 12. The recordings are on the YouTube channel but the old site never linked them; this is the "video matching" import task.
 - **No talk descriptions before 2025**: the old site only has them for 2025 (25) and 2026 (19).
 - There is one 2021 edition (10 talks), which the step 4 test data counts.
+
+## 2026-11-16 · Video embeds: two buttons, no autoplay
+
+**What:** `partials/embed.php` shows two buttons on a video still: "Гледай тук" (load the player here) and "Гледай в YouTube ↗" (a plain link). The player loads without `autoplay=1`. The separate YouTube button under the talk video and in the live block is gone (the still has it now). The live block's bar shows only when there's an external-player link.
+
+**Why:** YouTube doesn't count autoplayed embeds as views (YouTube Help, "Embed videos & playlists"; the IFrame API docs say a play counts only when started with the player's own button). One click with autoplay lost the views; two clicks behind a single button felt broken. Two clearly labelled choices keep views counting, keep nothing going to Google before a click, and give a one-click way to YouTube (or its app on phones). The embedded player's YouTube logo still opens YouTube mid-talk.
+
+**Tests:** the talk page test checks both links and that the iframe address has no autoplay; a PHP page test fakes a live event with live and stream links.
+
+**Open:** new talks' still images. Proposal (not yet confirmed): when an editor saves a talk with a YouTube link, the server downloads the still once; if that fails the card shows the edition colour and saving retries; editors can upload their own. Until the admin exists, a `bin/video-stills` command would do the same for talks missing a still.

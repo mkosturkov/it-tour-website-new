@@ -52,8 +52,11 @@ test.describe('talk page', () => {
     await page.reload();
     await expect(page.locator('.embed img')).toHaveAttribute('src', /^\/media\//);
     expect(external).toEqual([]);
-    await page.getByRole('link', { name: 'Гледай лекцията' }).click();
-    await expect(page.locator('.embed iframe')).toHaveAttribute('src', /youtube-nocookie\.com\/embed\/[\w-]{11}/);
+    // Two choices on the still: watch on YouTube (a plain link), or load the player here.
+    await expect(page.getByRole('link', { name: 'Гледай в YouTube ↗' })).toHaveAttribute('href', /^https:\/\/www\.youtube\.com\/watch\?v=[\w-]{11}$/);
+    await page.getByRole('link', { name: 'Гледай тук' }).click();
+    // No autoplay: YouTube counts a view only when its own play button starts the video.
+    await expect(page.locator('.embed iframe')).toHaveAttribute('src', /^https:\/\/www\.youtube-nocookie\.com\/embed\/[\w-]{11}$/);
   });
 
   test('other talks of the edition and a way back to it', async ({ page }) => {
