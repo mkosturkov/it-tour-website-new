@@ -1,6 +1,6 @@
 // Step 5: speaker profiles (every domain) and talk pages (main site).
 const { test, expect } = require('@playwright/test');
-const { main, city, expectNoSidewaysScroll, expectAccessible } = require('./helpers');
+const { main, city, expectNoSidewaysScroll, expectAccessible, expectLooks } = require('./helpers');
 
 test.describe('speaker profile', () => {
   test('shows bio, links and all talks, newest first', async ({ page }) => {
@@ -18,7 +18,7 @@ test.describe('speaker profile', () => {
     await expect(page.locator('#main-nav a[aria-current=page]')).toHaveText('Лектори');
     await expectNoSidewaysScroll(page);
     await expectAccessible(page);
-    await expect(page).toHaveScreenshot('speaker-127.png', { fullPage: true });
+    await expectLooks(page, 'speaker-127.png');
   });
 
   test('old city addresses keep working, canonical to it-tour.bg', async ({ page }) => {
@@ -65,7 +65,20 @@ test.describe('talk page', () => {
     await expect(page.getByRole('link', { name: 'Към изданието' })).toHaveAttribute('href', city('plovdivconf', '/archive/2017'));
     await expectNoSidewaysScroll(page);
     await expectAccessible(page);
-    await expect(page).toHaveScreenshot('talk-179.png');
+    await expectLooks(page, 'talk-179.png', { fullPage: false });
+  });
+
+  test('a talk inside a full-day recording starts at its time, with a note when approximate', async ({ page }) => {
+    await page.goto(main('/talks/422'));   // VarnaConf 2025, approximate start from the programme
+    await expect(page.getByRole('link', { name: 'Гледай в YouTube ↗' })).toHaveAttribute('href', 'https://www.youtube.com/watch?v=DQOTmmjftuA&t=2296s');
+    await expect(page.locator('.talk-note')).toContainText('приблизително');
+    await page.getByRole('link', { name: 'Гледай тук' }).click();
+    await expect(page.locator('.embed iframe')).toHaveAttribute('src', 'https://www.youtube-nocookie.com/embed/DQOTmmjftuA?start=2296');
+  });
+
+  test('the edition page links to the full-day recording', async ({ page }) => {
+    await page.goto(city('varnaconf', '/archive/2025'));
+    await expect(page.getByRole('link', { name: '▶ Запис на целия ден' })).toHaveAttribute('href', 'https://www.youtube.com/watch?v=DQOTmmjftuA');
   });
 
   test('the number finds the talk; a wrong or missing slug redirects', async ({ request }) => {

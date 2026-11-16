@@ -1,6 +1,6 @@
 // Step 1: the frame of every page, the 404 page and redirects.
 const { test, expect } = require('@playwright/test');
-const { main, city, expectNoSidewaysScroll, expectAccessible } = require('./helpers');
+const { main, city, expectNoSidewaysScroll, expectAccessible, expectLooks } = require('./helpers');
 
 test.describe('404 page', () => {
   test('unknown address on a city site gives the styled 404', async ({ page }) => {
@@ -15,7 +15,7 @@ test.describe('404 page', () => {
     await expect(page.getByRole('searchbox')).toHaveCount(0);
     await expectNoSidewaysScroll(page);
     await expectAccessible(page);
-    await expect(page).toHaveScreenshot('404-varna.png', { fullPage: true });
+    await expectLooks(page, '404-varna.png');
   });
 
   test('city sites use the city colour, the main site the hub accent', async ({ page }) => {

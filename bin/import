@@ -608,6 +608,8 @@ if (is_file($matchFile)) {
             continue;
         }
         $url = "https://www.youtube.com/watch?v={$r['youtube_id']}";
+        $start = $r['start'] !== '' ? (int) $r['start'] : null;
+        $approx = $r['status'] === 'approximate' ? 1 : 0;
         $still = null;
         $stillFile = "$in/files/youtube/{$r['youtube_id']}.jpg";
         if (is_file($stillFile)) {
@@ -615,7 +617,7 @@ if (is_file($matchFile)) {
         }
         if ($slot['tid']) {
             if ($slot['video_url'] === null) {
-                Db::run('UPDATE talks SET video_url = ?, video_still_media_id = ? WHERE id = ?', [$url, $still, $slot['tid']]);
+                Db::run('UPDATE talks SET video_url = ?, video_still_media_id = ?, video_start = ?, video_start_approx = ? WHERE id = ?', [$url, $still, $start, $approx, $slot['tid']]);
                 $matched++;
             }
         } else {
@@ -623,6 +625,7 @@ if (is_file($matchFile)) {
             $talkId = Db::insert('talks', [
                 'event_id' => $slot['event_id'], 'title' => $slot['title'], 'slug' => Text::slug($slot['title']),
                 'video_url' => $url, 'video_still_media_id' => $still,
+                'video_start' => $start, 'video_start_approx' => $approx,
                 'search_text' => Text::searchText($slot['title']), 'published' => 1,
             ]);
             Db::run("UPDATE slots SET kind = 'talk', title = '', talk_id = ? WHERE id = ?", [$talkId, $slot['id']]);
@@ -630,6 +633,26 @@ if (is_file($matchFile)) {
         }
     }
     fclose($fh);
+}
+
+// ---- Full-day livestream recordings per edition ------------------------------
+
+$recordingEditions = 0;
+$byKey = [];
+foreach (glob("$in/youtube/streams/*.json") ?: [] as $file) {
+    $s = json_decode((string) file_get_contents($file), true);
+    if ($s && ($s['duration'] ?? 0) >= 600 && !empty($s['release_timestamp'])) {
+        $key = preg_replace('/\s+/', '', preg_replace('/^it tour\s*/i', '', mb_strtolower($s['title'])));
+        $byKey[$key][(int) $s['release_timestamp']] = "https://www.youtube.com/watch?v={$s['id']}";
+    }
+}
+foreach (Db::all('SELECT id, name FROM events') as $ev) {
+    $key = preg_replace('/\s+/', '', mb_strtolower($ev['name']));
+    if (!empty($byKey[$key])) {
+        ksort($byKey[$key]);   // parts in the order they were streamed
+        Db::run('UPDATE events SET recordings = ? WHERE id = ?', [json_encode(array_values($byKey[$key]), JSON_UNESCAPED_SLASHES), $ev['id']]);
+        $recordingEditions++;
+    }
 }
 
 $pdo->commit();
@@ -641,6 +664,8 @@ foreach (['cities', 'events', 'talks', 'slots', 'speakers', 'sponsors', 'sponsor
     printf("  %-13s %d\n", $t, Db::value("SELECT COUNT(*) FROM $t"));
 }
 printf("  %-13s %d (%d from import/video-matches.csv)\n", 'with video', Db::value('SELECT COUNT(*) FROM talks WHERE video_url IS NOT NULL'), $matched);
+printf("  %-13s %d editions\n", 'recordings', $recordingEditions);
+printf("  %-13s %d (%d approximate start)\n", 'stream links', Db::value('SELECT COUNT(*) FROM talks WHERE video_start IS NOT NULL'), Db::value('SELECT COUNT(*) FROM talks WHERE video_start_approx = 1'));
 printf("  %-13s %d\n", 'no talks', Db::value('SELECT COUNT(*) FROM speakers s WHERE NOT EXISTS (SELECT 1 FROM talk_speakers ts WHERE ts.speaker_id = s.id)'));
 
 echo "\nPossible duplicate speakers (same name, different numbers)\n";

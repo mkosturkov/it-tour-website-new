@@ -23,7 +23,10 @@ $isYoutube = $t['video_url'] && preg_match('#youtube\.com|youtu\.be#', $t['video
   <div class="wrap two-col">
     <div class="talk-main">
       <?php if ($isYoutube): ?>
-      <?= partial('embed', ['url' => $t['video_url'], 'still' => $t['still'], 'title' => 'Видео: ' . $t['title']]) ?>
+      <?= partial('embed', ['url' => $t['video_url'], 'start' => $t['video_start'], 'still' => $t['still'], 'title' => 'Видео: ' . $t['title']]) ?>
+      <?php if ($t['video_start'] !== null): ?>
+      <p class="talk-note">Лекцията е част от записа на целия ден и видеото започва от нея<?php if ($t['video_start_approx']): ?>, приблизително: началото е изчислено по програмата и може да е няколко минути по-рано или по-късно<?php endif ?>.</p>
+      <?php endif ?>
       <?php elseif ($upcoming): ?>
       <p class="talk-note">Лекцията предстои на <?= e(date_bg($event['date'])) ?>. Видеото ще се появи тук след събитието.</p>
       <?php endif ?>

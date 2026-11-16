@@ -30,9 +30,37 @@ async function expectAccessible(page) {
   expect(summary, 'accessibility problems').toEqual([]);
 }
 
+// Lazy images load only when scrolled to; load them all before a full-page screenshot.
+async function loadAllImages(page) {
+  // Scroll through the page so the browser itself starts every lazy image, then back to the top.
+  await page.evaluate(async () => {
+    for (let y = 0; y < document.body.scrollHeight; y += window.innerHeight) {
+      window.scrollTo({ top: y, behavior: 'instant' });   // the site uses smooth scrolling
+      await new Promise((r) => requestAnimationFrame(r));
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  });
+  await page.evaluate(async () => {
+    const imgs = [...document.querySelectorAll('img')];
+    imgs.forEach((img) => { img.loading = 'eager'; });
+    await Promise.all(imgs.map((img) => img.complete ? null : new Promise((r) => { img.onload = img.onerror = r; })));
+    // decoding="async" images may not be painted yet in a full-page capture; decode them first.
+    await Promise.all(imgs.map((img) => img.decode().catch(() => null)));
+  });
+}
+
 // Fake the current time (Bulgarian time) for the following requests.
 async function at(page, when) {
   await page.setExtraHTTPHeaders({ 'X-Test-Now': when });
 }
 
-module.exports = { main, city, expectNoSidewaysScroll, expectAccessible, at };
+// Compare the page with its approved screenshot (screenshots/<spec>/<name>-<project>.png).
+// Uses page.screenshot() + toMatchSnapshot(): toHaveScreenshot() captured full pages without
+// lazily loaded images even after they had loaded.
+async function expectLooks(page, name, { fullPage = true } = {}) {
+  await loadAllImages(page);
+  const shot = await page.screenshot({ fullPage, animations: 'disabled', caret: 'hide' });
+  expect(shot).toMatchSnapshot(name, { maxDiffPixelRatio: 0.01 });
+}
+
+module.exports = { main, city, expectNoSidewaysScroll, expectAccessible, at, loadAllImages, expectLooks };

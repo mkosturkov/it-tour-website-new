@@ -49,6 +49,9 @@ $stateText = [
         <?php if ($slots): ?>
         <a class="btn <?= e($state === 'live' && isset($sections['live']) ? 'btn-ghost' : 'btn-primary') ?>" href="#schedule">Виж програмата</a>
         <?php endif ?>
+        <?php if ($state === 'finished'): foreach ($recordings as $i => $rec): ?>
+        <a class="btn btn-ghost" href="<?= e($rec) ?>">▶ Запис на целия ден<?php if (count($recordings) > 1): ?>, част <?= e($i + 1) ?><?php endif ?></a>
+        <?php endforeach; endif ?>
         <?php if ($e['facebook_url']): ?>
         <a class="btn btn-ghost" href="<?= e($e['facebook_url']) ?>">Събитието във Facebook</a>
         <?php endif ?>

@@ -52,6 +52,7 @@ final class EventPage
             'state' => $state,
             'now' => $now,
             'logo' => Media::find($event['logo_media_id']),
+            'recordings' => json_decode($event['recordings'] ?? '[]', true) ?: [],
             'wordmark' => Events::wordmark($event),
             'season' => $season,
             'stop' => $stop === false ? null : $stop + 1,

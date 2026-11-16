@@ -11,6 +11,7 @@
  * Maps get one button that loads the map, and work as a link without JavaScript.
  *
  * $url    YouTube watch/live address, or a Google Maps embed address
+ * $start  optional: seconds into the video where it should start (a talk in a full-day recording)
  * $still  optional media row: our own copy of the video's still image
  * $title  iframe title (for screen readers)
  * $label  button text for maps
@@ -20,8 +21,8 @@ $kind ??= 'video';
 $src = $url;
 $open = $url;
 if ($kind === 'video' && preg_match('#(?:v=|youtu\.be/|/live/|/embed/)([\w-]{11})#', $url, $m)) {
-    $src = 'https://www.youtube-nocookie.com/embed/' . $m[1];
-    $open = 'https://www.youtube.com/watch?v=' . $m[1];
+    $src = 'https://www.youtube-nocookie.com/embed/' . $m[1] . (!empty($start) ? '?start=' . (int) $start : '');
+    $open = 'https://www.youtube.com/watch?v=' . $m[1] . (!empty($start) ? '&t=' . (int) $start . 's' : '');
 } elseif ($kind === 'map') {
     $open = str_replace('output=embed', '', $url);
 }

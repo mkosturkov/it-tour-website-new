@@ -199,3 +199,22 @@ The user decided (2026-11-16) that no colour is corrected for contrast for now, 
 - **2024, 2025 and most of 2026 have no per-talk videos on the channel**, only full-day livestream recordings (one or more per edition, 7–8 hours). How to link them is to be decided.
 - TarnovoConf 2017 and 2018 and RuseConf 2017 found almost nothing: no playlists, and the channel titles don't match.
 - The `check` and `likely` rows need a person to look at them.
+
+## 2026-11-16 · Full-day recordings and talk timestamps
+
+**What:** `bin/match-videos` also links remaining talks into the editions' livestream recordings at their start time (new `start` column in `import/video-matches.csv`, sources `stream-chapter` and `stream-time`). `migrations/004_recordings.sql` adds `talks.video_start`, `talks.video_start_approx` and `events.recordings`. Embeds start at the time (`?start=N` in the player, `&t=Ns` on the YouTube link); edition pages show "▶ Запис на целия ден" (parts numbered) once finished; talk pages explain that the video is part of the day's recording and when the start is approximate.
+
+**Why / how:**
+- From 2024 the channel has only full-day livestreams (7–8 h). yt-dlp gives each stream's real start (`release_timestamp`) and, for some, YouTube chapters with exact talk starts (VarnaConf, RuseConf and PlovdivConf 2024).
+- Chapters are matched by title like the videos (status `sure` ≥ 90, else `check`). Without chapters: start = programme time − stream start, choosing the stream part that covers it; status `approximate`. Streams under 10 minutes are ignored (tests, mislabelled clips).
+- Accuracy of the approximation, measured on VarnaConf 2024 against its chapters: from about half a minute to 6 minutes late.
+- Stream details are saved in `data/import/youtube/streams/<id>.json` (yt-dlp needs `--ignore-no-formats-error` for these, or it fails with "not available").
+- Result: 99 more talks linked (21 exact, 75 approximate incl. lightning talks); talks with video: 456 of 491; 15 editions have recordings.
+
+**Gotchas (tests):**
+- Playwright's `toHaveScreenshot({ fullPage: true })` captured lazily loaded images as blank even after they had loaded; `page.screenshot()` didn't. Screenshot checks now use `expectLooks(page, name)` in `specs/helpers.js`: scroll through the page so lazy images start, decode them, then `page.screenshot()` + `toMatchSnapshot()`.
+- The site has `scroll-behavior: smooth`, so scrolling back to the top in a test animated and the screenshot was taken mid-scroll (3 px off, flaky). Test scrolls use `behavior: 'instant'`.
+
+**Open:**
+- Talks still without video: 35 (TarnovoConf 2017/2018, RuseConf 2017 have nothing; some first talks started before the stream did, e.g. VarnaConf 2025).
+- The editor review of approximate timestamps belongs in the admin (see decisions.md).

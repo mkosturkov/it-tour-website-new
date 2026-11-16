@@ -1,6 +1,6 @@
 // Step 3: the edition page on a city site, in its three states.
 const { test, expect } = require('@playwright/test');
-const { city, main, at, expectNoSidewaysScroll, expectAccessible } = require('./helpers');
+const { city, main, at, expectNoSidewaysScroll, expectAccessible, expectLooks } = require('./helpers');
 
 test.describe('a finished edition (VarnaConf 2024)', () => {
   test.beforeEach(async ({ page }) => {
@@ -15,9 +15,9 @@ test.describe('a finished edition (VarnaConf 2024)', () => {
     await expect(page.locator('.ev-facts')).toContainText('Събота, 17 август 2024');
     await expect(page.locator('.ev-facts')).toContainText('Хотел Черно море');
 
-    // Programme: 7 talks among the slots, linked to their talk pages on the main site.
+    // Programme: 7 talks plus the lightning talks recording, linked to their talk pages on the main site.
     const talks = page.locator('#schedule .slot:not(.break) h3 a');
-    await expect(talks).toHaveCount(7);
+    await expect(talks).toHaveCount(8);
     await expect(talks.first()).toHaveText('Два проекта с отворен код, които ще променят живота ти!');
     await expect(talks.first()).toHaveAttribute('href', new RegExp('^' + main('/talks/\\d+-dva-proekta')));
     // English titles are marked for screen readers.
@@ -29,7 +29,8 @@ test.describe('a finished edition (VarnaConf 2024)', () => {
     await expect(speakers.first()).toHaveAttribute('href', city('varnaconf', '/speakers/161'));
 
     // Finished: numbers instead of a countdown.
-    await expect(page.locator('.ev-stats')).toContainText('7 лекции');
+    await expect(page.locator('.ev-stats')).toContainText('8 лекции');
+    await expect(page.locator('.ev-stats')).toContainText('8 видеа');   // from the full-day recording's chapters
     await expect(page.locator('[data-countdown]')).toHaveCount(0);
   });
 
@@ -56,7 +57,7 @@ test.describe('a finished edition (VarnaConf 2024)', () => {
   test('looks right and is accessible', async ({ page }) => {
     await expectNoSidewaysScroll(page);
     await expectAccessible(page);
-    await expect(page).toHaveScreenshot('varna-2024.png', { fullPage: true });
+    await expectLooks(page, 'varna-2024.png');
   });
 });
 
@@ -86,7 +87,7 @@ test.describe('VarnaConf 2026 through the day (22 August 2026)', () => {
     await page.goto(city('varnaconf', '/'));
     await expect(page.locator('.state-chip')).toHaveText('Програмата е публикувана');
     await expect(page.locator('[data-countdown] [data-unit=d]')).toHaveText('31');
-    await expect(page).toHaveScreenshot('varna-2026-upcoming.png');
+    await expectLooks(page, 'varna-2026-upcoming.png', { fullPage: false });
   });
 
   test('during a talk: live, with the current talk marked', async ({ page }) => {

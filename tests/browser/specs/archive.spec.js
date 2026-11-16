@@ -1,6 +1,6 @@
 // Step 4: it-tour.bg/archive, every edition by year, filtered by city and year.
 const { test, expect } = require('@playwright/test');
-const { main, city, expectNoSidewaysScroll, expectAccessible } = require('./helpers');
+const { main, city, expectNoSidewaysScroll, expectAccessible, expectLooks } = require('./helpers');
 
 test('lists all 62 editions, newest year first', async ({ page }) => {
   await page.goto(main('/archive'));
@@ -12,11 +12,11 @@ test('lists all 62 editions, newest year first', async ({ page }) => {
   const varna2024 = page.locator('.ed', { hasText: 'VarnaConf 2024' });
   await expect(varna2024).toHaveAttribute('href', city('varnaconf', '/archive/2024'));
   await expect(varna2024).toContainText('17.08 · Хотел Черно море');
-  await expect(varna2024).toContainText('7 лекции');
+  await expect(varna2024).toContainText('8 лекции');
   await expect(page.locator('#main-nav a[aria-current=page]')).toHaveText('Архив');
   await expectNoSidewaysScroll(page);
   await expectAccessible(page);
-  await expect(page).toHaveScreenshot('archive-top.png');
+  await expectLooks(page, 'archive-top.png', { fullPage: false });
 });
 
 test('filter by city with the pills', async ({ page }) => {

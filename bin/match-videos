@@ -19,7 +19,14 @@
  *  - "Lightning talks – VarnaConf 2023" matches the edition's lightning talks slot;
  *  - each video is used once, best scores first.
  *
- * Status column: sure / likely / check (set here, by confidence). People
+ * Talks still without a video (2024 onwards were only livestreamed) are linked
+ * into the edition's full-day livestream recording at their start time (column
+ * start, in seconds): exact from the recording's chapters when it has them,
+ * otherwise worked out from the stream's real start and the programme time,
+ * with status "approximate". Stream details are saved per stream with
+ *   yt-dlp --ignore-no-formats-error -J --skip-download <url>  (into streams/<id>.json)
+ *
+ * Status column: sure / likely / check / approximate (set here). People
  * reviewing the file change it to ok or wrong; wrong rows are ignored by the
  * import. Rows already in the file are kept as they are on later runs.
  */
@@ -33,7 +40,7 @@ use ItTour\Text;
 
 $yt = APP_ROOT . '/data/import/youtube';
 $out = APP_ROOT . '/import/video-matches.csv';
-$columns = ['edition', 'time', 'title', 'youtube_id', 'video_title', 'source', 'score', 'status'];
+$columns = ['edition', 'time', 'title', 'youtube_id', 'start', 'video_title', 'source', 'score', 'status'];
 
 if (!is_file("$yt/videos.json")) {
     fwrite(STDERR, "No data/import/youtube/videos.json: see the comment at the top of this script.\n");
@@ -48,7 +55,7 @@ if (is_file($out)) {
     $fh = fopen($out, 'r');
     $head = fgetcsv($fh, escape: '');
     while (($r = fgetcsv($fh, escape: '')) !== false) {
-        $row = array_combine($head, $r);
+        $row = array_combine($head, $r) + ['start' => ''];
         $rows[$row['edition'] . '|' . $row['time'] . '|' . $row['title']] = $row;
         if ($row['status'] !== 'wrong') {
             $usedVideos[$row['youtube_id']] = true;
@@ -230,13 +237,86 @@ foreach ($events as $ev) {
         $item = $items[$i];
         $rows["$edition|{$item['time']}|{$item['title']}"] = [
             'edition' => $edition, 'time' => $item['time'], 'title' => $item['title'],
-            'youtube_id' => $id, 'video_title' => $vtitle, 'source' => $source,
+            'youtube_id' => $id, 'start' => '', 'video_title' => $vtitle, 'source' => $source,
             'score' => (string) round(min($score, 100)), 'status' => $status,
         ];
         $newRows++;
     }
     $candidatesFound += count($items);
 }
+
+// ---- Full-day livestream recordings (2024 onwards) --------------------------
+// Talks still without a video get a link into the edition's livestream recording
+// at the talk's start: exact when the recording has YouTube chapters (matched by
+// title), otherwise worked out from the stream's real start time and the
+// programme time ("approximate", for an editor to check).
+
+$streams = [];   // "varnaconf2024" => [stream, ...]
+foreach (glob("$yt/streams/*.json") ?: [] as $file) {
+    $s = json_decode((string) file_get_contents($file), true);
+    if (!$s || ($s['duration'] ?? 0) < 600 || empty($s['release_timestamp'])) {
+        continue;   // test streams of a minute or two, or no start time
+    }
+    $key = preg_replace('/\s+/', '', preg_replace('/^it tour\s*/i', '', mb_strtolower($s['title'])));
+    $streams[$key][] = $s;
+}
+$streamRows = 0;
+foreach ($events as $ev) {
+    $edition = $ev['domain'] . '/' . $ev['year'];
+    $key = preg_replace('/\s+/', '', mb_strtolower($ev['name']));
+    if (empty($streams[$key])) {
+        continue;
+    }
+    $date = Db::value('SELECT date FROM events WHERE id = ?', [$ev['id']]);
+    $items = Db::all(
+        "SELECT s.starts_at AS time, COALESCE(t.title, s.title) AS title, t.id AS talk_id
+         FROM slots s LEFT JOIN talks t ON t.id = s.talk_id
+         WHERE s.event_id = ? AND ((t.id IS NOT NULL AND t.video_url IS NULL) OR (s.talk_id IS NULL AND lower(s.title) LIKE 'light%'))",
+        [$ev['id']],
+    );
+    foreach ($items as $item) {
+        $rowKey = "$edition|{$item['time']}|{$item['title']}";
+        if (isset($rows[$rowKey])) {
+            continue;
+        }
+        $names = $item['talk_id'] ? array_column(Db::all('SELECT s.name FROM talk_speakers ts JOIN speakers s ON s.id = ts.speaker_id WHERE ts.talk_id = ?', [$item['talk_id']]), 'name') : [];
+        $found = null;
+        // 1. Chapters: exact.
+        foreach ($streams[$key] as $s) {
+            foreach ($s['chapters'] ?? [] as $ch) {
+                [$ct, $who] = splitTitle($ch['title'], $names);
+                $ct = preg_replace('/^\s*\d+\.\s*/', '', $ct);
+                $score = $item['talk_id'] ? sim($item['title'], $ct) : (preg_match('/^lightn?ing/i', $ct) ? 100 : 0);
+                $ok = $score >= 85 || ($score >= 60 && speakerMatch($names, $who));
+                if ($ok && (!$found || $score > $found['score'])) {
+                    $found = ['s' => $s, 'start' => (int) $ch['start_time'], 'score' => $score, 'source' => 'stream-chapter',
+                        'status' => $score >= 90 ? 'sure' : 'check', 'label' => $s['title'] . ' · ' . $ch['title']];
+                }
+            }
+        }
+        // 2. Programme time minus the stream's real start: approximate.
+        if (!$found) {
+            $at = (new DateTimeImmutable("$date {$item['time']}", new DateTimeZone('Europe/Sofia')))->getTimestamp();
+            foreach ($streams[$key] as $s) {
+                $offset = $at - (int) $s['release_timestamp'];
+                if ($offset >= 0 && $offset < $s['duration'] - 300) {
+                    $found = ['s' => $s, 'start' => $offset, 'score' => 0, 'source' => 'stream-time',
+                        'status' => 'approximate', 'label' => $s['title'] . ' · ' . gmdate('G:i:s', $offset)];
+                    break;
+                }
+            }
+        }
+        if ($found) {
+            $rows[$rowKey] = [
+                'edition' => $edition, 'time' => $item['time'], 'title' => $item['title'],
+                'youtube_id' => $found['s']['id'], 'start' => (string) $found['start'], 'video_title' => $found['label'],
+                'source' => $found['source'], 'score' => (string) round($found['score']), 'status' => $found['status'],
+            ];
+            $streamRows++;
+        }
+    }
+}
+printf("Livestream recordings: %d talks linked at their start time.\n", $streamRows);
 
 // ---- Write ---------------------------------------------------------------------
 
