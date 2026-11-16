@@ -489,3 +489,18 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 - ✅ **Schedule slots may overlap.** A few editions ran workshops in parallel with the talks (VarnaConf 2015 and 2016 had a whole second list; PlovdivConf 2018, TarnovoConf 2022, RuseConf 2022 and VarnaConf 2025 had single workshops). There are no separate tracks: overlapping items are simply shown together at their time.
 - 📝 Import findings: lightning talks are one slot per edition, with at most one video for the whole block (16 have one, 2013–2017). Openings and closings are plain slots; their 34 old videos (2012–2017) are not linked from the new site.
 - ✅ **Speakers with the same name are different people:** Тодор Тодоров (#20, #172), Иван Димитров (#23, #104) and Николай Маринов (#114, #115), checked 2026-11-16. The import no longer reports them.
+
+### Architecture of the public site
+
+- ✅ **Request flow:** `public/index.php` is the only entry point → the domain picks the site (it-tour.bg or a city; locally `varnaconf.localhost` stands for `varnaconf.com`) → a small router matches the address to a handler → the handler loads plain data (published content only) → a renderer turns it into a full page or, with `X-Partial`, just the results block → if nothing matches: redirects table, then the 404 page and the missed-address log.
+- ✅ **Code:** `src/Site.php` (domains and cross-domain links), `src/Router.php`, `src/Pages/` (one handler per page type), small query classes per area (`Events`, `Talks`, `Speakers`, `Sponsors`) that the future admin API can reuse, `src/View.php` (`render()`, `e()`, layouts, partials, link, date and image helpers), `templates/`, `public/assets/` (F's CSS and JS without the mockup switches).
+- ✅ **Ready for caching later:** rendering is a pure step from (template, data) to a finished response string, and a response depends only on the domain, path, query and the database. A page cache can later wrap that step without changing handlers or templates.
+- ✅ **No dependencies in the site itself.** We may reconsider for the admin panel (more of an application) and if the public site needs form posts.
+
+### Testing
+
+- ✅ **Mostly browser tests with Playwright** (a development tool only; nothing ships to the server): correct content on each page type, instant search with and without JavaScript, phone width (390 px) with no sideways scroll, screenshot comparison against approved images, and accessibility checks with axe.
+- ✅ **Reliable screenshots:** a fixed test database (a frozen copy of the imported data) and a setting that fakes "now", so upcoming, live and finished states can be tested on purpose.
+- ✅ **Old addresses:** a test goes through every address from the download and checks it still works.
+- ✅ **A few plain PHP unit tests** (no framework) for the parts with real rules: slugs and transliteration, upcoming/live/finished status, search matching.
+- ✅ **Static checks:** `php -l` and the escaping check. Everything runs locally before each commit; no CI.
