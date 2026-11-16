@@ -409,9 +409,15 @@ foreach ($editions as [$year, $host, $file]) {
         }
     }
 
-    // Schedule: talks, breaks and other slots.
+    // Schedule: talks, breaks and other slots. A few editions (VarnaConf 2015
+    // and 2016) have a second list of workshops running in parallel; times
+    // may overlap and there are no separate tracks.
     $items = [];
-    foreach ($doc->querySelectorAll('#schedule li') as $li) {
+    foreach ($doc->querySelectorAll('#schedule ol') as $listNo => $ol) {
+    foreach ($ol->children as $li) {
+        if ($li->localName !== 'li') {
+            continue;
+        }
         $title = text($li->querySelector('summary strong'));
         $speakerIds = [];
         foreach ($li->querySelectorAll('a.speaker') as $a) {
@@ -437,7 +443,9 @@ foreach ($editions as [$year, $host, $file]) {
             'description' => $description,
             'video' => videoUrl($li->querySelector('a.video')?->getAttribute('href')),
             'slides' => cleanUrl($li->querySelector('a.slides')?->getAttribute('href')),
+            'list' => $listNo,
         ];
+    }
     }
 
     $counts = ['talks' => 0, 'videos' => 0, 'slides' => 0, 'slots' => 0, 'sponsors' => 0];
@@ -494,10 +502,32 @@ foreach ($editions as [$year, $host, $file]) {
             'kind' => $isTalk ? 'talk' : ($isBreak ? 'break' : 'other'),
             'title' => $isTalk ? '' : $item['title'],
             'talk_id' => $talkId,
+            'list' => $item['list'],
         ];
     }
-    foreach ($slots as $i => $slot) {
-        $slot['ends_at'] = $slots[$i + 1]['starts_at'] ?? null;
+    // A slot ends when the next one in the same list starts.
+    foreach ($slots as $i => &$slot) {
+        $slot['ends_at'] = null;
+        for ($j = $i + 1; $j < count($slots); $j++) {
+            if ($slots[$j]['list'] === $slot['list']) {
+                $slot['ends_at'] = $slots[$j]['starts_at'];
+                break;
+            }
+        }
+    }
+    unset($slot);
+    usort($slots, fn ($a, $b) => [$a['starts_at'], $a['list']] <=> [$b['starts_at'], $b['list']]);
+    $seenBreaks = [];
+    foreach ($slots as $slot) {
+        unset($slot['list']);
+        // Parallel lists repeat the shared breaks ("Обяд" in both); keep one.
+        if ($slot['kind'] !== 'talk') {
+            $k = $slot['starts_at'] . '|' . mb_strtolower($slot['title']);
+            if (isset($seenBreaks[$k])) {
+                continue;
+            }
+            $seenBreaks[$k] = true;
+        }
         Db::insert('slots', $slot);
         $counts['slots']++;
     }
