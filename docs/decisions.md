@@ -504,3 +504,9 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 - ✅ **Old addresses:** a test goes through every address from the download and checks it still works.
 - ✅ **A few plain PHP unit tests** (no framework) for the parts with real rules: slugs and transliteration, upcoming/live/finished status, search matching.
 - ✅ **Static checks:** `php -l` and the escaping check. Everything runs locally before each commit; no CI.
+- ✅ **Domains are set per installation** in `config.php` (not committed; `config.example.php` is). It gives the main site's host and a pattern for city sites, where `{city}` is the city's production domain without `.com`:
+  - production: `it-tour.bg`, and each city's own domain from the database
+  - a demo: `demo.example.com` and `{city}.demo.example.com` (for example `varnaconf.demo.example.com`)
+  - local: `it-tour.localhost:8000` and `{city}.localhost:8000`
+  - The mapping works both ways: it picks the site for an incoming request, and builds every cross-site link and absolute address (canonical, Open Graph, sitemap), so a demo never links to the real domains.
+  - A `production` switch: when off, every page has `noindex` and `robots.txt` blocks everything.
