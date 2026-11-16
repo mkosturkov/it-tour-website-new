@@ -1,0 +1,5 @@
+/* Plain error page (templates/error.php): no fonts or images, nothing that could fail. */
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #e8ecf5; color: #2f2f2f; font: 17px/1.6 system-ui, sans-serif; }
+main { max-width: 520px; padding: 32px 16px; }
+h1 { font-size: 30px; line-height: 1.2; margin: 0 0 12px; }
+a { color: #375992; }

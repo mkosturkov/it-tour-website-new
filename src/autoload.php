@@ -17,3 +17,6 @@ spl_autoload_register(function (string $class): void {
         require $file;
     }
 });
+
+require __DIR__ . '/helpers.php';
+date_default_timezone_set('Europe/Sofia');

@@ -1,0 +1,6 @@
+#!/bin/sh
+# Local server. Open http://it-tour.localhost:8000 or http://varnaconf.localhost:8000
+# (browsers send every *.localhost address to this computer).
+cd "$(dirname "$0")/.." || exit 1
+[ -f config.php ] || cp config.example.php config.php
+exec php -S "localhost:${PORT:-8000}" -t public public/index.php

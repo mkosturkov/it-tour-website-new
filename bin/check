@@ -1,0 +1,60 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Static checks, run before every commit (bin/test runs them too):
+ *  - every PHP file parses (php -l)
+ *  - templates print values only through e(), partial() or raw()
+ */
+
+declare(strict_types=1);
+
+$root = dirname(__DIR__);
+$failed = 0;
+
+// 1. Syntax of every PHP file we own.
+$files = [];
+foreach (['src', 'templates', 'public', 'migrations', 'tests'] as $dir) {
+    if (!is_dir("$root/$dir")) {
+        continue;
+    }
+    $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator("$root/$dir", FilesystemIterator::SKIP_DOTS));
+    foreach ($it as $f) {
+        if ($f->getExtension() === 'php') {
+            $files[] = $f->getPathname();
+        }
+    }
+}
+foreach (glob("$root/bin/*") as $f) {
+    if (str_starts_with((string) file_get_contents($f, false, null, 0, 40), '#!/usr/bin/env php')) {
+        $files[] = $f;
+    }
+}
+foreach ($files as $f) {
+    exec('php -l ' . escapeshellarg($f) . ' 2>&1', $out, $code);
+    if ($code !== 0) {
+        echo implode("\n", $out), "\n";
+        $failed++;
+    }
+    $out = [];
+}
+
+// 2. Escaping in templates: <?= must be followed by e(, partial( or raw(.
+$it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator("$root/templates", FilesystemIterator::SKIP_DOTS));
+foreach ($it as $f) {
+    if ($f->getExtension() !== 'php') {
+        continue;
+    }
+    foreach (file($f->getPathname()) as $n => $line) {
+        if (preg_match_all('/<\?=\s*(.{0,40})/', $line, $m)) {
+            foreach ($m[1] as $expr) {
+                if (!preg_match('/^(e|partial|raw)\(/', $expr)) {
+                    printf("%s:%d: print through e(), partial() or raw(): <?= %s\n", substr($f->getPathname(), strlen($root) + 1), $n + 1, trim($expr));
+                    $failed++;
+                }
+            }
+        }
+    }
+}
+
+echo $failed ? "\n$failed problem(s).\n" : 'Checks passed (' . count($files) . " PHP files).\n";
+exit($failed ? 1 : 0);

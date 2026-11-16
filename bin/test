@@ -1,0 +1,49 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Runs the static checks and the PHP unit tests in tests/unit/.
+ * (Browser tests with Playwright are added in step 2.)
+ *
+ * A test file returns an array of 'description' => function () { ... }.
+ * Inside, use same($expected, $actual) and ok($condition, $message).
+ */
+
+declare(strict_types=1);
+
+require dirname(__DIR__) . '/src/autoload.php';
+
+final class TestFailure extends Exception
+{
+}
+
+function same(mixed $expected, mixed $actual, string $message = ''): void
+{
+    if ($expected !== $actual) {
+        throw new TestFailure(($message ? "$message: " : '') . 'expected ' . var_export($expected, true) . ', got ' . var_export($actual, true));
+    }
+}
+
+function ok(bool $condition, string $message = 'condition is false'): void
+{
+    if (!$condition) {
+        throw new TestFailure($message);
+    }
+}
+
+passthru(PHP_BINARY . ' ' . escapeshellarg(__DIR__ . '/check'), $checkCode);
+
+$passed = 0;
+$failed = 0;
+foreach (glob(dirname(__DIR__) . '/tests/unit/*.php') as $file) {
+    foreach (require $file as $name => $test) {
+        try {
+            $test();
+            $passed++;
+        } catch (Throwable $e) {
+            $failed++;
+            printf("FAIL %s: %s\n     %s\n", basename($file, '.php'), $name, $e->getMessage());
+        }
+    }
+}
+printf("Unit tests: %d passed, %d failed.\n", $passed, $failed);
+exit($failed || $checkCode ? 1 : 0);

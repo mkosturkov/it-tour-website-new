@@ -21,6 +21,8 @@ final class Text
     public static function transliterate(string $s): string
     {
         $s = mb_strtolower($s, 'UTF-8');
+        // The law's one named exception: България → Bulgaria.
+        $s = preg_replace('/\bбългария\b/u', 'bulgaria', $s);
         // "ия" at the end of a word is "ia" (София → Sofia).
         $s = preg_replace('/ия\b/u', 'ia', $s);
         return strtr($s, self::BG);
