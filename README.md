@@ -87,6 +87,25 @@ The new site is PHP and SQLite, with no framework. See `docs/decisions.md`.
 - PHP 8.5 (the latest stable release)
 - PHP extensions: PDO SQLite, GD with WebP support, mbstring, intl, fileinfo, exif, DOM, cURL (cURL only for `bin/fetch`)
 - No libraries and no Composer for now
+- For the tests only: Node.js (the browser tests use Playwright, installed by `bin/test` the first time)
+
+### Running it locally
+
+```
+bin/serve     # then open http://it-tour.localhost:8000 or http://varnaconf.localhost:8000
+```
+
+### Testing
+
+```
+bin/test                          # checks, PHP unit tests and browser tests (desktop and phone)
+bin/test --php                    # only checks and unit tests (fast)
+bin/test -- -g "404"              # only browser tests whose name matches
+bin/test -- --update-snapshots    # approve new screenshots after an intended visual change
+bin/test-db                       # re-freeze the test database from data/site.sqlite
+```
+
+Browser tests are in `tests/browser/specs/`, approved screenshots in `tests/browser/screenshots/`. They run against a frozen copy of the database (`data/test/site.sqlite`) and can fake the current time with the `X-Test-Now` header, so the upcoming, live and finished states can be tested.
 
 ### Importing the old sites
 

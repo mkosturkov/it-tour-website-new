@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Freezes the test database: copies data/site.sqlite to data/test/site.sqlite.
+ * The browser tests and their approved screenshots rely on this copy, so it
+ * only changes when you run this again (for example after improving the import).
+ * Images are shared with the normal database (public/media, named by content).
+ */
+
+declare(strict_types=1);
+
+require dirname(__DIR__) . '/src/autoload.php';
+
+$from = APP_ROOT . '/data/site.sqlite';
+$to = APP_ROOT . '/data/test/site.sqlite';
+if (!is_file($from)) {
+    fwrite(STDERR, "No data/site.sqlite: run bin/import first.\n");
+    exit(1);
+}
+@mkdir(dirname($to), 0777, true);
+// VACUUM INTO writes a clean, consistent copy even while the site is running.
+@unlink($to);
+(new PDO("sqlite:$from"))->exec('VACUUM INTO ' . (new PDO('sqlite::memory:'))->quote($to));
+echo "Test database frozen: data/test/site.sqlite\n";

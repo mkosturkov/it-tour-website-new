@@ -11,9 +11,10 @@ final class Db
 {
     private static ?PDO $pdo = null;
 
+    /** data/site.sqlite, or the file in IT_TOUR_DB (the browser tests use a frozen copy). */
     public static function path(): string
     {
-        return APP_ROOT . '/data/site.sqlite';
+        return getenv('IT_TOUR_DB') ?: APP_ROOT . '/data/site.sqlite';
     }
 
     public static function pdo(): PDO

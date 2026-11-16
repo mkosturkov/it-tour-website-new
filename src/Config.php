@@ -12,7 +12,8 @@ final class Config
     public static function get(string $key): mixed
     {
         if (self::$values === null) {
-            $file = APP_ROOT . '/config.php';
+            // IT_TOUR_CONFIG points to another settings file (the browser tests use tests/config.php).
+            $file = getenv('IT_TOUR_CONFIG') ?: APP_ROOT . '/config.php';
             self::$values = is_file($file) ? require $file : require APP_ROOT . '/config.example.php';
         }
         return self::$values[$key] ?? null;

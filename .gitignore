@@ -3,3 +3,6 @@ visuals/
 /public/media/
 /public/files/
 /config.php
+/tests/browser/node_modules/
+/tests/browser/test-results/
+/tests/browser/playwright-report/

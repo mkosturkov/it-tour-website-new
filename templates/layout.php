@@ -44,7 +44,8 @@ $classes = $city ? 'city' . (ink_for($colour) !== '#ffffff' ? ' ink-dark' : '') 
 <?php if (!empty($canonical)): ?>
 <link rel="canonical" href="<?= e($canonical) ?>">
 <?php endif ?>
-<link rel="preload" href="<?= e(asset('fonts/montserrat-cyrillic.woff2')) ?>" as="font" type="font/woff2" crossorigin>
+<?php /* Same address as in site.css (no ?v=), or the browser downloads the font twice. */ ?>
+<link rel="preload" href="/assets/fonts/montserrat-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="<?= e(asset('site.css')) ?>">
 <script src="<?= e(asset('site.js')) ?>" defer></script>
 </head>

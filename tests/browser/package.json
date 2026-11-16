@@ -1,0 +1,12 @@
+{
+  "name": "it-tour-browser-tests",
+  "private": true,
+  "description": "Browser tests for the IT Tour site. Run through bin/test.",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.65.1"
+  }
+}

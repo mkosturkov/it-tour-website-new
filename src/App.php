@@ -36,6 +36,7 @@ final class App
             }
             throw new \ErrorException($message, 0, $severity, $file, $line);
         });
+        Clock::fake(getenv('IT_TOUR_TESTING') === '1' ? $req->header('X-Test-Now') : null);
         try {
             $response = self::dispatch($req);
         } catch (\Throwable $e) {

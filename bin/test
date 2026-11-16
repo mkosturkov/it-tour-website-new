@@ -1,8 +1,16 @@
 #!/usr/bin/env php
 <?php
 /**
- * Runs the static checks and the PHP unit tests in tests/unit/.
- * (Browser tests with Playwright are added in step 2.)
+ * Runs everything: the static checks, the PHP unit tests in tests/unit/ and
+ * the browser tests in tests/browser/ (Playwright).
+ *
+ *   bin/test                     everything
+ *   bin/test --php               only checks and unit tests
+ *   bin/test -- <playwright args> pass arguments on, for example
+ *                                 bin/test -- --update-snapshots   to approve new screenshots
+ *                                 bin/test -- -g "404"             to run matching tests only
+ *
+ * The browser tests use a frozen database, data/test/site.sqlite (bin/test-db).
  *
  * A test file returns an array of 'description' => function () { ... }.
  * Inside, use same($expected, $actual) and ok($condition, $message).
@@ -46,4 +54,19 @@ foreach (glob(dirname(__DIR__) . '/tests/unit/*.php') as $file) {
     }
 }
 printf("Unit tests: %d passed, %d failed.\n", $passed, $failed);
-exit($failed || $checkCode ? 1 : 0);
+
+$args = array_slice($argv, 1);
+$browserCode = 0;
+if (!in_array('--php', $args, true)) {
+    $root = dirname(__DIR__);
+    if (!is_file("$root/data/test/site.sqlite")) {
+        passthru(PHP_BINARY . ' ' . escapeshellarg(__DIR__ . '/test-db'));
+    }
+    if (!is_dir("$root/tests/browser/node_modules")) {
+        echo "Installing the browser test tools (once)...\n";
+        passthru('cd ' . escapeshellarg("$root/tests/browser") . ' && npm ci --no-audit --no-fund && npx playwright install chromium');
+    }
+    $pass = ($i = array_search('--', $args, true)) === false ? [] : array_slice($args, $i + 1);
+    passthru('cd ' . escapeshellarg("$root/tests/browser") . ' && npx playwright test ' . implode(' ', array_map('escapeshellarg', $pass)), $browserCode);
+}
+exit($failed || $checkCode || $browserCode ? 1 : 0);
