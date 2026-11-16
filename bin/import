@@ -268,7 +268,7 @@ $addSpeaker = function (int $id, string $name, string $bio, ?string $photoSrc, a
     $photo = bestLocal($in, uploadPath((string) $photoSrc));
     if ($photo) {
         try {
-            $mediaId = Media::add($photo, $name, $name, true, $photoSrc);
+            $mediaId = Media::add($photo, $name, $name, 1.0, $photoSrc);
         } catch (Throwable $e) {
             $warn("Speaker $id ($name): photo skipped: {$e->getMessage()}");
         }
@@ -361,7 +361,7 @@ foreach ($editions as [$year, $host, $file]) {
             return null;
         }
         try {
-            return Media::add($file, "$name $what", "$name $what", false, $src);
+            return Media::add($file, "$name $what", "$name $what", null, $src);
         } catch (Throwable $e) {
             $warn("$label: $what skipped: {$e->getMessage()}");
             return null;
@@ -479,8 +479,17 @@ foreach ($editions as [$year, $host, $file]) {
                     $warn("$label: slides for \"{$item['title']}\" are lost ({$item['slides']})");
                 }
             }
+            $still = null;
+            if ($item['video'] && preg_match('#[?&]v=([\w-]{11})#', $item['video'], $vm) && is_file("$in/files/youtube/{$vm[1]}.jpg")) {
+                try {
+                    $still = Media::add("$in/files/youtube/{$vm[1]}.jpg", $item['title'], '', 16 / 9, $item['video']);
+                } catch (Throwable $e) {
+                    $warn("$label: video still for \"{$item['title']}\" skipped: {$e->getMessage()}");
+                }
+            }
             $talkId = Db::insert('talks', [
                 'event_id' => $eventId,
+                'video_still_media_id' => $still,
                 'title' => $item['title'],
                 'slug' => Text::slug($item['title']),
                 'description' => $item['description'],
@@ -554,7 +563,7 @@ foreach ($editions as [$year, $host, $file]) {
         $logo = null;
         if ($file = bestLocal($in, uploadPath($src), $src)) {
             try {
-                $logo = Media::add($file, $sponsorName, $sponsorName, false, $src);
+                $logo = Media::add($file, $sponsorName, $sponsorName, null, $src);
             } catch (Throwable $e) {
                 $warn("$label: logo of $sponsorName skipped: {$e->getMessage()}");
             }

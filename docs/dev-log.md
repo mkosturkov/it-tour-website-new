@@ -148,3 +148,24 @@ The user decided (2026-11-16) that no colour is corrected for contrast for now, 
 **Gotchas:**
 - `.btn { display: inline-flex }` beats the `hidden` attribute; a global `[hidden] { display: none !important; }` fixes it for every element.
 - Playwright's `getByRole('link', { name: 'Варна' })` also matches "VarnaConf…" cards and footer links by substring; scope it to the pills group and use `exact: true`.
+
+## 2026-11-16 · Step 5: speaker profiles and talk pages
+
+**What:** `/speakers/<id>` on every domain (`src/Pages/SpeakerPage.php`, `templates/pages/speaker.php`), `/talks/<id>-<slug>` on the main site (`src/Pages/TalkPage.php`, `templates/pages/talk.php`), queries in `src/Talks.php` and `src/Speakers.php`, `partials/talk-card.php`; video stills stored in the media library.
+
+**Why / how:**
+- **A talk is public only when the talk, its edition and that edition's programme are all published** (`Talks::VISIBLE`). Otherwise its page is a 404 and it's left out of profiles.
+- Talk addresses: the number finds the talk. `/talks/179` and `/talks/179-any-old-slug` redirect (301) to the current slug, so nothing needs storing when a title changes.
+- Speaker profiles answer on every domain, as the old sites did, with the canonical on it-tour.bg; city copies keep the city's colours. Profile: photo (or a round initial), "Лектор на IT Tour · N лекции", bio paragraphs, links labelled by site (LinkedIn, GitHub, X… or the domain; `Speakers::linkLabel()`), upcoming talks as a highlighted block, past talks as cards, newest first.
+- Talk page: title (marked English when it has no Cyrillic), edition tag, date and city, speakers, video (click to load), description, YouTube and slides buttons; side box with the speakers, the other talks of the edition in programme order and a link back to the edition. Upcoming talks say the video will come after the event. Non-YouTube videos (old `.avi` and `.mp4` on va.ludost.net) get a plain "Видео ↗" link.
+- **Video stills are self-hosted:** `bin/fetch` downloads `maxresdefault.jpg` (or `hqdefault.jpg`) for every YouTube video once; `bin/import` adds them to the media library cropped to 16:9 (`Media::add()` now takes a crop ratio: 1.0 for speaker photos, 16/9 for stills) and stores them in `talks.video_still_media_id` (`migrations/003_video_stills.sql`). The step 3 embed loaded stills from `i.ytimg.com`, which contacted Google on page load; it now uses our copies, and `i.ytimg.com` is out of the CSP. A browser test checks that a talk page makes no request outside our site before the click.
+- Talk cards without a video have no picture area, just the edition's colour as a top edge.
+
+**Gotchas:**
+- `/talks/{id}-{slug}` is matched before `/talks/{id}`; the slug pattern allows an empty slug (`/talks/179-`).
+- The `<dl>`/link markup and lazy-image sizing rules from step 3 apply here too (fixed sizes on photos).
+
+**Open (data):**
+- **No videos are linked for 2018 or 2022–2026**, and 2019 has only 12. The recordings are on the YouTube channel but the old site never linked them; this is the "video matching" import task.
+- **No talk descriptions before 2025**: the old site only has them for 2025 (25) and 2026 (19).
+- There is one 2021 edition (10 talks), which the step 4 test data counts.

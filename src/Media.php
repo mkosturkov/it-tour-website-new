@@ -32,9 +32,10 @@ final class Media
      * Adds a file to the library and produces its public copies.
      * If the same content is already there, returns the existing id.
      *
-     * $square: crop to a centred square (speaker photos).
+     * $ratio: crop to this width/height ratio around the centre (1.0: square
+ * speaker photos; 16/9: video stills), or null to keep the whole image.
      */
-    public static function add(string $file, string $name, string $alt = '', bool $square = false, ?string $source = null): int
+    public static function add(string $file, string $name, string $alt = '', ?float $ratio = null, ?string $source = null): int
     {
         $bytes = file_get_contents($file);
         $hash = sha1($bytes);
@@ -72,9 +73,11 @@ final class Media
             $row['width'] = $w;
             $row['height'] = $h;
             $crop = ['x' => 0, 'y' => 0, 'w' => $w, 'h' => $h];
-            if ($square && $w !== $h) {
-                $side = min($w, $h);
-                $crop = ['x' => intdiv($w - $side, 2), 'y' => intdiv($h - $side, 2), 'w' => $side, 'h' => $side];
+            if ($ratio && abs($w / $h - $ratio) > 0.01) {
+                // Centred crop to width/height = $ratio (1.0 for speaker photos, 16/9 for video stills).
+                $cw = (int) min($w, round($h * $ratio));
+                $ch = (int) min($h, round($w / $ratio));
+                $crop = ['x' => intdiv($w - $cw, 2), 'y' => intdiv($h - $ch, 2), 'w' => $cw, 'h' => $ch];
                 $row['crop'] = json_encode($crop);
             }
             $row['widths'] = json_encode(self::produce($img, $crop, $slug, $hash));

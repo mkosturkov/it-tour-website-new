@@ -8,6 +8,8 @@ use ItTour\Pages\Archive;
 use ItTour\Pages\EventPage;
 use ItTour\Pages\NotFound;
 use ItTour\Pages\Placeholder;
+use ItTour\Pages\SpeakerPage;
+use ItTour\Pages\TalkPage;
 
 /**
  * Turns a request into a response: picks the site from the host, matches the
@@ -25,10 +27,14 @@ final class App
         if ($site->isMain()) {
             $r->add('/', fn () => Placeholder::main());
             $r->add('/archive', fn ($req) => Archive::show($req));
+            $r->add('/talks/{id:\d+}-{slug:[a-z0-9-]*}', fn ($req, $p) => TalkPage::show($req, (int) $p['id'], $p['slug']));
+            $r->add('/talks/{id:\d+}', fn ($req, $p) => TalkPage::show($req, (int) $p['id'], ''));
         } else {
             $r->add('/', fn () => EventPage::show($site));
             $r->add('/archive/{year:\d{4}}', fn ($req, $p) => EventPage::show($site, (int) $p['year']));
         }
+        // Speaker profiles answer on every domain, as on the old sites.
+        $r->add('/speakers/{id:\d+}', fn ($req, $p) => SpeakerPage::show($site, (int) $p['id']));
         return $r;
     }
 
@@ -111,7 +117,7 @@ final class App
         $res->headers += [
             'Content-Security-Policy' => implode('; ', [
                 "default-src 'self'",
-                "img-src 'self' data: https://i.ytimg.com",
+                "img-src 'self' data:",
                 "style-src 'self'",
                 "style-src-attr 'unsafe-inline'",   // per-element colours: style="--c:#6dc4aa"
                 "script-src 'self'",

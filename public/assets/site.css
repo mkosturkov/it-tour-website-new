@@ -658,3 +658,47 @@ footer .cbar { position: relative; margin-bottom: 0; height: 10px; }
 .ed img { object-fit: contain; }
 .empty { color: var(--muted); }
 .empty a { color: var(--accent-text); }
+
+/* Talk cards (speaker profiles, talks library) */
+.talk-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.talk-card .still { position: relative; aspect-ratio: 16/9; background: color-mix(in srgb, var(--c) 35%, #fff); display: grid; place-items: center; overflow: hidden; }
+.talk-card .still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.talk-card .still .play { position: relative; color: #fff; font-size: 16px; }
+.talk-card .meta .tag::before { background: var(--c); }
+.talk-card h3 { font-size: 18px; }
+.talk-card.no-still { border-top: 6px solid var(--c); }   /* no video: the edition's colour as a top edge */
+@media (max-width: 960px) { .talk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .talk-grid { grid-template-columns: 1fr; } }
+
+/* Speaker profile */
+.profile { margin-top: 24px; }
+.profile .face { width: 220px; height: 220px; aspect-ratio: 1; border-radius: 50%; object-fit: cover; border: 5px solid #fff; box-shadow: var(--shadow); }
+.profile .no-photo { display: grid; place-items: center; font: 800 80px var(--head); color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, #fff); }
+.profile h1 { margin: 8px 0 6px; font-size: clamp(34px, 5vw, 52px); }
+.profile .role { margin: 0 0 12px; color: var(--muted); font-weight: 600; }
+.profile .bio p { margin: 0 0 10px; }
+ul.links { list-style: none; padding: 0; }
+.upcoming-talk h3 a { color: inherit; text-decoration: none; }
+.upcoming-talk + .upcoming-talk { margin-top: 14px; }
+@media (max-width: 960px) { .profile .face { width: 160px; height: 160px; } }
+
+/* Talk page */
+.talk-meta { font-size: 15px; margin-top: 4px; }
+.talk-meta .tag { text-decoration: none; }
+.talk-meta .tag::before { background: var(--c); }
+.talk-by { font-size: 18px; margin: 14px 0 0; }
+.talk-by a { color: var(--text); font-weight: 700; }
+.talk-body { padding-top: 0; }
+.talk-main { display: grid; gap: 28px; align-content: start; }
+.talk-main .prose h2 { margin-top: 0; }
+.talk-note { color: var(--muted); }
+.aside-card .eyebrow { justify-self: start; }
+.aside-card hr { border: 0; border-top: 1px solid var(--line); width: 100%; margin: 4px 0; }
+.aside-speaker { display: flex; gap: 12px; align-items: center; text-decoration: none; }
+.aside-speaker .face { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; flex: none; }
+.aside-speaker .no-photo { display: grid; place-items: center; font: 800 22px var(--head); color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, #fff); }
+.aside-speaker b { font-family: var(--head); font-size: 17px; }
+.aside-speaker .sub { color: var(--muted); font-size: 14px; }
+.aside-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 15px; }
+.aside-list a { color: var(--accent-text); text-decoration: none; font-weight: 500; }
+.aside-list a:hover { text-decoration: underline; }
