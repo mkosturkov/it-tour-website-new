@@ -262,7 +262,7 @@ Discussed with the user: computing the Latin form during each search (no stored 
 - **Season pop-up** on every main-site page (`View::page` adds it; city sites show their own state): next stop with "След N дни" and a link to the programme (or the event), or "На живо сега" with what's on stage. Off-season there is none. Closing it keeps it closed for the visit (`sessionStorage`, keyed by event and state, so a live pop-up still appears after closing the "next stop" one).
 
 **Gotchas:**
-- `section.tight`-style specificity again: none here, but the pop-up is `position: fixed`, so in full-page screenshots it lands mid-page; the test closes it first.
+- The pop-up is `position: fixed`, so in full-page screenshots it lands mid-page; the test closes it first.
 - The test for "conferences held" must use the faked date: on 20 July 2026 it's 59, not 62.
 
 **Open:** see decisions.md, "Homepage, open points from step 7" (no season sponsors in the old data, short tagline, the dropped "0 лв." fact).
