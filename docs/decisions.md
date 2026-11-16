@@ -107,6 +107,11 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 - ✅ **Photos:** past event photos probably exist, but nobody has access right now. The mockups use placeholder images.
 - 🔜 **Photo section, parked until we know whether we have access to the photos.** The planned design stays as in the mockups: about six highlights on each after-event page, plus a link to the full album hosted elsewhere (Google Photos, Flickr…). There is no gallery on our site. The first version launches without it.
 - ❓ To discuss with the team: who has the past photos, whether we can use them, and whether to hire a photographer for 2027.
+- 📝 **What we already have and what the photo feature still needs** (2026-11-16, parked with the photos):
+  - **The old galleries:** the old sites showed 9 photos on each of 7 editions (PlovdivConf 2013 and 2016, VarnaConf 2014, BlagoevgradConf 2014, BurgasConf 2015, RuseConf 2015, TarnovoConf 2016), 63 in all, many full size. They are in the download (`data/import/files/system/uploads/photo/asset/`) but not imported. Low risk to reuse, as IT Tour already published them, but the photographers are unknown. No later edition had photos on the old sites, so "who has the photos" is about the other 55 editions (Facebook albums, organisers, photographers).
+  - **The design has only a placeholder:** design F's finished-edition page (`event-ruse.html`) has a "Снимки · От залата" grid of five photos (one large), a "Целият албум ↗" link, a "Снимки" hero button and a photo count.
+  - **Undecided before it can be built:** where an edition's photos are stored (no table yet); what clicking a photo does (nothing, full size, or the album); photographer credit (permission may require it); who writes alt text; how editors pick, order and upload highlights; and what the 63 old photos link to, since they have no external album.
+  - If the old photos are imported, extend the old-image redirect rule to them (see "From step 8").
 
 ## 9. Design directions (four versions)
 
