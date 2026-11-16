@@ -130,3 +130,21 @@ A running log of how the real site is being built: what was done, why, how, and 
 - The old data has no live or stream links, so the live block is only covered by logic tests and the "now on stage" marking; check it with real links before the first live event.
 - When a new year's badge is made from the city's SVG, the year text inside the badge must change too, not only the colour (admin feature).
 - "I'm coming" and "add to calendar" are not built (parked / next version).
+
+## 2026-11-16 · Colour corrections reverted
+
+The user decided (2026-11-16) that no colour is corrected for contrast for now, design colours included: colours are by design and are discussed after the site is built. `--dim` is back to `#7f8899`; the automatic darkening of city and accent colours was removed. `bin/contrast-report` and the browser tests' `tests/browser/reports/contrast.txt` log the problems (216 elements across the tested pages on 2026-11-16, mostly the dim grey and light city colours).
+
+## 2026-11-16 · Step 4: archive of all editions
+
+**What:** `it-tour.bg/archive` (`src/Pages/Archive.php`, `templates/pages/archive.php`, `Events::archive()`), the edition pages themselves were done in step 3.
+
+**Why / how:**
+- All published editions grouped by year, newest first; each card has the edition's logo, name, date and venue, and the numbers of talks and videos (counted from published talks). Photos were in the mockup's card but are parked.
+- Filters: city pills are plain links (`?city=varna`), the year is a GET form (`?year=2015`); both combine. `site.js` hides the form's button and submits on change (`form[data-autosubmit]`). Unknown values are ignored rather than giving errors. The list is small (62), so no paging or partial rendering here.
+- The current year's heading says how far the season is ("сезонът тече · 2 от 5 издания минаха") while some of its editions aren't finished.
+- Cities without any published edition are left out of the pills; Благоевград stays (2013–2014).
+
+**Gotchas:**
+- `.btn { display: inline-flex }` beats the `hidden` attribute; a global `[hidden] { display: none !important; }` fixes it for every element.
+- Playwright's `getByRole('link', { name: 'Варна' })` also matches "VarnaConf…" cards and footer links by substring; scope it to the pills group and use `exact: true`.

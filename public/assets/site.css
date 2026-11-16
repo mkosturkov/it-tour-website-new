@@ -42,6 +42,7 @@
    City sites set --c (this year's colour) and --c-ink (readable text on it); the accent follows the city. */
 .city { --accent: var(--c); --accent-ink: var(--c-ink); }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }   /* even on elements with their own display, such as .btn */
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--body); }
 a { color: inherit; }
@@ -648,3 +649,12 @@ footer .cbar { position: relative; margin-bottom: 0; height: 10px; }
 .embed-play:hover { background: rgba(20, 35, 70, .92); }
 .player .embed { border-radius: 0; }
 .place-open { margin: 18px 0 0; }
+
+/* Archive */
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.archive-list { padding-top: 0; }
+.year-form { display: flex; gap: 8px; align-items: center; }
+.ed .ed-dot { width: 56px; height: 56px; border-radius: 50%; background: var(--c); }
+.ed img { object-fit: contain; }
+.empty { color: var(--muted); }
+.empty a { color: var(--accent-text); }

@@ -43,6 +43,41 @@ final class Events
         ));
     }
 
+    /**
+     * All published editions, newest first, each with its logo and the numbers
+     * of published talks and videos. Optional filters: city slug, year.
+     */
+    public static function archive(?string $city = null, ?int $year = null): array
+    {
+        $where = ['e.published = 1'];
+        $params = [];
+        if ($city) {
+            $where[] = 'c.slug = ?';
+            $params[] = $city;
+        }
+        if ($year) {
+            $where[] = 'e.year = ?';
+            $params[] = $year;
+        }
+        $rows = Db::all(
+            'SELECT e.*, c.slug AS city_slug, c.name AS city_name, c.domain AS city_domain, ' . Media::JOIN_COLUMNS . ',
+                (SELECT COUNT(*) FROM talks t WHERE t.event_id = e.id AND t.published = 1) AS talk_count,
+                (SELECT COUNT(*) FROM talks t WHERE t.event_id = e.id AND t.published = 1 AND t.video_url IS NOT NULL) AS video_count
+             FROM events e JOIN cities c ON c.id = e.city_id
+             LEFT JOIN media m ON m.id = e.logo_media_id
+             WHERE ' . implode(' AND ', $where) . '
+             ORDER BY e.year DESC, e.date',
+            $params,
+        );
+        return array_map(fn ($r) => Media::pluck($r, 'logo'), $rows);
+    }
+
+    /** Years with published editions, newest first. */
+    public static function allYears(): array
+    {
+        return array_map('intval', array_column(Db::all('SELECT DISTINCT year FROM events WHERE published = 1 ORDER BY year DESC'), 'year'));
+    }
+
     /** City row of an event row, for links. */
     public static function city(array $event): array
     {

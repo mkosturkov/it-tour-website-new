@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ItTour;
 
+use ItTour\Pages\Archive;
 use ItTour\Pages\EventPage;
 use ItTour\Pages\NotFound;
 use ItTour\Pages\Placeholder;
@@ -23,6 +24,7 @@ final class App
         $r = new Router();
         if ($site->isMain()) {
             $r->add('/', fn () => Placeholder::main());
+            $r->add('/archive', fn ($req) => Archive::show($req));
         } else {
             $r->add('/', fn () => EventPage::show($site));
             $r->add('/archive/{year:\d{4}}', fn ($req, $p) => EventPage::show($site, (int) $p['year']));

@@ -51,3 +51,10 @@ document.addEventListener('click', function (e) {
   }
   setInterval(tick, 30000);
 })();
+
+// Forms marked [data-autosubmit] submit as soon as a select changes; their button is then not needed.
+document.querySelectorAll('form[data-autosubmit]').forEach(function (f) {
+  var b = f.querySelector('button[type=submit]');
+  if (b) b.hidden = true;
+  f.addEventListener('change', function () { f.submit(); });
+});
