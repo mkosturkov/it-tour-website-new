@@ -17,7 +17,7 @@
   --line: #d5dbe7;
   --text: #2f2f2f;
   --muted: #586172;
-  --dim: #7f8899;
+  --dim: #5f6878;   /* darker than the mockup's #7f8899 so small text meets WCAG AA contrast */
   --accent: #375992;
   --accent-ink: #ffffff;
   --live: #e0464b;
@@ -450,7 +450,8 @@ section.tight { padding: 48px 0; }
 
 /* ===== Version F brand layer: light surfaces, white cards with soft shadows, city colour bar,
    dotted wave textures, round photos with white rings, ribbons and the code-comment info block ===== */
-body { font-size: 16px; --accent-text: color-mix(in srgb, var(--accent) 70%, #111); }
+/* --accent-text (accent colour dark enough for text on light grounds) is computed in PHP and set on <html>. */
+body { font-size: 16px; }
 .more, .slot .act, .prose a:not(.btn), .state-chip { color: var(--accent-text); }
 .speakers { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
 h1, h2, h3 { font-weight: 800; letter-spacing: -0.015em; }
@@ -615,3 +616,34 @@ footer .cbar { position: relative; margin-bottom: 0; height: 10px; }
 .not-found-stops .stop { grid-template-columns: 14px 1fr; border-left-width: 6px; }
 .not-found-stops .cdot { margin: 0; }
 .not-found-links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* Event page */
+.side-card .h3 { margin: 0; }
+.ev-stats { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; color: var(--muted); }
+.ev-stats b { font: 800 30px var(--head); color: var(--text); margin-right: 6px; }
+.onstage-now { margin: 0; }
+.onstage-now b { font-size: 18px; color: var(--text); }
+.slot h3 a { color: inherit; text-decoration: none; }
+.slot h3 a:hover { text-decoration: underline; }
+.slot .who { flex-wrap: wrap; gap: 6px 16px; }
+.who-one { display: inline-flex; align-items: center; gap: 8px; color: inherit; text-decoration: none; }
+.who-one:hover { color: var(--text); text-decoration: underline; }
+.who-one .face { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+.parallel { display: inline-block; margin-top: 6px; font: 600 11px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px; }
+.speaker .face { width: 78%; aspect-ratio: 1; height: auto; border-radius: 50%; object-fit: cover; border: 5px solid #fff; box-shadow: var(--shadow); justify-self: center; background: var(--panel-2); }
+.speaker .no-photo { display: grid; place-items: center; font: 800 44px var(--head); color: var(--c, var(--accent)); background: color-mix(in srgb, var(--c, var(--accent)) 16%, #fff); }
+.slogo { display: inline-flex; align-items: center; justify-content: center; min-height: 72px; padding: 12px 20px; text-decoration: none; }
+.slogo img { display: block; height: 52px; width: auto; max-width: 160px; object-fit: contain; }   /* fixed height: no jump while lazy logos load */
+.venue dd p { margin: 0 0 6px; }
+.venue dd a { color: var(--accent-text); }
+.ev-hero h1 { overflow-wrap: anywhere; }
+/* Click-to-load embeds */
+.embed { position: relative; aspect-ratio: 16/9; background: var(--map); border-radius: var(--r); overflow: hidden; display: grid; place-items: center; }
+.embed-map { aspect-ratio: auto; min-height: 280px; }
+.embed > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.embed-play { position: relative; display: inline-flex; align-items: center; gap: 10px; background: rgba(20, 35, 70, .78); color: #fff; padding: 10px 18px 10px 10px; border-radius: 999px; text-decoration: none; font-weight: 700; }
+.embed-play .play { width: 36px; height: 36px; background: var(--accent); color: var(--accent-ink); font-size: 14px; }
+.embed-play:hover { background: rgba(20, 35, 70, .92); }
+.player .embed { border-radius: 0; }
+.place-open { margin: 18px 0 0; }

@@ -98,3 +98,31 @@ A running log of how the real site is being built: what was done, why, how, and 
 - Role-based locators skip hidden elements: the main menu is hidden on phones, so menu tests use `#main-nav a`.
 - The font preload must use the exact address the stylesheet uses (no `?v=`), otherwise the font is downloaded twice. The tests' network log showed it.
 - `php -S` writes every request to stderr; the test server's output is ignored. PHP errors still go to `data/logs/`.
+
+## 2026-11-16 · Step 3: the edition page on city sites
+
+**What:** `/` and `/archive/<year>` on each city domain (`src/Pages/EventPage.php`, `templates/pages/event.php`), with queries in `src/Events.php`, `src/Programme.php`, `src/Sponsors.php`, and partials `img`, `place` (venue / after party) and `embed` (click-to-load YouTube or map).
+
+**Why / how:**
+- One page for all states; the state comes from `Events::state()`: upcoming before the start time, live until the end time, finished after (Bulgarian time; the after party doesn't count). Upcoming shows a countdown (server-rendered, updated by `site.js` every 30 s); live shows the live block (player, external-player link, now on stage) when a live or stream link is set, and marks the current and past slots; finished shows counts of talks, speakers and videos.
+- `/` shows the latest published edition; `/archive/<year>` any published edition. The latest edition's canonical is `/` (it answers at both); others are canonical to their `/archive/<year>`.
+- **Each edition uses its own year's colour** (page data `colour`, used by the layout instead of the city's latest colour), and its own imported logo. The imported logos are already the per-year badges with the year in them.
+- Sections appear only when they have content; the section bar lists only those present. The after party is its own section (only when visible), not in the schedule or venue.
+- Schedule: talk titles link to talk pages on the main site (built in step 5), speakers to `/speakers/<id>` on the same city site. Descriptions are cut to about 220 characters (`excerpt()`). Slots starting at the same time get a small "паралелно" label (VarnaConf 2015/2016 workshops). English titles get `lang="en"` automatically (`lang_attr()`: no Cyrillic letters).
+- Speakers block: from the event's talks, in programme order, each once, with their talk titles. No photo: a round initial.
+- Sponsors grouped by sponsorship type in sponsorship order; logos link to the sponsor.
+- Maps and videos load only on click (`partials/embed.php` + `site.js`); without JavaScript the button is a link. "Open in Google Maps" uses a Google Maps search for name + address, because embed addresses can't be turned into normal map links reliably.
+- Call for speakers section shows while `cfs_deadline` hasn't passed; it has no button yet because the speaker form is undecided.
+- Import change: `events.ends_at` is now 18:00 or the last slot's start, whichever is later.
+- Media rows joined into queries use `Media::JOIN_COLUMNS` and `Media::pluck($row, 'photo')`.
+
+**Gotchas:**
+- **Accessibility fixes to the F design** (axe found them): `--dim` darkened from `#7f8899` to `#5f6878` (small grey text was 3:1); text in the accent or city colour now uses `--accent-text`, computed in PHP (`text_colour()`: the colour darkened until 4.6:1 against `#e8ecf5`), because light city colours such as 2024 orange `#E09D4E` were 3.5:1. `<dl>` may only contain `dt`/`dd` groups, so the map button sits after it.
+- Lazy images with `height: auto` collapse to zero until loaded (logos were "hidden" and the page jumped). Sponsor logos have a fixed height.
+- `mb_ucfirst()` (PHP 8.4+) capitalises Bulgarian dates ("Събота, 17 август 2024").
+- PHP page tests (`tests/unit/PagesTest.php`) cover data the frozen database doesn't have: each test copies the test database, changes it with SQL, and calls `App::handle()` in-process (hidden after party, unpublished programme/edition/speaker, escaping).
+
+**Open:**
+- The old data has no live or stream links, so the live block is only covered by logic tests and the "now on stage" marking; check it with real links before the first live event.
+- When a new year's badge is made from the city's SVG, the year text inside the badge must change too, not only the colour (admin feature).
+- "I'm coming" and "add to calendar" are not built (parked / next version).

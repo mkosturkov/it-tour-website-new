@@ -83,6 +83,37 @@ final class Media
         return Db::insert('media', $row);
     }
 
+    public static function find(?int $id): ?array
+    {
+        return $id ? Db::one('SELECT * FROM media WHERE id = ?', [$id]) : null;
+    }
+
+    /** Columns to select when joining media as alias m: they come back as m_id, m_hash… */
+    public const JOIN_COLUMNS = 'm.id AS m_id, m.hash AS m_hash, m.name AS m_name, m.ext AS m_ext,
+        m.widths AS m_widths, m.crop AS m_crop, m.width AS m_width, m.height AS m_height, m.alt AS m_alt';
+
+    /**
+     * Moves the joined media columns (m_id, m_hash…) of a row into $row[$as]:
+     * a media row, or null when there is none.
+     */
+    public static function pluck(array $row, string $as): array
+    {
+        $media = null;
+        if (!empty($row['m_id'])) {
+            $media = [];
+            foreach (['id', 'hash', 'name', 'ext', 'widths', 'crop', 'width', 'height', 'alt'] as $k) {
+                $media[$k] = $row["m_$k"];
+            }
+        }
+        foreach (array_keys($row) as $k) {
+            if (str_starts_with($k, 'm_')) {
+                unset($row[$k]);
+            }
+        }
+        $row[$as] = $media;
+        return $row;
+    }
+
     /** Public URL of a media item at the width closest to $want (or its SVG). */
     public static function url(array $media, int $want = 800): string
     {

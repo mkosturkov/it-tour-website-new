@@ -7,6 +7,8 @@
  *   $description  meta description
  *   $nav          key of the active menu item (stops, talks, speakers, archive, team)
  *   $canonical    absolute canonical URL
+ *   $colour       colour for this page on a city site (an edition's own colour);
+ *                 defaults to the city's latest colour
  */
 use ItTour\Cities;
 use ItTour\Config;
@@ -23,10 +25,11 @@ if (!$site->isMain()) {
         }
     }
 }
-$colour = css_colour($city['colour'] ?? null, css_colour(Settings::get('accent')));
-$style = $city
+$colour = css_colour($colour ?? $city['colour'] ?? null, css_colour(Settings::get('accent')));
+$style = ($city
     ? '--c:' . $colour . ';--c-ink:' . ink_for($colour)
-    : '--accent:' . $colour . ';--accent-ink:' . ink_for($colour);
+    : '--accent:' . $colour . ';--accent-ink:' . ink_for($colour))
+    . ';--accent-text:' . text_colour($colour);
 $classes = $city ? 'city' . (ink_for($colour) !== '#ffffff' ? ' ink-dark' : '') : 'hub';
 ?>
 <!doctype html>

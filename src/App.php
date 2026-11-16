@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ItTour;
 
+use ItTour\Pages\EventPage;
 use ItTour\Pages\NotFound;
 use ItTour\Pages\Placeholder;
 
@@ -23,7 +24,8 @@ final class App
         if ($site->isMain()) {
             $r->add('/', fn () => Placeholder::main());
         } else {
-            $r->add('/', fn () => Placeholder::city($site));
+            $r->add('/', fn () => EventPage::show($site));
+            $r->add('/archive/{year:\d{4}}', fn ($req, $p) => EventPage::show($site, (int) $p['year']));
         }
         return $r;
     }
@@ -68,7 +70,10 @@ final class App
         if ($match) {
             [$handler, $params] = $match;
             $result = $handler($req, $params);
-            return $result instanceof Response ? $result : View::page($result, $site, $req);
+            if ($result !== null) {
+                return $result instanceof Response ? $result : View::page($result, $site, $req);
+            }
+            // The handler found nothing (no such edition, unpublished talk…): fall through to 404.
         }
 
         $redirect = Db::one(

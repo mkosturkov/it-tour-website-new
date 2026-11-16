@@ -19,3 +19,35 @@
     }
   });
 })();
+
+// Click-to-load embeds (YouTube, Google Maps): [data-embed] becomes an iframe on click.
+document.addEventListener('click', function (e) {
+  var a = e.target.closest('[data-embed] .embed-play');
+  if (!a) return;
+  e.preventDefault();
+  var box = a.closest('[data-embed]');
+  var f = document.createElement('iframe');
+  f.src = box.getAttribute('data-embed');
+  f.title = box.getAttribute('data-title');
+  f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+  f.setAttribute('allowfullscreen', '');
+  f.loading = 'lazy';
+  box.replaceChildren(f);
+  box.classList.add('loaded');
+  f.focus();
+});
+
+// Countdown: [data-countdown="<ISO start>"] with [data-unit=d|h|m], updated every 30 s.
+(function () {
+  var box = document.querySelector('[data-countdown]');
+  if (!box) return;
+  var start = new Date(box.getAttribute('data-countdown')).getTime();
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function tick() {
+    var left = Math.max(0, Math.floor((start - Date.now()) / 60000));
+    box.querySelector('[data-unit=d]').textContent = Math.floor(left / 1440);
+    box.querySelector('[data-unit=h]').textContent = pad(Math.floor(left / 60) % 24);
+    box.querySelector('[data-unit=m]').textContent = pad(left % 60);
+  }
+  setInterval(tick, 30000);
+})();

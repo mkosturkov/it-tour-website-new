@@ -534,7 +534,9 @@ foreach ($editions as [$year, $host, $file]) {
         $counts['slots']++;
     }
     if ($slots) {
-        Db::run('UPDATE events SET starts_at = ? WHERE id = ?', [$slots[0]['starts_at'], $eventId]);
+        // Starts with the first slot; ends at 18:00 or with the last slot if that is later.
+        $last = max(array_column($slots, 'starts_at'));
+        Db::run('UPDATE events SET starts_at = ?, ends_at = ? WHERE id = ?', [$slots[0]['starts_at'], max('18:00', $last), $eventId]);
     }
 
     // Sponsors: free-form HTML; headings give the type, linked logos the sponsors.
