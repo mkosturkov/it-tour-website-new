@@ -531,3 +531,7 @@ Things deliberately left for after the coding of the site, so they don't get los
   - **Season sponsors:** the old it-tour.bg homepage had no sponsor list, so nothing was imported and the homepage block stays hidden until editors add sponsors for the season.
   - **Hero text:** the heading is the design's "Една конференция. Пет града. Всяко лято." with the number of cities counted from the season; the paragraph under it is the editable tagline, which is short today ("Безплатни еднодневни IT конференции из България от 2012 г."). The design's longer paragraph could become the tagline.
   - **Numbers:** conferences held, since when, talks and speakers, all counted. The design's "0 лв. вход, винаги" was left out: Bulgaria uses the euro since 2026, and free entry is already in the tagline.
+- ❓ **From step 8** (2026-11-16):
+  - **Old image addresses are not kept.** All 290 old pages and the 2 old slide files work (slides redirect to their copies). The ~1,000 old image addresses (`/system/uploads/...`: logos, speaker photos, event photos) were the old pages' own images and now 404. To confirm with the user; if needed, the import can add redirects to the new copies.
+  - **Preview images are WebP** (our media library only makes WebP), except the default JPEG. Facebook, LinkedIn, X, Telegram, Slack and Discord show WebP; Viber is unclear. Check real previews after launch; if one fails, the library can also make a JPEG for sharing.
+  - **`llms.txt` is in English** (aimed at AI tools), with names and dates as on the site.

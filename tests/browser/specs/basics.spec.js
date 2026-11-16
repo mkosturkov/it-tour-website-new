@@ -64,3 +64,12 @@ test('www. redirects permanently to the address without it', async ({ request })
   expect(res.status()).toBe(301);
   expect(res.headers()['location']).toBe('http://varnaconf.localhost:8001/archive/2015');
 });
+
+test('team page: empty for now, in the menu, accessible', async ({ page }) => {
+  await page.goto(main('/team'));
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Хората зад IT Tour');
+  await expect(page.locator('#main-nav a[aria-current=page]')).toHaveText('Екип');
+  await expect(page.locator('.empty')).toHaveText('Скоро тук ще представим екипа.');
+  await expectNoSidewaysScroll(page);
+  await expectAccessible(page);
+});

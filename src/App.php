@@ -8,9 +8,11 @@ use ItTour\Pages\Archive;
 use ItTour\Pages\EventPage;
 use ItTour\Pages\Home;
 use ItTour\Pages\NotFound;
+use ItTour\Pages\Robots;
 use ItTour\Pages\SpeakerPage;
 use ItTour\Pages\SpeakersDirectory;
 use ItTour\Pages\TalksLibrary;
+use ItTour\Pages\TeamPage;
 use ItTour\Pages\TalkPage;
 
 /**
@@ -31,12 +33,16 @@ final class App
             $r->add('/archive', fn ($req) => Archive::show($req));
             $r->add('/talks', fn ($req) => TalksLibrary::show($req));
             $r->add('/speakers', fn ($req) => SpeakersDirectory::show($req));
+            $r->add('/team', fn () => TeamPage::show());
+            $r->add('/llms.txt', fn ($req) => Robots::llms($site, $req));
             $r->add('/talks/{id:\d+}-{slug:[a-z0-9-]*}', fn ($req, $p) => TalkPage::show($req, (int) $p['id'], $p['slug']));
             $r->add('/talks/{id:\d+}', fn ($req, $p) => TalkPage::show($req, (int) $p['id'], ''));
         } else {
             $r->add('/', fn () => EventPage::show($site));
             $r->add('/archive/{year:\d{4}}', fn ($req, $p) => EventPage::show($site, (int) $p['year']));
         }
+        $r->add('/robots.txt', fn () => Robots::robots($site));
+        $r->add('/sitemap.xml', fn () => Robots::sitemap($site));
         // Speaker profiles answer on every domain, as on the old sites.
         $r->add('/speakers/{id:\d+}', fn ($req, $p) => SpeakerPage::show($site, (int) $p['id']));
         return $r;

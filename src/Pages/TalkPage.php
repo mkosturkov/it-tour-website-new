@@ -8,6 +8,7 @@ use ItTour\Events;
 use ItTour\Page;
 use ItTour\Request;
 use ItTour\Response;
+use ItTour\Schema;
 use ItTour\Talks;
 
 /** it-tour.bg/talks/<id>-<slug>: one talk. The number finds it; a wrong slug redirects. */
@@ -29,6 +30,12 @@ final class TalkPage
             'description' => excerpt($talk['description'] ?: sprintf('%s%s на %s.', $talk['title'], $names ? ", $names," : '', $ev['name']), 200),
             'nav' => 'talks',
             'canonical' => talk_url($talk),
+            'image' => $talk['still'],
+            'imageAlt' => $talk['title'],
+            'jsonld' => array_values(array_filter([
+                Schema::video($talk, talk_url($talk)),
+                Schema::breadcrumbs([['IT Tour', main_url('/')], ['Лекции', main_url('/talks')], [$talk['title'], talk_url($talk)]]),
+            ])),
             'talk' => $talk,
             'event' => $ev,
             'eventUrl' => city_url(['domain' => $ev['city_domain']], '/archive/' . $ev['year']),

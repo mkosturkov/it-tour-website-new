@@ -8,6 +8,7 @@ use ItTour\Clock;
 use ItTour\Events;
 use ItTour\Map;
 use ItTour\Page;
+use ItTour\Schema;
 use ItTour\Season;
 use ItTour\Settings;
 use ItTour\Speakers;
@@ -44,6 +45,7 @@ final class Home
             'tagline' => Settings::get('tagline'),
             'nav' => null,
             'canonical' => main_url('/'),
+            'jsonld' => [Schema::organization(), ['@type' => 'WebSite', 'name' => 'IT Tour', 'url' => main_url('/'), 'inLanguage' => 'bg', 'publisher' => ['@id' => main_url('/#organization')]]],
             'season' => $season,
             'points' => $points,
             'facts' => [

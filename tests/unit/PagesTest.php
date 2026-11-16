@@ -131,4 +131,78 @@ return [
         same(4, substr_count($body, '<g class="node'));
         ok(str_contains($body, '<h3 lang="en">RuseConf</h3>'), 'Ruse missing from the list');
     },
+    'crawlers: robots.txt blocks everything outside production, allows all with a sitemap in production' => function () use ($main, $varna) {
+        same("# Not the live site: nothing here should be indexed.\nUser-agent: *\nDisallow: /\n", page_with('', $varna, '/robots.txt')->body);
+        ItTour\Config::override(['production' => true]);
+        try {
+            $body = page_with('', $varna, '/robots.txt')->body;
+            ok(str_contains($body, "Allow: /") && str_contains($body, 'Sitemap: ' . ItTour\Site::cityUrl(['domain' => 'varnaconf.com'], '/sitemap.xml')), $body);
+        } finally {
+            ItTour\Config::override(['production' => false]);
+        }
+    },
+    'crawlers: each domain lists its own canonical pages in sitemap.xml' => function () use ($main, $varna) {
+        $res = page_with('', $main, '/sitemap.xml');
+        same('application/xml; charset=utf-8', $res->headers['Content-Type']);
+        $xml = simplexml_load_string($res->body);
+        $locs = array_map(fn ($u) => (string) $u->loc, iterator_to_array($xml->url, false));
+        same(5 + 491 + 221, count($locs));
+        ok(in_array(ItTour\Site::mainUrl('/speakers/15'), $locs, true), 'speaker profile missing');
+        $city = simplexml_load_string(page_with('', $varna, '/sitemap.xml')->body);
+        same(13, count($city->url));   // "/" for 2026 and /archive/<year> for the other 12 editions
+        ok(!str_contains(page_with('', $varna, '/sitemap.xml')->body, '/archive/2026'), 'latest edition should only be "/"');
+    },
+    'crawlers: llms.txt is on it-tour.bg only' => function () use ($main, $varna) {
+        $res = page_with('', $main, '/llms.txt');
+        ok(str_starts_with($res->body, "# IT Tour\n") && str_contains($res->body, '[VarnaConf 2026]'), $res->body);
+        same(404, page_with('', $varna, '/llms.txt')->status);
+    },
+    'sharing: preview tags with the right image on each page' => function () use ($main, $varna) {
+        $og = function (string $body, string $prop): ?string {
+            return preg_match('/<meta property="' . preg_quote($prop) . '" content="([^"]*)"/', $body, $m) ? html_entity_decode($m[1]) : null;
+        };
+        $archive = page_with('', $main, '/archive')->body;
+        same(ItTour\Site::mainUrl('/assets/img/share.jpg'), $og($archive, 'og:image'));
+        same('bg_BG', $og($archive, 'og:locale'));
+        same('IT Tour', $og($archive, 'og:site_name'));
+        ok(str_contains($archive, '<meta name="twitter:card" content="summary_large_image">'), 'twitter card');
+        $speaker = page_with('', $main, '/speakers/15')->body;
+        same('profile', $og($speaker, 'og:type'));
+        ok(str_contains((string) $og($speaker, 'og:image'), '/media/svetlin-nakov-'), 'speaker photo expected');
+        same('VarnaConf', $og(page_with('', $varna, '/')->body, 'og:site_name'));
+    },
+    'structured data: every page type has valid JSON-LD that matches the page' => function () use ($main, $varna) {
+        $ld = function (string $body): array {
+            ok((bool) preg_match('#<script type="application/ld\+json">(.*?)</script>#s', $body, $m), 'no JSON-LD');
+            return json_decode($m[1], true, flags: JSON_THROW_ON_ERROR);
+        };
+        $types = fn (array $d): array => array_column($d['@graph'] ?? [$d], '@type');
+        same(['Organization', 'WebSite'], $types($ld(page_with('', $main, '/')->body)));
+        same(['BreadcrumbList'], $types($ld(page_with('', $main, '/talks')->body)));
+        same(['ProfilePage', 'BreadcrumbList'], $types($ld(page_with('', $main, '/speakers/15')->body)));
+
+        $event = $ld(page_with('', $varna, '/archive/2024')->body);
+        same('Event', $event['@type']);
+        same('VarnaConf 2024', $event['name']);
+        same('2024-08-17T10:30:00+03:00', $event['startDate']);
+        same('Хотел Черно море', $event['location']['name']);
+        ok(count($event['performer']) > 0, 'speakers missing');
+
+    },
+    'structured data: a talk with a YouTube recording is a VideoObject' => function () use ($main) {
+        $res = page_with('', $main, '/talks/179');
+        $res = page_with('', $main, parse_url($res->headers['Location'] ?? '/talks/179', PHP_URL_PATH));
+        ok((bool) preg_match('#<script type="application/ld\+json">(.*?)</script>#s', $res->body, $m), 'no JSON-LD');
+        $d = json_decode($m[1], true, flags: JSON_THROW_ON_ERROR);
+        $video = $d['@graph'][0];
+        same('VideoObject', $video['@type']);
+        ok(str_starts_with($video['embedUrl'], 'https://www.youtube-nocookie.com/embed/'), $video['embedUrl']);
+        ok(str_contains($video['thumbnailUrl'], '/media/'), 'thumbnail should be our copy');
+    },
+    'team: empty until editors add people, then one flat list in their order' => function () use ($main) {
+        ok(str_contains(page_with('', $main, '/team')->body, 'Скоро тук ще представим екипа.'), 'empty message');
+        $body = page_with("INSERT INTO team_members (name, role, sort_order, published) VALUES ('Б Второ', 'Стрийм', 2, 1), ('А Първо', 'Организатор', 1, 1), ('Скрит', '', 0, 0)", $main, '/team')->body;
+        ok(strpos($body, 'А Първо') < strpos($body, 'Б Второ'), 'order');
+        ok(!str_contains($body, 'Скрит'), 'unpublished member shown');
+    },
 ];

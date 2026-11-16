@@ -9,6 +9,7 @@ use ItTour\Events;
 use ItTour\Page;
 use ItTour\Pager;
 use ItTour\Request;
+use ItTour\Schema;
 use ItTour\Talks;
 
 /**
@@ -47,6 +48,7 @@ final class TalksLibrary
             'canonical' => list_url('/talks', $f + ['page' => $page]),
             // Search and filter results are near-copies of the full list: crawl them, don't index them.
             'noindex' => $filtered,
+            'jsonld' => [Schema::breadcrumbs([['IT Tour', main_url('/')], ['Лекции', main_url('/talks')]])],
             'filters' => $f,
             'cities' => $cities,
             'years' => $years,

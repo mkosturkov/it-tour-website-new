@@ -9,6 +9,7 @@ use ItTour\Events;
 use ItTour\Media;
 use ItTour\Page;
 use ItTour\Programme;
+use ItTour\Schema;
 use ItTour\Site;
 use ItTour\Sponsors;
 
@@ -36,6 +37,9 @@ final class EventPage
         $latest = Events::forCity((int) $site->city['id']);
         $isLatest = $latest && $latest['id'] === $event['id'];
         $first = $slots ? $slots[0]['starts_at'] : $event['starts_at'];
+        $speakers = Programme::speakers($slots);
+        $url = $site->url($isLatest ? '/' : '/archive/' . $event['year']);
+        $cover = Media::find($event['cover_media_id']);
 
         return new Page('pages/event', [
             'title' => $event['name'],
@@ -46,7 +50,11 @@ final class EventPage
                 $event['venue_name'] ?: $event['city_name'],
             ),
             // The latest edition lives at "/" and also answers at /archive/<year>.
-            'canonical' => $site->url($isLatest ? '/' : '/archive/' . $event['year']),
+            'canonical' => $url,
+            // Preview image: the editor's cover image, else the site default.
+            'image' => $cover,
+            'imageAlt' => $event['name'],
+            'jsonld' => [Schema::event($event, $speakers, $cover, $url)],
             'colour' => $event['colour'],
             'event' => $event,
             'state' => $state,
@@ -57,7 +65,7 @@ final class EventPage
             'season' => $season,
             'stop' => $stop === false ? null : $stop + 1,
             'slots' => $slots,
-            'speakers' => Programme::speakers($slots),
+            'speakers' => $speakers,
             'onStage' => $state === 'live' ? Programme::onStage($slots, $now->format('H:i')) : null,
             'talkCount' => count($talks),
             'videoCount' => count(array_filter(array_column($talks, 'video_url'))),

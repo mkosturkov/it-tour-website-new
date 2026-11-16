@@ -9,6 +9,7 @@ use ItTour\Clock;
 use ItTour\Events;
 use ItTour\Page;
 use ItTour\Request;
+use ItTour\Schema;
 
 /** it-tour.bg/archive: every edition, grouped by year, filtered by city and year. */
 final class Archive
@@ -40,6 +41,7 @@ final class Archive
             'description' => sprintf('Всички %d издания на IT Tour от %d насам: програми, лектори и видеа.', count($all), min($years)),
             'nav' => 'archive',
             'canonical' => main_url('/archive'),
+            'jsonld' => [Schema::breadcrumbs([['IT Tour', main_url('/')], ['Архив', main_url('/archive')]])],
             'cities' => $cities,
             'years' => $years,
             'city' => $city,

@@ -9,6 +9,7 @@ use ItTour\Events;
 use ItTour\Page;
 use ItTour\Pager;
 use ItTour\Request;
+use ItTour\Schema;
 use ItTour\Speakers;
 
 /**
@@ -45,6 +46,7 @@ final class SpeakersDirectory
             'nav' => 'speakers',
             'canonical' => list_url('/speakers', $f + ['page' => $page]),
             'noindex' => array_filter($f) !== [],
+            'jsonld' => [Schema::breadcrumbs([['IT Tour', main_url('/')], ['Лектори', main_url('/speakers')]])],
             'filters' => $f,
             'cities' => $cities,
             'years' => $years,

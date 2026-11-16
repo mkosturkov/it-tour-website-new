@@ -147,7 +147,8 @@ function excerpt(?string $text, int $max = 220): string
     }
     $cut = mb_substr($text, 0, $max);
     $space = mb_strrpos($cut, ' ');
-    return rtrim(mb_substr($cut, 0, $space ?: $max), " ,.;:–-") . '…';
+    // Not rtrim(): it works on bytes, and "–" in its list would cut Cyrillic letters in half.
+    return preg_replace('/[\s,.;:–-]+$/u', '', mb_substr($cut, 0, $space ?: $max)) . '…';
 }
 
 /** ' lang="en"' for text without Cyrillic letters (English talk titles), so screen readers switch. */

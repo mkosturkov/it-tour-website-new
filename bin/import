@@ -175,7 +175,10 @@ function videoUrl(?string $url): ?string
     return $url;
 }
 
-/** Copies slides hosted on the old sites into public/files/. Returns the new URL or null. */
+/**
+ * Copies slides hosted on the old sites into public/files/ and redirects the
+ * old address to the copy (people may have shared it). Returns the new URL or null.
+ */
 function localSlides(string $in, string $url, string $title): ?string
 {
     $host = preg_replace('/^www\./', '', (string) parse_url($url, PHP_URL_HOST));
@@ -196,6 +199,7 @@ function localSlides(string $in, string $url, string $title): ?string
     $name = Text::slug($title, 40) . '-' . substr(sha1($bytes), 0, 8) . ".$ext";
     @mkdir(APP_ROOT . '/public/files', 0777, true);
     file_put_contents(APP_ROOT . "/public/files/$name", $bytes);
+    Db::run('INSERT OR IGNORE INTO redirects (host, path, target) VALUES (?, ?, ?)', [$host, $path, "/files/$name"]);
     return "/files/$name";
 }
 

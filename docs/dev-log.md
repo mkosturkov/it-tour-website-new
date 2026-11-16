@@ -266,3 +266,25 @@ Discussed with the user: computing the Latin form during each search (no stored 
 - The test for "conferences held" must use the faked date: on 20 July 2026 it's 59, not 62.
 
 **Open:** see decisions.md, "Homepage, open points from step 7" (no season sponsors in the old data, short tagline, the dropped "0 лв." fact).
+
+## 2026-11-16 · Step 8: old addresses, team, crawler files, previews, structured data
+
+**What:**
+- `tests/old-addresses.txt` (committed list from the download) and `tests/unit/OldAddressesTest.php`: all 290 old pages answer 200; the 2 old slide files redirect (301) to their copies. `bin/import` now adds a `redirects` row for every slide file it copies (old path → `/files/<name>`).
+- `/team` (`src/Pages/TeamPage.php`, `templates/pages/team.php`): one flat list in editors' order, published members only; "Скоро тук ще представим екипа." while empty.
+- `src/Pages/Robots.php`: `robots.txt` and `sitemap.xml` on every domain, `llms.txt` (`templates/llms.php`) on it-tour.bg.
+- Layout: Open Graph (site name per domain, `bg_BG`, type, URL, image + alt), `twitter:card`, and a JSON-LD block from page data `jsonld` (`src/Schema.php`).
+- Default preview image `public/assets/img/share.jpg` (1200 × 630 crop of the hero photo).
+
+**Why / how:**
+- **robots.txt:** production allows everything and names the sitemap; otherwise `Disallow: /` (decisions.md).
+- **Sitemaps:** it-tour.bg lists its 5 hub pages, every public talk and every speaker with a public talk (profiles are canonical there); a city domain lists "/" (latest edition) and `/archive/<year>` for older editions only, matching the canonicals. Filtered and numbered list pages are left out.
+- **Preview image:** speaker photo, talk still, event cover (editor upload; none imported), else the default. Width/height only for the default (media files vary).
+- **JSON-LD:** home: Organization + WebSite; event page: Event (times with the +02/+03 offset, venue, free offer, speakers as performers, mixed attendance when there's a stream); speaker: ProfilePage/Person + breadcrumbs; talk: VideoObject when it has a YouTube video and our still (upload date = the edition's date, which the page shows) + breadcrumbs; archive, talks, speakers, team: breadcrumbs. `Schema::json()` escapes `<`, `>` and `&`, so text can't close the script tag; CSP doesn't block it (data blocks aren't executed).
+
+**Gotchas:**
+- **`excerpt()` broke Cyrillic text:** `rtrim($s, " ,.;:–-")` trims bytes, and "–" (e2 80 93) shares its 0x80 byte with letters such as "р" (d1 80), so "лектор" lost half its last letter. Meta descriptions had this silently; `json_encode` failed loudly (three speaker profiles gave 500). Now a `/u` regex; test added (it fails on the old code).
+- The old-address test first ran on the frozen database, and a failing address got logged as "missed" into it. It uses a throwaway copy now.
+- `pkill -f "php -S …"` killed its own shell again; use `fuser -k 8011/tcp`.
+
+**Open:** decisions.md, "From step 8" (old image addresses, WebP previews, English llms.txt).

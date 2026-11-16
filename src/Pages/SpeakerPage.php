@@ -6,6 +6,7 @@ namespace ItTour\Pages;
 
 use ItTour\Events;
 use ItTour\Page;
+use ItTour\Schema;
 use ItTour\Site;
 use ItTour\Speakers;
 use ItTour\Talks;
@@ -31,6 +32,13 @@ final class SpeakerPage
             'description' => excerpt($speaker['bio'] ?: $speaker['name'] . ', лектор на IT Tour.', 200),
             'nav' => 'speakers',
             'canonical' => main_url('/speakers/' . $id),
+            'ogType' => 'profile',
+            'image' => $speaker['photo'],
+            'imageAlt' => $speaker['name'],
+            'jsonld' => [
+                Schema::profile($speaker, main_url('/speakers/' . $id)),
+                Schema::breadcrumbs([['IT Tour', main_url('/')], ['Лектори', main_url('/speakers')], [$speaker['name'], main_url('/speakers/' . $id)]]),
+            ],
             'speaker' => $speaker,
             'upcoming' => $upcoming,
             'past' => $past,

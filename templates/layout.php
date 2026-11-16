@@ -9,6 +9,10 @@
  *   $canonical    absolute canonical URL
  *   $popup        season pop-up data (main site, added by View::page), or null
  *   $noindex      true: search engines may follow the links but not index the page
+ *   $image        preview image for sharing (media row; default: the hero photo crop)
+ *   $imageAlt     its alt text
+ *   $ogType       Open Graph type: website (default), profile, article
+ *   $jsonld       schema.org items (ItTour\Schema) for a JSON-LD block
  *   $colour       colour for this page on a city site (an edition's own colour);
  *                 defaults to the city's latest colour
  */
@@ -31,6 +35,9 @@ $colour = css_colour($colour ?? $city['colour'] ?? null, css_colour(Settings::ge
 $style = ($city
     ? '--c:' . $colour . ';--c-ink:' . ink_for($colour)
     : '--accent:' . $colour . ';--accent-ink:' . ink_for($colour));
+$siteName = $city ? $city['brand'] : 'IT Tour';
+$shareImage = !empty($image) ? here_url(media_url($image, 1200)) : here_url('/assets/img/share.jpg');
+$shareAlt = !empty($image) ? ($imageAlt ?? $image['alt'] ?: $title) : 'Публика на IT Tour конференция';
 $classes = $city ? 'city' . (ink_for($colour) !== '#ffffff' ? ' ink-dark' : '') : 'hub';
 ?>
 <!doctype html>
@@ -49,6 +56,26 @@ $classes = $city ? 'city' . (ink_for($colour) !== '#ffffff' ? ' ink-dark' : '') 
 <?php endif ?>
 <?php if (!empty($canonical)): ?>
 <link rel="canonical" href="<?= e($canonical) ?>">
+<?php endif ?>
+<meta property="og:site_name" content="<?= e($siteName) ?>">
+<meta property="og:locale" content="bg_BG">
+<meta property="og:type" content="<?= e($ogType ?? 'website') ?>">
+<meta property="og:title" content="<?= e($fullTitle) ?>">
+<?php if (!empty($description)): ?>
+<meta property="og:description" content="<?= e($description) ?>">
+<?php endif ?>
+<?php if (!empty($canonical)): ?>
+<meta property="og:url" content="<?= e($canonical) ?>">
+<?php endif ?>
+<meta property="og:image" content="<?= e($shareImage) ?>">
+<meta property="og:image:alt" content="<?= e($shareAlt) ?>">
+<?php if (empty($image)): ?>
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<?php endif ?>
+<meta name="twitter:card" content="summary_large_image">
+<?php if (!empty($jsonld)): ?>
+<script type="application/ld+json"><?= raw(ItTour\Schema::json($jsonld)) ?></script>
 <?php endif ?>
 <?php /* Same address as in site.css (no ?v=), or the browser downloads the font twice. */ ?>
 <link rel="preload" href="/assets/fonts/montserrat-cyrillic.woff2" as="font" type="font/woff2" crossorigin>

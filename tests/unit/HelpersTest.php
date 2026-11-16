@@ -50,4 +50,10 @@ return [
             same(null, ItTour\Pager::number(ItTour\Request::get('x', "/talks?page=$bad")), $bad);
         }
     },
+    'excerpt never cuts a Cyrillic letter in half' => function () {
+        // "–" is three bytes; trimming it byte by byte used to eat the end of "р" (d1 80).
+        $out = excerpt('програмист и лектор ' . str_repeat('в софтуерния бранш ', 20), 20);
+        ok(mb_check_encoding($out, 'UTF-8'), 'broken UTF-8: ' . bin2hex($out));
+        same('програмист и лектор…', $out);
+    },
 ];
