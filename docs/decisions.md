@@ -485,3 +485,6 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 
 - ✅ **Build a working public site before discussing the admin.** Order: an import script in PHP (downloads everything including images, fills SQLite, can be re-run, lists possible duplicate speakers) → the public pages as designed → a local demo with PHP's built-in server. Content goes straight into the database until the admin exists. The admin panel, operations and the rest of the discussion continue afterwards.
 - ✅ **Documentation stays light for now:** decisions in this file, `AGENTS.md` updated for the new code.
+- ✅ **No talk types for now** (talk, workshop, lightning talk). The old site has none, and if we want them later the imported titles and descriptions are still there to classify from.
+- ✅ **Schedule slots may overlap.** A few editions ran workshops in parallel with the talks (VarnaConf 2015 and 2016 had a whole second list; PlovdivConf 2018, TarnovoConf 2022, RuseConf 2022 and VarnaConf 2025 had single workshops). There are no separate tracks: overlapping items are simply shown together at their time.
+- 📝 Import findings: lightning talks are one slot per edition, with at most one video for the whole block (16 have one, 2013–2017). Openings and closings are plain slots; their 34 old videos (2012–2017) are not linked from the new site.
