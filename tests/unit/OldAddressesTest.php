@@ -20,7 +20,7 @@ function local_host(string $domain): string
 }
 
 return [
-    'every old page and slide file still works' => function () {
+    'every old page, slide file and imported image still works' => function () {
         // A copy: a broken address would be logged as missed, changing the frozen database.
         $copy = sys_get_temp_dir() . '/it-tour-old-addresses-' . getmypid() . '.sqlite';
         copy(APP_ROOT . '/data/test/site.sqlite', $copy);
@@ -38,7 +38,7 @@ return [
                 if ($kind === 'page' && $res->status !== 200) {
                     $broken[] = "$address: $res->status";
                 }
-                if ($kind === 'file') {
+                if ($kind === 'file' || $kind === 'image') {
                     $target = (string) parse_url($res->headers['Location'] ?? '', PHP_URL_PATH);
                     if ($res->status !== 301 || !is_file(APP_ROOT . '/public' . $target)) {
                         $broken[] = "$address: $res->status → " . ($res->headers['Location'] ?? 'nowhere');
@@ -51,5 +51,23 @@ return [
             @unlink($copy);
         }
         same([], $broken);
+    },
+    'old images we don\'t have are a 404 and are not logged as missed' => function () {
+        $copy = sys_get_temp_dir() . '/it-tour-old-images-' . getmypid() . '.sqlite';
+        copy(APP_ROOT . '/data/test/site.sqlite', $copy);
+        putenv("IT_TOUR_DB=$copy");
+        Db::close();
+        try {
+            $host = local_host('varnaconf.com');
+            same(404, App::handle(Request::get($host, '/system/uploads/photo/asset/15/original_image.JPG'))->status);
+            same(404, App::handle(Request::get($host, '/system/uploads/../../config.php'))->status);
+            same(0, (int) Db::value("SELECT COUNT(*) FROM missed_urls WHERE path LIKE '/system/uploads/%'"));
+            App::handle(Request::get($host, '/no-such-page'));
+            same(1, (int) Db::value("SELECT COUNT(*) FROM missed_urls WHERE path = '/no-such-page'"));
+        } finally {
+            Db::close();
+            putenv('IT_TOUR_DB');
+            @unlink($copy);
+        }
     },
 ];

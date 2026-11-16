@@ -288,3 +288,15 @@ Discussed with the user: computing the Latin form during each search (no stored 
 - `pkill -f "php -S …"` killed its own shell again; use `fuser -k 8011/tcp`.
 
 **Open:** decisions.md, "From step 8" (old image addresses, WebP previews, English llms.txt).
+
+## 2026-11-16 · Old image addresses redirect
+
+**What:** `Media::fromOldUpload()` and a branch in `App::dispatch` (before the missed-address log): `/system/uploads/...` redirects (301) to our copy, or gives a 404 that isn't logged. `tests/old-addresses.txt` now also has 469 `image` lines; the test checks they redirect to a file that exists, and that unknown old images aren't logged. `bin/import` no longer sets old banners as editions' `cover_media_id` (they stay in the media library).
+
+**Why / how:** agreed with the user: a rule instead of a stored map. The old app kept each image in a folder per item with size variants, so the folder is the key (sponsor logos share one folder: matched by file name); the import already records each image's old address in `media.source`. The path must look like an upload path and contain no `..` before it reaches the query.
+
+**Gotchas:**
+- **The old header banners had been imported as editions' covers**, and step 8 made covers the sharing preview, so event previews would have been 900 × 216 panoramas. Covers are now left empty for editors (decisions.md).
+- The media library stores identical files once and keeps only the first address, so 4 old addresses whose file is identical to another edition's image (BurgasConf's logo 38, VarnaConf's banner 10) don't redirect. Listed as exceptions in `tests/old-addresses.txt`; recording every old address per media item would fix it if it ever matters.
+
+**Open:** if the galleries are imported, extend the rule to them (decisions.md).

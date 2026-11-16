@@ -91,6 +91,25 @@ final class Media
         return $id ? Db::one('SELECT * FROM media WHERE id = ?', [$id]) : null;
     }
 
+    /**
+     * The media item imported from an old /system/uploads/ address, or null.
+     * The old sites kept each image in its own folder with size variants
+     * (speaker/photo/127/thumb_image.jpg, main_image.jpg…), so any file in the
+     * folder means that image; sponsor logos share one folder and match by name.
+     * Matched against `source`, where the import recorded each image's old address.
+     */
+    public static function fromOldUpload(string $path): ?array
+    {
+        if (!preg_match('#^/system/uploads/[\w./ -]+$#', $path) || str_contains($path, '..')) {
+            return null;
+        }
+        $key = str_starts_with($path, '/system/uploads/sponsors/') ? $path : dirname($path) . '/';
+        return Db::one(
+            "SELECT * FROM media WHERE instr(source, ?) > 0 OR instr(source, ?) > 0 ORDER BY id LIMIT 1",
+            [$key, str_replace(' ', '%20', $key)],
+        );
+    }
+
     /** Columns to select when joining media as alias m: they come back as m_id, m_hash… */
     public const JOIN_COLUMNS = 'm.id AS m_id, m.hash AS m_hash, m.name AS m_name, m.ext AS m_ext,
         m.widths AS m_widths, m.crop AS m_crop, m.width AS m_width, m.height AS m_height, m.alt AS m_alt';

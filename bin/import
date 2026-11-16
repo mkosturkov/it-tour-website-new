@@ -376,6 +376,11 @@ foreach ($editions as [$year, $host, $file]) {
     $party = place($doc->querySelector('article#after-party'));
     preg_match('#/event/logo/(\d+)/#', (string) $logoSrc, $m);
 
+    // The old header banners (900 × 216 city panoramas) go into the media library, so their
+    // old addresses redirect and editors can reuse them, but they are not the edition's
+    // cover: that is the sharing preview, which an editor uploads (decisions.md).
+    $media($coverSrc, 'корица');
+
     $eventId = Db::insert('events', [
         'city_id' => $cityIds[$city],
         'year' => $year,
@@ -383,7 +388,6 @@ foreach ($editions as [$year, $host, $file]) {
         'date' => $date,
         'colour' => $colour,
         'logo_media_id' => $media($logoSrc, 'лого'),
-        'cover_media_id' => $media($coverSrc, 'корица'),
         'venue_name' => $venue['name'] ?? null,
         'venue_url' => $venue['url'] ?? null,
         'venue_address' => $venue['address'] ?? null,

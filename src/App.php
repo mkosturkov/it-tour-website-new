@@ -102,6 +102,14 @@ final class App
             return Response::redirect(str_starts_with($redirect['target'], '/') ? $site->url($redirect['target']) : $redirect['target']);
         }
 
+        // Images of the old sites redirect to our copies (Media::fromOldUpload). The ones we
+        // don't have (old event galleries) are a plain 404 and aren't logged: they are old
+        // page images, not links an editor could fix with a redirect.
+        if (str_starts_with($req->path, '/system/uploads/')) {
+            $media = Media::fromOldUpload($req->path);
+            return $media ? Response::redirect($site->url(Media::url($media, 1600))) : View::page(NotFound::page(), $site, $req);
+        }
+
         self::logMissed($site, $req);
         return View::page(NotFound::page(), $site, $req);
     }
