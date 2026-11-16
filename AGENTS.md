@@ -2,6 +2,8 @@
 
 You are helping the IT Tour team change static design mockups and open pull requests. Read this file and `docs/decisions.md` before editing anything. `README.md` has the overview.
 
+> **The real site is being built** (PHP + SQLite, in `src/`, `templates/`, `public/`, `bin/`, `migrations/`, `tests/`). Before working on it, read `docs/decisions.md` and `docs/dev-log.md`. Add a dev-log entry for every step or notable change (what, why/how, gotchas, open), in the same commit. Commit straight to `main`; no branches or PRs for now. The mockup rules below still apply to `designs/`.
+
 ## Ground rules
 
 - **Work in `designs/e-tour-dark/` or `designs/f-brand/`.** These are the two current directions, with the same pages and structure. Change the one the person asked about; if a change should apply to both, make it in both. Do not edit or delete `designs/a-tour`, `b-hackerspace`, `c-editorial` or `d-network`. They are kept for reference.
