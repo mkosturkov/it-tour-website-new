@@ -17,7 +17,7 @@
   --line: #d5dbe7;
   --text: #2f2f2f;
   --muted: #586172;
-  --dim: #5f6878;   /* darker than the mockup's #7f8899 so small text meets WCAG AA contrast */
+  --dim: #7f8899;
   --accent: #375992;
   --accent-ink: #ffffff;
   --live: #e0464b;
@@ -450,8 +450,8 @@ section.tight { padding: 48px 0; }
 
 /* ===== Version F brand layer: light surfaces, white cards with soft shadows, city colour bar,
    dotted wave textures, round photos with white rings, ribbons and the code-comment info block ===== */
-/* Text in the accent or city colour. Editors choose these colours; contrast problems are reported
-   (bin/contrast-report, and the browser tests' contrast report), not corrected automatically. */
+/* Colours are as designed. Contrast problems are reported (bin/contrast-report and the browser
+   tests' contrast report), not corrected; colours are reviewed after the site is built. */
 body { font-size: 16px; --accent-text: color-mix(in srgb, var(--accent) 70%, #111); }
 .more, .slot .act, .prose a:not(.btn), .state-chip { color: var(--accent-text); }
 .speakers { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }

@@ -510,4 +510,5 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
   - local: `it-tour.localhost:8000` and `{city}.localhost:8000`
   - The mapping works both ways: it picks the site for an incoming request, and builds every cross-site link and absolute address (canonical, Open Graph, sitemap), so a demo never links to the real domains.
   - A `production` switch: when off, every page has `noindex` and `robots.txt` blocks everything.
-- ✅ **Colours chosen by editors are not corrected automatically** (city and edition colours, the hub accent), even when their contrast is below WCAG AA. Problems are logged for people to review: `bin/contrast-report` and the browser tests' contrast report. Design colours that aren't editor choices are fixed in the stylesheet.
+- ✅ **Colours are not corrected automatically,** neither the design's nor the ones editors choose (city and edition colours, the hub accent), even when their contrast is below WCAG AA. Problems are logged for people to review: `bin/contrast-report` and the browser tests' contrast report.
+- ❓ **Colours and contrast are discussed after the site is built.**
