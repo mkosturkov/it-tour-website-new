@@ -178,4 +178,4 @@ The user decided (2026-11-16) that no colour is corrected for contrast for now, 
 
 **Tests:** the talk page test checks both links and that the iframe address has no autoplay; a PHP page test fakes a live event with live and stream links.
 
-**Open:** new talks' still images. Proposal (not yet confirmed): when an editor saves a talk with a YouTube link, the server downloads the still once; if that fails the card shows the edition colour and saving retries; editors can upload their own. Until the admin exists, a `bin/video-stills` command would do the same for talks missing a still.
+**Decided later the same day:** new talks' still images (see decisions.md): when an editor saves a talk with a YouTube link, the server downloads the still once; if that fails the card shows the edition colour and saving retries; editors can upload their own. Until the admin exists, a `bin/video-stills` command would do the same for talks missing a still.
