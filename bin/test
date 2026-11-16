@@ -71,7 +71,7 @@ if (!in_array('--php', $args, true)) {
     $report = "$root/tests/browser/reports/contrast.txt";
     if (is_file($report)) {
         $n = count(file($report, FILE_SKIP_EMPTY_LINES));
-        echo "Colour contrast: $n element(s) below WCAG AA, listed in tests/browser/reports/contrast.txt (not a failure; editors choose colours).\n";
+        echo "Colour contrast: $n element(s) below WCAG AA, listed in tests/browser/reports/contrast.txt (not a failure; colours are reviewed after the site is built).\n";
     }
 }
 exit($failed || $checkCode || $browserCode ? 1 : 0);
