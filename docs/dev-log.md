@@ -218,3 +218,29 @@ The user decided (2026-11-16) that no colour is corrected for contrast for now, 
 **Open:**
 - Talks still without video: 35 (TarnovoConf 2017/2018, RuseConf 2017 have nothing; some first talks started before the stream did, e.g. VarnaConf 2025).
 - The editor review of approximate timestamps belongs in the admin (see decisions.md).
+
+## 2026-11-16 · Step 6: talks library and speaker directory
+
+**What:** `it-tour.bg/talks` (`src/Pages/TalksLibrary.php`, `templates/pages/talks.php`, `partials/talk-results.php`) and `it-tour.bg/speakers` (`src/Pages/SpeakersDirectory.php`, `templates/pages/speakers.php`, `partials/speaker-results.php`); queries `Talks::library()`, `Talks::counts()`, `Speakers::directory()`; `src/Pager.php` + `partials/pager.php`; `Text::searchWhere()`; `list_url()` helper; instant search in `site.js`.
+
+**Why / how:**
+- **Talks:** newest edition first, programme order within it; filters: search (title or speaker), city, year, "Само със запис". Rows as in the mockup: city dot and year, title, speakers · edition, "▶ запис" / "предстои".
+- **Speakers:** published speakers with at least one public talk, alphabetical (decisions.md); filters: name, city and year (where and when they spoke). The card says "N лекции · cities" or, for one talk, the edition.
+- **Search:** every word must match; each word matches as typed or transliterated against `search_text` (lowercase + Latin), so "наков" and "nakov" find the same. `LIKE` wildcards in the query are escaped. Searching Cyrillic for a Latin title ("докер") doesn't match; fine for now.
+- **Pages:** 24 per page; links show 1, neighbours, last and "…" gaps (a one-page gap shows the page). `?page=` that is not a positive number, or past the end, is a 404; a search with no results is a 200 with "Няма лекции… Изчисти филтрите".
+- **Instant search** (agreed with the user): the plain GET form works without JavaScript; with it, `site.js` fetches the same address with `X-Partial: results` and swaps `[data-results]`.
+  - Typing waits 300 ms after the last key; an older request still running is aborted.
+  - History: the first search of a typing run is pushed, the rest replace it (Back goes to before typing, not to half-typed words); a filter change or page link pushes; leaving the search box ends the typing run. Back/Forward refill the form from the address and load its results.
+  - The history entry is written when the request starts, not when it ends, so an aborted request can't lose it.
+  - Empty values are left out of the address (`/talks?q=go`, not `&city=&year=`); page 1 has no `?page`.
+  - The count (or "no results") is copied into a `role="status"` element for screen readers; the results block is dimmed with `aria-busy` while loading. If a request fails, the browser just goes to the address.
+- **Caching and indexing:** responses of pages with a partial carry `Vary: X-Partial`. In production, filtered or searched lists have `<meta name="robots" content="noindex, follow">`; the plain lists and their numbered pages are indexed, with a canonical to themselves (layout's new `$noindex`).
+
+**Gotchas:**
+- `section.tight` beats a plain class, so `.archive-list { padding-top: 0 }` from step 4 never worked; now `section.archive-list` / `section.list-page` (the archive screenshot changed).
+- Speaker cards in a grid stretch to the row; `align-items: start` keeps names aligned when city lines wrap differently.
+- `pkill -f` with a pattern that also matches the calling shell kills the shell (again); stop test servers by job instead.
+
+**Open:**
+- 8 speakers have their names in Latin script, so they sort before everyone else.
+- Talk and speaker `search_text` is filled by `bin/import`; the admin will have to refresh it on save (talks: title and speaker names, so renaming a speaker touches their talks).

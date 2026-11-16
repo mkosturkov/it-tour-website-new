@@ -9,6 +9,8 @@ use ItTour\Pages\EventPage;
 use ItTour\Pages\NotFound;
 use ItTour\Pages\Placeholder;
 use ItTour\Pages\SpeakerPage;
+use ItTour\Pages\SpeakersDirectory;
+use ItTour\Pages\TalksLibrary;
 use ItTour\Pages\TalkPage;
 
 /**
@@ -27,6 +29,8 @@ final class App
         if ($site->isMain()) {
             $r->add('/', fn () => Placeholder::main());
             $r->add('/archive', fn ($req) => Archive::show($req));
+            $r->add('/talks', fn ($req) => TalksLibrary::show($req));
+            $r->add('/speakers', fn ($req) => SpeakersDirectory::show($req));
             $r->add('/talks/{id:\d+}-{slug:[a-z0-9-]*}', fn ($req, $p) => TalkPage::show($req, (int) $p['id'], $p['slug']));
             $r->add('/talks/{id:\d+}', fn ($req, $p) => TalkPage::show($req, (int) $p['id'], ''));
         } else {

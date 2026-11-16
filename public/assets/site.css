@@ -655,7 +655,7 @@ footer .cbar { position: relative; margin-bottom: 0; height: 10px; }
 
 /* Archive */
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-.archive-list { padding-top: 0; }
+section.archive-list { padding-top: 0; }   /* section.tight would win over a plain class */
 .year-form { display: flex; gap: 8px; align-items: center; }
 .ed .ed-dot { width: 56px; height: 56px; border-radius: 50%; background: var(--c); }
 .ed img { object-fit: contain; }
@@ -705,3 +705,17 @@ ul.links { list-style: none; padding: 0; }
 .aside-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 15px; }
 .aside-list a { color: var(--accent-text); text-decoration: none; font-weight: 500; }
 .aside-list a:hover { text-decoration: underline; }
+
+/* Talks library and speaker directory */
+section.list-page { padding-top: 0; }
+.list-page .filters { scroll-margin-top: 90px; }   /* page links scroll back to the form, below the sticky header */
+.filters .check { display: flex; gap: 8px; align-items: center; color: var(--muted); font-size: 14px; }
+.filters .check input { accent-color: var(--accent); width: 18px; height: 18px; }
+.results[aria-busy="true"] { opacity: .55; transition: opacity .15s .1s; }
+.talk-rows h3 { overflow-wrap: anywhere; }
+.talk-rows .when { display: inline-flex; align-items: center; gap: 8px; }
+.talk-rows .end { color: var(--muted); font-size: 14px; white-space: nowrap; }
+.talk-rows .end.more { color: var(--accent-text); font-weight: 600; }
+.pager { flex-wrap: wrap; align-items: center; }
+.pager .gap { color: var(--dim); padding: 0 2px; }
+.list-page .speakers { margin-bottom: 8px; align-items: start; }   /* names line up when the city lines differ in length */

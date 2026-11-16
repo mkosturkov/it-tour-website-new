@@ -185,3 +185,16 @@ function plural_bg(int $n, string $one, string $many): string
 {
     return $n . ' ' . ($n === 1 ? $one : $many);
 }
+
+/**
+ * Main-site address with a query string, leaving out empty values and page 1:
+ * list_url('/talks', ['q' => 'go', 'city' => null, 'page' => 1]) → ".../talks?q=go".
+ */
+function list_url(string $path, array $query): string
+{
+    $query = array_filter($query, fn ($v) => $v !== null && $v !== '' && $v !== false);
+    if (($query['page'] ?? null) === 1) {
+        unset($query['page']);
+    }
+    return main_url($path . ($query ? '?' . http_build_query($query) : ''));
+}

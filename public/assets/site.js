@@ -60,3 +60,104 @@ document.querySelectorAll('form[data-autosubmit]').forEach(function (f) {
   if (b) b.hidden = true;
   f.addEventListener('change', function () { f.submit(); });
 });
+
+// Instant search on list pages: form[data-live-search] and its results block [data-results].
+// The form is a plain GET form that works without this. Here, results are fetched from the
+// same address with the header "X-Partial: results" (the server returns only the block) and
+// the address bar follows, so Back/Forward work and every search can be shared:
+// - typing searches 300 ms after the last key; the first search of a typing run adds a
+//   history entry, the following ones replace it (Back skips the in-between words)
+// - a filter change or a page link adds a history entry
+// - Back/Forward load the results for that address and put its values back in the form
+(function () {
+  var form = document.querySelector('form[data-live-search]');
+  var box = document.querySelector('[data-results]');
+  if (!form || !box || !window.fetch || !window.history.pushState) return;
+  var status = document.querySelector('[data-results-status]');
+  var input = form.querySelector('input[type=search]');
+  var button = form.querySelector('button[type=submit]');
+  var base = form.action.split('?')[0];
+  var timer, request, typing = false;
+  if (button) button.hidden = true;
+
+  // The form's address, without empty values: /talks?q=go rather than /talks?q=go&city=&year=
+  function formUrl() {
+    var params = new URLSearchParams();
+    new FormData(form).forEach(function (v, k) {
+      v = String(v).trim();
+      if (v) params.append(k, v);
+    });
+    var qs = params.toString();
+    return base + (qs ? '?' + qs : '');
+  }
+
+  // Put the values of an address back into the form (after Back/Forward).
+  function fillForm(url) {
+    var params = new URL(url).searchParams;
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!el.name) return;
+      if (el.type === 'checkbox') el.checked = params.get(el.name) === el.value;
+      else el.value = params.get(el.name) || '';
+    });
+  }
+
+  // how: 'push' adds a history entry, 'replace' changes the current one, null leaves history alone
+  function load(url, how) {
+    if (how && new URL(url, location.href).href === location.href) return;
+    if (how === 'push') history.pushState(null, '', url);
+    if (how === 'replace') history.replaceState(null, '', url);
+    if (request) request.abort();
+    request = new AbortController();
+    box.setAttribute('aria-busy', 'true');
+    fetch(url, { headers: { 'X-Partial': 'results' }, signal: request.signal })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.text();
+      })
+      .then(function (html) {
+        box.innerHTML = html;
+        box.removeAttribute('aria-busy');
+        var count = box.querySelector('.count-line, .empty');
+        if (status && count) status.textContent = count.textContent;
+      })
+      .catch(function (err) {
+        if (err.name !== 'AbortError') location.href = url;   // let the server show the page
+      });
+  }
+
+  function search() {
+    clearTimeout(timer);
+    load(formUrl(), typing ? 'replace' : 'push');
+    typing = true;
+  }
+
+  input.addEventListener('input', function () {
+    clearTimeout(timer);
+    timer = setTimeout(search, 300);
+  });
+  input.addEventListener('blur', function () { typing = false; });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    search();
+  });
+  form.addEventListener('change', function (e) {
+    if (e.target === input) return;   // typing is handled above
+    clearTimeout(timer);
+    typing = false;
+    load(formUrl(), 'push');
+  });
+  box.addEventListener('click', function (e) {
+    var a = e.target.closest('.pager a');
+    if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    typing = false;
+    load(a.href, 'push');
+    form.scrollIntoView({ block: 'start' });
+  });
+  window.addEventListener('popstate', function () {
+    clearTimeout(timer);
+    typing = false;
+    fillForm(location.href);
+    load(location.href, null);
+  });
+})();

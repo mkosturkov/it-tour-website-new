@@ -11,7 +11,7 @@ use ItTour\Request;
 use ItTour\Settings;
 
 /** Runs $sql on a copy of the test database, then requests $uri on $host. */
-function page_with(string $sql, string $host, string $uri): ItTour\Response
+function page_with(string $sql, string $host, string $uri, array $headers = []): ItTour\Response
 {
     $copy = sys_get_temp_dir() . '/it-tour-page-test-' . getmypid() . '.sqlite';
     copy(APP_ROOT . '/data/test/site.sqlite', $copy);
@@ -23,7 +23,7 @@ function page_with(string $sql, string $host, string $uri): ItTour\Response
         Db::pdo()->exec($sql);
     }
     try {
-        return App::handle(Request::get($host, $uri));
+        return App::handle(Request::get($host, $uri, $headers));
     } finally {
         Db::close();
         putenv('IT_TOUR_DB');
@@ -31,6 +31,7 @@ function page_with(string $sql, string $host, string $uri): ItTour\Response
     }
 }
 
+$main = ItTour\Config::get('main_host');
 $varna = 'varnaconf.' . explode('.', ItTour\Config::get('main_host'), 2)[1];
 
 if (!is_file(APP_ROOT . '/data/test/site.sqlite')) {
@@ -78,5 +79,42 @@ return [
         $res = page_with("UPDATE talks SET title = '<script>alert(1)</script>' WHERE id = (SELECT talk_id FROM slots s JOIN events e ON e.id = s.event_id JOIN cities c ON c.id = e.city_id WHERE e.year = 2024 AND c.slug = 'varna' AND talk_id IS NOT NULL LIMIT 1)", $varna, '/archive/2024');
         ok(!str_contains($res->body, '<script>alert(1)'), 'not escaped');
         ok(str_contains($res->body, '&lt;script&gt;alert(1)'), 'escaped title missing');
+    },
+    'lists: instant search gets only the results block, and caches keep both' => function () use ($main) {
+        $full = page_with('', $main, '/talks?q=nakov');
+        $part = page_with('', $main, '/talks?q=nakov', ['X-Partial' => 'results']);
+        same('X-Partial', $full->headers['Vary'] ?? null);
+        same('X-Partial', $part->headers['Vary'] ?? null);
+        ok(str_contains($full->body, '<html'), 'full page expected');
+        ok(!str_contains($part->body, '<html') && str_contains($part->body, 'class="count-line"'), 'results block expected');
+    },
+    'lists: filtered results are "noindex, follow"; the plain list is indexed' => function () use ($main) {
+        ItTour\Config::override(['production' => true]);
+        try {
+            foreach (['/talks', '/talks?page=2', '/speakers'] as $uri) {
+                ok(!str_contains(page_with('', $main, $uri)->body, 'name="robots"'), "$uri should be indexed");
+            }
+            foreach (['/talks?q=go', '/talks?city=varna', '/talks?video=1', '/speakers?city=ruse&page=2'] as $uri) {
+                ok(str_contains(page_with('', $main, $uri)->body, '<meta name="robots" content="noindex, follow">'), "$uri should be noindex");
+            }
+        } finally {
+            ItTour\Config::override(['production' => false]);
+        }
+    },
+    'lists: page links keep the filters and drop empty values' => function () use ($main) {
+        $body = page_with('', $main, '/talks?q=&city=varna&year=&page=2')->body;
+        ok(str_contains($body, 'href="' . e(ItTour\Site::mainUrl('/talks?city=varna&page=3')) . '"'), 'next page link');
+        ok(str_contains($body, 'href="' . e(ItTour\Site::mainUrl('/talks?city=varna')) . '" rel="prev"'), 'previous page is page 1 without ?page');
+    },
+    'lists: a page past the end or a bad page number is a 404' => function () use ($main) {
+        same(404, page_with('', $main, '/talks?page=999')->status);
+        same(404, page_with('', $main, '/speakers?page=0')->status);
+        same(200, page_with('', $main, '/talks?q=nothing-matches-this')->status);
+    },
+    'lists: unpublished talks and speakers are left out' => function () use ($main) {
+        $res = page_with('UPDATE speakers SET published = 0 WHERE id = 15', $main, '/speakers?q=nakov');
+        ok(!str_contains($res->body, 'Светлин Наков'), 'unpublished speaker listed');
+        $res = page_with("UPDATE events SET schedule_published = 0 WHERE year = 2024", $main, '/talks?year=2024');
+        ok(str_contains($res->body, 'Няма лекции'), 'talks of an unpublished programme listed');
     },
 ];

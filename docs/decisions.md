@@ -270,7 +270,7 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
   Its time comes from the programme slot.
 - ✅ **Talks library** (on it-tour.bg): search by title or speaker, city and year filters, a "has video" filter, newest first.
 - ✅ **Talk page:** title, edition, description, embedded video when there is one, slides link, speakers with links to their profiles, and more talks from the same edition. Talk pages are new, so their addresses are free to choose.
-- ✅ **Speaker directory** (on it-tour.bg): search by name, city and year filters, alphabetical, each with a photo, name and number of talks.
+- ✅ **Speaker directory** (on it-tour.bg): search by name, city and year filters (where and when they spoke), alphabetical, each with a photo, name, number of talks and cities (or the edition, for one talk).
 - ✅ **Speaker profile:** photo, bio, job title and links, then all their talks across cities and years. The old addresses `<city>conf.com/speakers/<id>` keep working on every city domain, with the old numbers kept.
 - ❓ For the technology discussion: how fast must an edit go live? A static site typically takes one to two minutes to rebuild, while PHP or WordPress shows changes immediately. This matters for programme changes on the day.
 - ✅ **News:**

@@ -62,6 +62,52 @@ final class Talks
         );
     }
 
+    /**
+     * The talks library: public talks matching the filters, newest edition
+     * first and in programme order within it. Returns [total, talks on this page].
+     * $f: city (slug), year, q (search), video (only talks with a recording)
+     */
+    public static function library(array $f, int $offset, int $limit): array
+    {
+        [$search, $params] = Text::searchWhere('t.search_text', (string) ($f['q'] ?? ''));
+        $where = self::VISIBLE . " AND $search";
+        if (!empty($f['city'])) {
+            $where .= ' AND c.slug = ?';
+            $params[] = $f['city'];
+        }
+        if (!empty($f['year'])) {
+            $where .= ' AND e.year = ?';
+            $params[] = (int) $f['year'];
+        }
+        if (!empty($f['video'])) {
+            $where .= " AND t.video_url <> ''";
+        }
+        $total = (int) Db::value(
+            "SELECT COUNT(*) FROM talks t JOIN events e ON e.id = t.event_id JOIN cities c ON c.id = e.city_id WHERE $where",
+            $params,
+        );
+        $rows = Db::all(
+            self::SELECT . " LEFT JOIN slots s ON s.talk_id = t.id
+             WHERE $where ORDER BY e.date DESC, s.starts_at, t.id LIMIT ? OFFSET ?",
+            [...$params, $limit, $offset],
+        );
+        $talks = array_map([self::class, 'shape'], $rows);
+        $speakers = self::speakers(array_column($talks, 'id'));
+        foreach ($talks as &$t) {
+            $t['speakers'] = $speakers[$t['id']] ?? [];
+        }
+        return [$total, $talks];
+    }
+
+    /** Numbers for the library's introduction: public talks, and how many have a recording. */
+    public static function counts(): array
+    {
+        return Db::one(
+            "SELECT COUNT(*) AS talks, SUM(t.video_url <> '') AS videos
+             FROM talks t JOIN events e ON e.id = t.event_id WHERE " . self::VISIBLE
+        );
+    }
+
     /** Published speakers of the given talks: talk id => [speaker with 'photo', ...] in order. */
     public static function speakers(array $talkIds): array
     {

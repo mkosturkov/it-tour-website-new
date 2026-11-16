@@ -59,4 +59,24 @@ final class Text
     {
         return mb_strtolower(trim(preg_replace('/\s+/u', ' ', $q)), 'UTF-8');
     }
+
+    /**
+     * SQL that finds every word of a search query in a search_text column:
+     * [condition, params]. Each word matches as typed or transliterated, so
+     * "наков" and "nakov" both find "Светлин Наков". Empty query: ['1', []].
+     */
+    public static function searchWhere(string $column, string $q): array
+    {
+        $words = array_slice(array_filter(explode(' ', self::searchQuery($q)), 'strlen'), 0, 8);
+        $sql = [];
+        $params = [];
+        foreach ($words as $word) {
+            $forms = array_values(array_unique([$word, self::transliterate($word)]));
+            $sql[] = '(' . implode(' OR ', array_fill(0, count($forms), "$column LIKE ? ESCAPE '\\'")) . ')';
+            foreach ($forms as $f) {
+                $params[] = '%' . addcslashes($f, '%_\\') . '%';
+            }
+        }
+        return [$sql ? implode(' AND ', $sql) : '1', $params];
+    }
 }

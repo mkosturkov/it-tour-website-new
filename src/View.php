@@ -49,6 +49,11 @@ final class View
             $content = self::render($page->template, $page->data);
             $body = self::render('layout', $page->data + ['content' => $content]);
         }
-        return new Response($page->status, $body);
+        $res = new Response($page->status, $body);
+        if ($page->partial) {
+            // The same address gives the whole page or only its results; caches must keep both.
+            $res->headers['Vary'] = 'X-Partial';
+        }
+        return $res;
     }
 }

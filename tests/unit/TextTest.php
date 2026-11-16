@@ -30,4 +30,11 @@ return [
         ok(str_contains(Text::searchText('Наков'), 'nakov'), 'Latin form missing');
         same('graphql', Text::searchText('GraphQL'));
     },
+    'search conditions: every word, typed or transliterated, LIKE wildcards escaped' => function () {
+        [$sql, $params] = Text::searchWhere('x', '  Наков   GO ');
+        same("(x LIKE ? ESCAPE '\\' OR x LIKE ? ESCAPE '\\') AND (x LIKE ? ESCAPE '\\')", $sql);
+        same(['%наков%', '%nakov%', '%go%'], $params);
+        same(['%100\\%%'], Text::searchWhere('x', '100%')[1]);
+        same(['1', []], Text::searchWhere('x', '   '));
+    },
 ];

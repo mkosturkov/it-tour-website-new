@@ -7,6 +7,7 @@
  *   $description  meta description
  *   $nav          key of the active menu item (stops, talks, speakers, archive, team)
  *   $canonical    absolute canonical URL
+ *   $noindex      true: search engines may follow the links but not index the page
  *   $colour       colour for this page on a city site (an edition's own colour);
  *                 defaults to the city's latest colour
  */
@@ -42,6 +43,8 @@ $classes = $city ? 'city' . (ink_for($colour) !== '#ffffff' ? ' ink-dark' : '') 
 <?php endif ?>
 <?php if (!Config::get('production')): ?>
 <meta name="robots" content="noindex, nofollow">
+<?php elseif (!empty($noindex)): ?>
+<meta name="robots" content="noindex, follow">
 <?php endif ?>
 <?php if (!empty($canonical)): ?>
 <link rel="canonical" href="<?= e($canonical) ?>">
