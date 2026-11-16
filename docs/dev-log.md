@@ -179,3 +179,23 @@ The user decided (2026-11-16) that no colour is corrected for contrast for now, 
 **Tests:** the talk page test checks both links and that the iframe address has no autoplay; a PHP page test fakes a live event with live and stream links.
 
 **Decided later the same day:** new talks' still images (see decisions.md): when an editor saves a talk with a YouTube link, the server downloads the still once; if that fails the card shows the edition colour and saving retries; editors can upload their own. Until the admin exists, a `bin/video-stills` command would do the same for talks missing a still.
+
+## 2026-11-16 · Video matching
+
+**What:** `bin/match-videos` matches talks without a video to the IT Tour YouTube channel and writes `import/video-matches.csv` (committed; see `import/README.md`). `bin/import` applies it; `bin/fetch` downloads stills for the matched videos.
+
+**Why / how:**
+- The channel's lists were saved with yt-dlp (installed in a throwaway virtualenv, not a project dependency) into `data/import/youtube/`: 722 uploads, 26 livestreams, 48 playlists. The commands are in the script's header.
+- Per edition: candidates are the edition's playlist ("VarnaConf 2023"), or the whole channel when there is none (then the speaker must match). Video titles are split into a title and a speaker part after removing numbering ("07. ", "006 ") and edition suffixes; old playlists also use "Speaker - Title", "Speaker: Title" and "Title Speaker". Titles are compared lowercased and transliterated (`similar_text`); surnames are compared in Latin, and for very common surnames (Иванов, Георгиев…) the first name must match too. Best scores win; each video is used once.
+- Status per row: `sure`, `likely`, `check`; people set `ok` or `wrong`. Existing rows are never changed by later runs, so the match isn't redone.
+- Lightning talk slots matched to a recording become talks on import.
+- Result: 156 matches (147 sure, 2 likely, 7 check); talks with video went from 201 to 357. Spot check of 25 sure rows: all correct. Known wrong: TarnovoConf 2017 "За стартъпите и погребенията" → "Yana Petrova - Za ideite i podkrepata" (status `check`).
+
+**Gotchas:**
+- Old playlists sometimes have several lightning talk videos ("Lightning talks 01/02 – BurgasConf 2022"); only one is linked to the edition's lightning slot.
+- PHP 8.4+ wants the `escape` argument for `fgetcsv`/`fputcsv`; `escape: ''` gives standard CSV.
+
+**Open:**
+- **2024, 2025 and most of 2026 have no per-talk videos on the channel**, only full-day livestream recordings (one or more per edition, 7–8 hours). How to link them is to be decided.
+- TarnovoConf 2017 and 2018 and RuseConf 2017 found almost nothing: no playlists, and the channel titles don't match.
+- The `check` and `likely` rows need a person to look at them.

@@ -61,7 +61,7 @@ test.describe('talk page', () => {
 
   test('other talks of the edition and a way back to it', async ({ page }) => {
     await page.goto(main('/talks/179-testing-rest-services-with-rest-assured'));
-    await expect(page.locator('.aside-list a')).toHaveCount(6);
+    await expect(page.locator('.aside-list a')).toHaveCount(7);   // 6 talks + the lightning talks recording
     await expect(page.getByRole('link', { name: 'Към изданието' })).toHaveAttribute('href', city('plovdivconf', '/archive/2017'));
     await expectNoSidewaysScroll(page);
     await expectAccessible(page);

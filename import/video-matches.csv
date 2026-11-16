@@ -1,0 +1,157 @@
+edition,time,title,youtube_id,video_title,source,score,status
+burgasconf.com/2015,10:10,Containers,zkB9uslCDb4,"01. Marian Marinov - Containers",playlist,100,sure
+burgasconf.com/2015,11:00,"Zero Downtime Deployment with Relational Databases",XGCrbGYzXYE,"02. Neda Kalcheva - Zero Downtime Deployment with Relational Databases",playlist,100,sure
+burgasconf.com/2015,13:20,Wearables,3HFDMcp4vOw,"04. Stoyan Uzunov - Wearables",playlist,100,sure
+burgasconf.com/2015,14:10,"Swift in the Real World",Kud_BFCLDWc,"05. Galin Kardzhilov - Swift in the Real World",playlist,100,sure
+ruseconf.com/2015,10:10,"Разработка на софтуер чрез употреба на виртуални машини",LQb2frckTdo,"01. Разработка на софтуер чрез употреба на виртуални машини - Вихрен Ганев",playlist,100,sure
+tarnovoconf.com/2016,11:00,"Риба, рак или щука - автори на техническа документация",Jt8yZi7R5Oc,"02. Риба, рак или щука   автори на техническа документация - Десислава Михайлова",playlist,84,check
+tarnovoconf.com/2016,11:50,"iOS 9 for Develepers",z9D0Kdg9_Dg,"03. iOS 9 for Develepers - Богдан Ковачев",playlist,100,sure
+tarnovoconf.com/2016,13:20,"Непознатите виртуални светове",irCbRXLOpcI,"04. Непознатите виртуални светове - Стефан Ставрев",playlist,100,sure
+tarnovoconf.com/2016,14:10,"Отново микроконтролери - или как да направим for цикъл като ползваме хардуера. Паралелна обработка и работа с данни.",iidowzt7P2A,"05. Отново микроконтролери или как да направим for цикъл като ползваме хардуера  Паралелна обработкa",playlist,92,sure
+tarnovoconf.com/2016,16:00,"Писна ми от бизнес програмиране: Първи стъпки в правене на игри с Unity3D",QpNXcoCcFUw,"07. Писна ми от бизнес програмиране - Лъчезар Канавров, Стоил Стойчев",playlist,70,check
+plovdivconf.com/2017,16:50,"Lightning Talks",J60-IPCIaXY,"09. Lightning Talks - 01 - PlovdivConf 2017",playlist,100,sure
+tarnovoconf.com/2017,13:10,"За стартъпите и погребенията",KiovLWJVUEc,"07. 01. Yana Petrova - Za ideite i podkrepata",channel,73,check
+burgasconf.com/2018,10:10,"Automate your understanding",8cdJk7fdiQ4,"Automate your understanding - Костадин Голев",playlist,100,sure
+burgasconf.com/2018,11:00,"Splitting the Monolith",Ll2cxMVcQjo,"Splitting the Monolith - Ростислав Георгиев",playlist,100,sure
+burgasconf.com/2018,11:50,"Как да направим образцово multitenant SaaS приложение за AWS",ha66JXVrWQ4,"Как да направим образцово multitenant SaaS приложение за AWS - Владимир Джувинов",playlist,100,sure
+burgasconf.com/2018,13:20,"Ethereum - the Future of Blockchain",D54-kD1sCD0,"Ethereum - the Future of Blockchain - Илин Казанджиев",playlist,100,sure
+burgasconf.com/2018,14:10,"Flash памети за компютри",IF74A-1HNF8,"Flash памети за компютри -  Цветан Узунов",playlist,100,sure
+burgasconf.com/2018,15:10,"Зад кулисите на един STEM експериментариум",eIXEII7mbfA,"Зад кулисите на един STEM експериментариум - Георги Георгиев",playlist,100,sure
+burgasconf.com/2018,16:00,"Lightning talks",E1xve0ITgUE,"Lightning talk  01 PSD2   Владимир Джувинов",playlist,100,sure
+burgasconf.com/2018,16:30,"Алгоритмите за дегустиране на виното",hCLBWmJWvzg,"Алгоритмите за дегустиране на виното -  Ирина Генова",playlist,100,sure
+plovdivconf.com/2018,11:00,"JSS бъдеще в миналото",-M6ZgNWV6d0,"1  Стоян Германов  - JSS бъдеще в миналото",playlist,100,sure
+plovdivconf.com/2018,12:00,"Wendelin - Big Data Platform and edge computing using Nvidia TX2 board",aLpL-KcP6PU,"2. Иван Тягов: Wendelin - Big Data Platform and edge computing using Nvidia TX2 board",playlist,100,sure
+plovdivconf.com/2018,14:00,"Kernel Shark 1.0",DANQshV7ixU,"3. Йордан Караджов - Kernel Shark 1.0",playlist,100,sure
+plovdivconf.com/2018,15:00,"Тренировки за ИТ специалисти",6xqoEeWtk0U,"4. Лазар Радков - Тренировки за ИТ специалисти",playlist,100,sure
+plovdivconf.com/2018,16:00,"SQ-UI Made in Plovdiv",mU7xag5mNhg,"5. Самуил Господинов: SQ UI Made in Plovdiv",playlist,100,sure
+plovdivconf.com/2018,16:25,"Как Open Source технологиите могат да помогнат Вашият град да стане по-добро място за живеене",BvK6s5coJeQ,"6. Цветан Узунов: Как Open Source технологиите могат да помогнат Вашият град да стане по добро място",playlist,100,sure
+plovdivconf.com/2018,17:00,"Lightning Talks",DJhYQvEbDbo,"Lightning talk 1. Андрей Радев: 5 минути Vim",playlist,100,sure
+ruseconf.com/2018,11:00,"HTTP/3 and QUIC",efJl6aPGuPU,"1  Мариян Маринов  HTTP 3 0 and QUIC",playlist,100,sure
+ruseconf.com/2018,12:00,"Дигитален маркетинг за програмисти",LQpQFs14flQ,"2  Вихрен Ганев  Дигитален маркетинг за програмисти",playlist,100,sure
+ruseconf.com/2018,14:00,"BTRFS overview",W-NJKec70ik,"3  Николай Борисов  BTRFS overview",playlist,100,sure
+ruseconf.com/2018,15:00,"Running a coding academy in the balkans",HpjJX2lDlEA,"4  Радослав Георгиев  Running a coding academy in the balkans",playlist,100,sure
+ruseconf.com/2018,16:00,"Create your own furniture with FreeCad+Python",0g5UE_1JHIY,"5  Николай Маринов  Create your own furniture with FreeCad+Python",playlist,100,sure
+ruseconf.com/2018,17:00,"VR Environment за “NASA Space Apps 2018”",ijSoCxOcg74,"6  Николай Маринов и Стефан Стефанов  VR Environment за  NASA Space Apps 2018",playlist,91,likely
+ruseconf.com/2018,18:00,"Lightning Talks",Q6kZb8aKi4s,"Lightning Talk 1  Николай Борисов  RISC V",playlist,100,sure
+tarnovoconf.com/2018,16:20,"Lightning talks",jugZYhlvzuc,"009 Lightning talks",playlist,100,sure
+varnaconf.com/2018,10:10,"Scalable web apps for patients",DYNkbK_ztHY,"Scalable web apps for patients - Красимир Цонев",playlist,100,sure
+varnaconf.com/2018,11:00,"Functions as a Service - The easy way",P01hyzrZGPY,"Functions as a Service - The easy way  - Ивана Йовчева",playlist,100,sure
+varnaconf.com/2018,11:50,"Deep dive into the JS call stack",z3Uk5Xk_gNM,"Deep dive into the JS call stack - Иван Димитров",playlist,100,sure
+varnaconf.com/2018,13:30,"Mitigating Network Attacks",HJTl7XDFIH0,"Mitigating Network Attacks -  Мариян Маринов",playlist,100,sure
+varnaconf.com/2018,14:20,"Open Source && Работа в екип",3l8wvjp0NL8,"Open Source && Работа в екип - Димитър Йорданов",playlist,100,sure
+varnaconf.com/2018,15:30,"Международните отношения в киберпространството",OoutpkAc6Fw,"Международните отношения в киберпространството - Венета Йосифова",playlist,100,sure
+varnaconf.com/2018,16:20,"GDPR - още въпроси и отговори",SsHyU3MgGwg,"GDPR -  още въпроси и отговори - Валентин Русалийски",playlist,100,sure
+burgasconf.com/2019,17:40,"Lightning Talks",614V6AohJ40,"010 Lightning Talk",playlist,100,sure
+plovdivconf.com/2019,10:20,"A Hipster Approach to Modern Java Development",EaNiGcOYc7g,"002 A Hipster Approach to Modern Java Developmen Nayden Gochev",playlist,100,sure
+plovdivconf.com/2019,10:50,"Developing Aeternity Blockchain Smart Contracts",X2BR8vFos9Y,"003 Developing Aeternity Blockchain Smart Contracts Milen Radkov",playlist,100,sure
+plovdivconf.com/2019,11:30,"PWA - Приложения в Браузъра",gyCXwYqIh0A,"004 PWA   Приложения в Браузъра Toma Velev",playlist,93,likely
+plovdivconf.com/2019,12:00,"Мястото на IT технологиите във Възраждането на българските села",kOjT9v-jGbU,"005 Мястото на IT технологиите във Възраждането на българските села Vasil Kendov",playlist,100,sure
+plovdivconf.com/2019,12:30,"Кариерно развитие за напреднали или какво НЕ! трябва да правим за да бъдем успешни.",ZFalHxkrdvc,"006 Кариерно развитие за напреднали или какво НЕ трябва да правим за да бъдем успешни Димитър Йорда",playlist,92,sure
+plovdivconf.com/2019,14:00,"EIP with Apache Camel",bXOoQbbDjWU,"007 EIP with Apache Camel Стефан Ангелов",playlist,100,sure
+plovdivconf.com/2019,14:45,"The road to QUIC and HTTP/3",hArIn4Hna9s,"008 The road to QUIC and HTTP 3 Рангел Иванов",playlist,100,sure
+plovdivconf.com/2019,15:30,"ftrace - какво се крие под капака на линукското ядро",_HixjDxwllM,"009 ftrace   какво се крие под капака на линукското ядро Цветомир Стоянов",playlist,100,sure
+plovdivconf.com/2019,16:15,"On hosts and guests: Kernel tracing of VMs",wTsGLq_wIAw,"010 On hosts and guests Kernel tracing of VMs Slavomir Kaslev",playlist,100,sure
+plovdivconf.com/2019,17:00,"Сигурност при ARM базирани устройствата, криптиране, сигурен boot и Trust zone при ARM",RvCMVjdvM2Y,"011 Сигурност при ARM базирани устройствата, криптиране, сигурен boot и Trust zone при ARM Цветан Уз",playlist,94,sure
+plovdivconf.com/2019,17:20,"Lightning Talks",5D6hwh0o7F4,"012 Lightning Talks",playlist,100,sure
+ruseconf.com/2019,11:00,"Статичен анализ за кеф и работа",E0B9gQ_0VF8,"001 Статичен анализ за кеф и работа - Александър Тодоров",playlist,100,sure
+ruseconf.com/2019,11:30,"How Pattern Object Model saved my life",BjsWxkMI5Wk,"002 How Pattern Object Model saved my life - Gjore Zaharchev",playlist,100,sure
+ruseconf.com/2019,12:10,"Обектно-ориентиран дизайн",1X-wyt0rwnQ,"003 Обектно ориентиран дизайн - Мариана Боздуганова",playlist,100,sure
+ruseconf.com/2019,15:00,"PostgreSQL indexes",xjIXgvd5cVo,"005 PostgreSQL indexes - Вихрен Ганев",playlist,100,sure
+ruseconf.com/2019,16:00,"NB-IoT нова технология за IoT която има потенциал да измести LoRa и SigFox",nTQUCj6DTKg,"006 NB-IoT нова технология за IoT която има потенциал да измести LoRa и SigFox - Цветан Узунов",playlist,100,sure
+ruseconf.com/2019,17:45,"Lightning Talks",zdDu4ivXAJ4,"008 Lightning Talks",playlist,100,sure
+tarnovoconf.com/2019,11:00,"Въведение в Go",v8zBdgGRKKQ,"002 Въведение в Go Ivan Vankov",playlist,100,sure
+tarnovoconf.com/2019,13:00,"The NLP approach for detecting phishing URLs",UP2UeFYn5AQ,"003 The NLP approach for detecting phishing URLs Георги Караджов",playlist,100,sure
+tarnovoconf.com/2019,14:00,"Network Service Mesh in a Nutshell",dA-vTZ-Ndc4,"004 Network Service Mesh in a Nutshell Радослав Димитров",playlist,100,sure
+tarnovoconf.com/2019,15:00,"kpatch - Linux Kernel livepatching",uEdvl7sQzqU,"005 kpatch   Linux Kernel livepatching Ангел Щилянов",playlist,100,sure
+tarnovoconf.com/2019,16:00,"Smart Home Basics",H7Mh-sdEoRE,"006 Smart Home Basics",playlist,100,sure
+tarnovoconf.com/2019,17:00,"Lightning Talks",y56s-d73Ic4,"007 Lightning Talks",playlist,100,sure
+varnaconf.com/2019,11:00,"Parallel processing with WebWorkers - all you need to know",g0MPWgWULsw,"001 Parallel processing with WebWorkers   all you need to know Александър Михайлов",playlist,100,sure
+varnaconf.com/2019,11:55,"Shipping Pseudocode to Production",z7WTEWD5s4M,"002 Shipping Pseudocode to Production Добромир Николов",playlist,100,sure
+varnaconf.com/2019,14:45,"Design First API Development With OpenAPI And Friends",WZ9mUw0PnBs,"003 Design First API Development With OpenAPI And Friends Боян Йорданов",playlist,100,sure
+varnaconf.com/2019,15:40,"Keeping secrets secret",5sjbXcgBVuY,"004 Keeping secrets secret Даниел Иванов",playlist,100,sure
+varnaconf.com/2019,16:35,"Browser grooves - Short introduction to WebAudio and WebMIDI",nv8RceX6I8Q,"005 Browser grooves   Short introduction to WebAudio and WebMIDI Александър Миланов",playlist,100,sure
+varnaconf.com/2019,17:30,"Chaos Cloud (lightning talk)",IQu-2pC-7Yc,"006 Chaos Cloud lightning talk Борис Симандов",playlist,100,sure
+varnaconf.com/2019,17:30,"Lightning Talks",N99Rl7LjEqM,"007 lightning talk",playlist,100,sure
+burgasconf.com/2022,11:00,"Modular Monolith Architecture",MyDP1fqHmWc,"Modular Monolith Architecture – Никола Нецов",playlist,100,sure
+burgasconf.com/2022,11:50,"Introduction to Deep Learning",RrHf1gtqV4w,"Introduction to Deep Learning – Евгени Дюлгеров",playlist,100,sure
+burgasconf.com/2022,12:40,"Building the HackConf Streaming Platform",E_L9eYX5y0g,"Building the HackConf Streaming Platform – Даниел Гошев",playlist,100,sure
+burgasconf.com/2022,14:30,"IT извън София? Мит или реалност?",nqASvMiLu1k,"IT извън София? Мит или реалност? – Божидар Бошнаков",playlist,100,sure
+burgasconf.com/2022,15:00,"Технологично предприемачество от малки градове 101",UvNvmHSbdDY,"Технологично предприемачество от малки градове 101 – Господин Бодуров",playlist,100,sure
+burgasconf.com/2022,16:20,"Zen and the art of testing a distributed storage system",OJQa1PzaW0c,"Zen and the art of testing a distributed storage system – Тодор Танев",playlist,100,sure
+burgasconf.com/2022,17:10,"Rust: настояще и бъдеще",u7VW5Q2YaBI,"Rust: настояще и бъдеще – Андрей Радев",playlist,100,sure
+burgasconf.com/2022,18:00,"Lightning talks",AT1aRkb7qCs,"Lightning talks 01 – BurgasConf 2022",playlist,100,sure
+plovdivconf.com/2022,11:00,"Microservices 101",oWaoZUjknqk,"Microservices 101 - Красимир Байлов",playlist,100,sure
+plovdivconf.com/2022,11:50,"Discovering Governing Equations from Partial Measurements with Deep Delay Autoencoders",67P5yx66oQg,"Discovering Governing Equations from Partial Measurements with Deep Delay Autoencoders - Вълко Милев",playlist,100,sure
+plovdivconf.com/2022,12:40,"Оптимизиране на ефективността на локалните облаци в контекста на нарастващите разходи за електроенергия и недостиг на хардуер.",jO3O20GEoFA,"Оптимизиране на ефективността на локалните облаци ..... - Николай Тенев",playlist,66,check
+plovdivconf.com/2022,14:30,"Manual QA in a Full-stack World: What’s the next step in your career development аs a QA?",Xijf7JX4U8U,"Manual QA in a Full-stack World. - Георги Иванов и Диляна Тоцева",playlist,63,check
+plovdivconf.com/2022,15:20,"Разпределена софтуерна архитектура за сериозни игри DiAS.",YUwjS0hNKeE,"Разпределена софтуерна архитектура за сериозни игри DiAS. - Стефан Ставрев",playlist,100,sure
+plovdivconf.com/2022,16:20,"Spring Cloud Native Application",8xbZjn1fw80,"Spring Cloud Native Application - Стефан Ангелов",playlist,100,sure
+plovdivconf.com/2022,17:10,"Privacy by Design & Privacy Engineering",Xy-jyCwT04o,"Privacy by Design end Privacy Engineering - Цветина Лунгарова",playlist,100,sure
+plovdivconf.com/2022,18:00,"Lightning talks",-vSx6puV8Dc,"Lightning talks-01",playlist,100,sure
+ruseconf.com/2022,11:00,"Building a CI/CD System with GitHub Actions",ZZ1f32pNYVs,"Building a CI/CD System with GitHub Actions – Светлин Наков",playlist,100,sure
+ruseconf.com/2022,11:50,"AWS Cloud and DevOps Engineer - demystified",uOPMtGdNttw,"AWS Cloud and DevOps Engineer - demystified – Тодор Тодоров",playlist,100,sure
+ruseconf.com/2022,12:40,"HashiCorp Nomad: Orchestration Made Easy",oDrTCkUudNU,"HashiCorp Nomad: Orchestration Made Easy – Вихрен Ганев",playlist,100,sure
+ruseconf.com/2022,14:30,"State of JavaScript tooling in 2022",u3XHq14xtt0,"State of JavaScript tooling in 2022 – Александър Кондов",playlist,100,sure
+ruseconf.com/2022,15:20,"Tailwind - a utility-first CSS framework for rapid UI development",VkYzsNWLe6Y,"Tailwind - a utility-first CSS framework for rapid UI development – Даяна Илиева",playlist,100,sure
+ruseconf.com/2022,16:20,"Софтуерни приложения за управление на производствени процеси",fNgujZE34L4,"Софтуерни приложения за управление на производствени процеси – Камен Кръстев",playlist,100,sure
+ruseconf.com/2022,17:10,"Да изтестваш за 60 секунди",TVU1md-bno4,"Да изтестваш за 60 секунди – Петър Събев",playlist,100,sure
+ruseconf.com/2022,18:00,"Lightning talks (6 slots)",YysmU95tYLk,"Lightning talks 01 – RuseConf 2022",playlist,100,sure
+tarnovoconf.com/2022,11:00,"MySQL за начинаещи",RYIIjS6_AAs,"MySQL за начинаещи – Георги Кодинов",playlist,100,sure
+tarnovoconf.com/2022,11:50,"Бъди по-бърз с тези инструменти за продуктивност: i3wm, vim, и други",Uh0y4m0-7JY,"Бъди по-бърз с тези инструменти за продуктивност: i3wm, vim и други – Тодор Тодоров",playlist,100,sure
+tarnovoconf.com/2022,12:40,"Кариерно развитие за напреднали",Wy-g3LLzhqs,"Кариерно развитие за напреднали – Даниела Назим",playlist,100,sure
+tarnovoconf.com/2022,14:30,"OpenStack HomeLab",KzCB7uHBQt0,"OpenStack HomeLab – Калоян Радославов Котларски",playlist,100,sure
+tarnovoconf.com/2022,15:20,"Водене на преговори за начинаещи: какво научих?",2NIXBCj1934,"Водене на преговори за начинаещи: какво научих? – Любомир Филипов",playlist,100,sure
+tarnovoconf.com/2022,16:20,"Цифрова несигурност",53gJBWNMhRs,"Цифрова несигурност – Сава Чанков",playlist,100,sure
+tarnovoconf.com/2022,17:10,"Lightning talks",OXam4-wfF-0,"Lightning talks 01 – TarnovoConf 2022",playlist,100,sure
+varnaconf.com/2022,11:00,"Rust: какво, защо и как може да е толкова яко",7s60qYzlXz8,"Rust: какво, защо и как може да е толкова яко – Стефан Кънев",playlist,100,sure
+varnaconf.com/2022,11:50,"Професия front-end програмист през погледа на един front-end програмист",r8dhApoAHP8,"Професия front-end програмист през погледа на един front-end програмист – Красимир Цонев",playlist,100,sure
+varnaconf.com/2022,12:40,"Conditional HTTP requests",B_6cfkovEHg,"Conditional HTTP requests – Красен Пенчев",playlist,100,sure
+varnaconf.com/2022,14:30,"Моделиране на заплахи (Threat Modeling)",dEJlUu3Vlwc,"Моделиране на заплахи (Threat Modeling) – Богомил Шопов",playlist,100,sure
+varnaconf.com/2022,15:20,"Data Lakes - какво, кога и как",ApXH4eD1yIY,"Data Lakes: какво, кога и как – Иван Донев",playlist,100,sure
+varnaconf.com/2022,16:20,"Видове автоматизирано тестване: какъв вид да изберем спрямо проекта?",vAtA4ortf6U,"Видове автоматизирано тестване: какъв вид да изберем спрямо проекта? – Димитър Панайотов",playlist,100,sure
+varnaconf.com/2022,17:10,"Web accessibility testing tools",7aK9M0l4tMQ,"Web accessibility testing tools – Елена Жекова",playlist,100,sure
+varnaconf.com/2022,18:00,"Lightning talks",tK4JuVFHEQk,"Lightning talks 01 – VarnaConf 2022",playlist,100,sure
+burgasconf.com/2023,11:00,"How to plan a feature",G_rtQKa9XtE,"How to plan a feature – Радослав Станков",playlist,100,sure
+burgasconf.com/2023,11:50,"Как да убием и последната дискета с Open Source технологии?",o0728SPwA2w,"Как да убием и последната дискета с Open Source технологии? – Леон Анави",playlist,100,sure
+burgasconf.com/2023,12:40,"PHP and JavaScript are dead. Long live PHP and JavaScript",zVNAwqxGvvY,"PHP and JavaScript are dead. Long live PHP and JavaScript – Христо Чонов",playlist,100,sure
+burgasconf.com/2023,14:30,"Компютърно зрение",ZoR-HhHoZ_s,"Компютърно зрение – Георги Маринов",playlist,100,sure
+burgasconf.com/2023,15:20,"Translation interface on steroids",yPAMtrvIc0o,"Translation interface on steroids – Любомир Филипов",playlist,100,sure
+burgasconf.com/2023,16:20,"Access Control Models",NnISO96u-zk,"Access Control Models – Йордан Танев",playlist,100,sure
+burgasconf.com/2023,17:10,"Как се прави Exploratory Testing",-8MaWMMkfRM,"Как се прави Exploratory Testing – Петър Събев",playlist,100,sure
+burgasconf.com/2023,18:00,"Lightning talks",AXUxJYVY55o,"Lightning talks – BurgasConf 2023",playlist,100,sure
+plovdivconf.com/2023,11:00,"Интегриране на OpenAI в решения за данни",I1OX6ONZ2tw,"Интегриране на OpenAI в решения за данни – Иван Донев",playlist,100,sure
+plovdivconf.com/2023,11:50,"Building Data Lakes",OgmSB5GuUwk,"Building Data Lakes – Стефан Ангелов",playlist,100,sure
+plovdivconf.com/2023,12:40,"TRIM/Discard в системи за облачно съхранение, базирани на KVM - какво е това, защо ни е нужно и как да го постигнем?",FfzZ5VkTViA,"TRIM/Discard в системи за облачно съхранение, базирани на KVM – Николай Тенев",playlist,79,check
+plovdivconf.com/2023,14:30,"Building Test Automation Framework With Groovy, Geb, and Spock",S-1sVoHPQTY,"Building Test Automation Framework With Groovy, Geb, and Spock – Георги Иванов",playlist,100,sure
+plovdivconf.com/2023,15:20,"Въведение в ембедед програмирането за микроконтролери STM32",3r6CRNf8Bh4,"Въведение в embedded програмирането за микроконтролери STM32 – Георги Маринов",playlist,100,sure
+plovdivconf.com/2023,16:20,"Въведение в (Machine|Deep) Learning",JGeQLxC0QFA,"Intro to machine learning/deep learning – Стефан Кънев",playlist,77,check
+plovdivconf.com/2023,17:10,"Що е то позитивна интелигентност и има ли тя почва у нас?",ClSZ1OK9kYM,"Що е то позитивна интелигентност и има ли тя почва у нас? – Даниела Назим",playlist,100,sure
+ruseconf.com/2023,11:00,"Welcome our new AI team",mzUah3WfEzo,"Welcome our new AI team – Вихрен Ганев",playlist,100,sure
+ruseconf.com/2023,11:50,"Unit tests: Досада или полза?",7BEbF3vayvE,"Unit tests: Досада или полза? – Кристиян Ташев",playlist,100,sure
+ruseconf.com/2023,12:40,"Меки умения – отчетливият контур в технологична среда",hY2mSvffp8M,"Меки умения – отчетливият контур в технологична среда – Калина Петрова",playlist,100,sure
+ruseconf.com/2023,14:30,"GCP (Google Cloud Platform) за web master-и",Ou6hPasa8j4,"GCP (Google Cloud Platform) за web master-и – Красимир Цонев",playlist,100,sure
+ruseconf.com/2023,15:20,GitOps,aKlv8rRbsRE,"GitOps – Стефан Андонов",playlist,100,sure
+ruseconf.com/2023,16:20,"Asynchronous Systems Programming under Linux",WwNLuRl0r_I,"Asynchronous Systems Programming under Linux – Благовест Буюклиев",playlist,100,sure
+ruseconf.com/2023,17:10,"Orchestrating nearly 2000 Websites on a Decoupled Architecture",tYlZ2byfhP4,"Orchestrating nearly 2000 Websites on a Decoupled Architecture – Никола Бинтев",playlist,100,sure
+ruseconf.com/2023,18:00,"Lightning talks",ApN1VQRIRRw,"Lightning talks – RuseConf 2023",playlist,100,sure
+tarnovoconf.com/2023,11:00,"Cooking for geeks - 10 years later",g_Qn2x3Hrt0,"Cooking for geeks - 10 years later – Яна Петрова",playlist,100,sure
+tarnovoconf.com/2023,11:50,"Платформа за подобряване на качеството, генериране и изпълнение на автоматизирани тестове",yb5RmqT3PfE,"Платформа за подобряване на качеството, генериране и изпълнение на автомат. тестове – Тонислав Троев",playlist,100,sure
+tarnovoconf.com/2023,12:40,"Аутентикация в MySQL",hn5NHE3VJxM,"Автентикация в MySQL – Георги Кодинов",playlist,100,sure
+tarnovoconf.com/2023,14:30,"C4 Architecture Model",WGF0WjMOfQU,"C4 Architecture Model – Красимир Байлов",playlist,100,sure
+tarnovoconf.com/2023,15:20,"You may not need a Single Page Application",7rppipIRF9s,"You may not need a Single Page Application – Венцислав Николов",playlist,100,sure
+tarnovoconf.com/2023,16:20,"Бизнес анализ, или успешна кариера в софтуерния сектор без програмни умения",F-Gc9F0yif4,"Бизнес анализ, или успешна кариера в софтуерния сектор без програмни умения – Петя Петкова",playlist,100,sure
+tarnovoconf.com/2023,17:10,"Необходимото зло – изкуственият интелект",vVqY86ARWyU,"Необходимото зло – изкуственият интелект – Любомир Филипов",playlist,100,sure
+tarnovoconf.com/2023,18:00,"Lightning talks",gL7xyDl9DeM,"Lightning talks – TarnovoConf 2023",playlist,100,sure
+varnaconf.com/2023,11:00,"JavaScript: доброто, лошото и това, което работи",II3tP4_jKDk,"JavaScript: доброто, лошото и това, което работи – Красимир Цонев",playlist,100,sure
+varnaconf.com/2023,12:40,"What the Flutter (WTF) - Какво е Flutter и защо се търси?",Gt6Df2odXVQ,"What the Flutter (WTF) – Какво е Flutter и защо се търси? – Йовко Желев",playlist,100,sure
+varnaconf.com/2023,14:30,"Breath of fresh air with Svelte",hjJ-BRshDjQ,"Breath of fresh air with Svelte – Венцислав Николов",playlist,100,sure
+varnaconf.com/2023,15:20,"Microservices Design Patterns",uYi7asbsIOw,"Microservices Design Patterns – Красимир Байлов",playlist,100,sure
+varnaconf.com/2023,16:20,"CI/CD pipelines With Terraform and GitHub Actions. Why?",XkC9RG9Vgl4,"CI/CD pipelines With Terraform and GitHub Actions. Why? – Георги Филипов",playlist,100,sure
+varnaconf.com/2023,17:10,"От нула до работещо приложение с помощта на ChatGPT",rKwAJxl4_LU,"От нула до работещо приложение с помощта на ChatGPT – Трифон Трифонов",playlist,100,sure
+varnaconf.com/2023,18:00,"Lightning talks",yZlW4QO87Lk,"Lightning Talks – VarnaConf 2023",playlist,100,sure
+plovdivconf.com/2026,11:00,"AI без гурута, митове и магия: реални автоматизации",8YkV_YmROXA,"AI без гурута, митове и магия: реални автоматизации – Стефан Чеканов",channel,100,sure
+plovdivconf.com/2026,11:50,OpenClaw,SZ7Ki-1bRbs,"OpenClaw – Стефан Ставрев",channel,100,sure
+plovdivconf.com/2026,12:40,"JVM : The One Platform to Rule Them All",WGktoIDrrTw,"JVM : The One Platform to Rule Them All – Найден Гочев",channel,100,sure
+plovdivconf.com/2026,15:20,"Abstraction Gravity: We Trained the AI on Our Worst Components",nYxmG0k35-U,"Abstraction Gravity: We Trained the AI on Our Worst Components – Виолина Попова",channel,100,sure
+plovdivconf.com/2026,16:20,"Human-in-the-Loop AI Agents: как да автоматизираме DevOps без да загубим контрол",WlCl4DE-f-E,"Human-in-the-Loop AI Agents: как да автоматизираме DevOps без да загубим контрол – Ованес Будакян",channel,100,sure
+plovdivconf.com/2026,17:10,"Lightning talks",G-yY4WwScw0,"Lightning Talks – PlovdivConf 2026",channel,100,sure

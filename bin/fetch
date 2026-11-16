@@ -254,6 +254,19 @@ foreach (glob("$root/pages/*/archive/*.html") as $file) {
         $videoIds[$id] = true;
     }
 }
+// Videos matched later to talks the old site didn't link (bin/match-videos).
+$matches = dirname(__DIR__) . '/import/video-matches.csv';
+if (is_file($matches)) {
+    $fh = fopen($matches, 'r');
+    $head = fgetcsv($fh, escape: '');
+    while (($r = fgetcsv($fh, escape: '')) !== false) {
+        $r = array_combine($head, $r);
+        if ($r['status'] !== 'wrong') {
+            $videoIds[$r['youtube_id']] = true;
+        }
+    }
+    fclose($fh);
+}
 $counts['video_stills'] = 0;
 foreach (array_keys($videoIds) as $id) {
     $file = "$root/files/youtube/$id.jpg";

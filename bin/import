@@ -584,6 +584,54 @@ foreach ($editions as [$year, $host, $file]) {
     echo sprintf("%-32s %2d talks, %2d videos, %2d slides, %2d slots, %2d sponsors\n", $label, ...array_values(array_intersect_key($counts, array_flip(['talks', 'videos', 'slides', 'slots', 'sponsors']))));
 }
 
+// ---- Videos matched to talks on the YouTube channel (bin/match-videos) -----
+
+$matched = 0;
+$matchFile = APP_ROOT . '/import/video-matches.csv';
+if (is_file($matchFile)) {
+    $fh = fopen($matchFile, 'r');
+    $head = fgetcsv($fh, escape: '');
+    while (($r = fgetcsv($fh, escape: '')) !== false) {
+        $r = array_combine($head, $r);
+        if ($r['status'] === 'wrong') {
+            continue;
+        }
+        [$domain, $year] = explode('/', $r['edition']);
+        $slot = Db::one(
+            'SELECT s.*, t.id AS tid, t.video_url FROM slots s JOIN events e ON e.id = s.event_id JOIN cities c ON c.id = e.city_id
+             LEFT JOIN talks t ON t.id = s.talk_id
+             WHERE c.domain = ? AND e.year = ? AND s.starts_at = ? AND COALESCE(t.title, s.title) = ?',
+            [$domain, (int) $year, $r['time'], $r['title']],
+        );
+        if (!$slot) {
+            $warn("Video match not applied, no such talk: {$r['edition']} {$r['time']} \"{$r['title']}\"");
+            continue;
+        }
+        $url = "https://www.youtube.com/watch?v={$r['youtube_id']}";
+        $still = null;
+        $stillFile = "$in/files/youtube/{$r['youtube_id']}.jpg";
+        if (is_file($stillFile)) {
+            $still = Media::add($stillFile, $r['title'], '', 16 / 9, $url);
+        }
+        if ($slot['tid']) {
+            if ($slot['video_url'] === null) {
+                Db::run('UPDATE talks SET video_url = ?, video_still_media_id = ? WHERE id = ?', [$url, $still, $slot['tid']]);
+                $matched++;
+            }
+        } else {
+            // A lightning talks slot with a recording becomes a talk, like the old site's ones with videos.
+            $talkId = Db::insert('talks', [
+                'event_id' => $slot['event_id'], 'title' => $slot['title'], 'slug' => Text::slug($slot['title']),
+                'video_url' => $url, 'video_still_media_id' => $still,
+                'search_text' => Text::searchText($slot['title']), 'published' => 1,
+            ]);
+            Db::run("UPDATE slots SET kind = 'talk', title = '', talk_id = ? WHERE id = ?", [$talkId, $slot['id']]);
+            $matched++;
+        }
+    }
+    fclose($fh);
+}
+
 $pdo->commit();
 
 // ---- Report ----------------------------------------------------------------
@@ -592,7 +640,7 @@ echo "\nTotals\n";
 foreach (['cities', 'events', 'talks', 'slots', 'speakers', 'sponsors', 'sponsorships', 'media'] as $t) {
     printf("  %-13s %d\n", $t, Db::value("SELECT COUNT(*) FROM $t"));
 }
-printf("  %-13s %d\n", 'with video', Db::value('SELECT COUNT(*) FROM talks WHERE video_url IS NOT NULL'));
+printf("  %-13s %d (%d from import/video-matches.csv)\n", 'with video', Db::value('SELECT COUNT(*) FROM talks WHERE video_url IS NOT NULL'), $matched);
 printf("  %-13s %d\n", 'no talks', Db::value('SELECT COUNT(*) FROM speakers s WHERE NOT EXISTS (SELECT 1 FROM talk_speakers ts WHERE ts.speaker_id = s.id)'));
 
 echo "\nPossible duplicate speakers (same name, different numbers)\n";

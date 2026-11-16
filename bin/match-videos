@@ -1,0 +1,257 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Matches talks that have no video to the recordings on the IT Tour YouTube
+ * channel, and writes the result to import/video-matches.csv (committed), so
+ * the match never has to be run again: bin/import reads that file.
+ *
+ * Input: the channel's lists in data/import/youtube/, saved with yt-dlp:
+ *   yt-dlp --flat-playlist -J https://www.youtube.com/channel/UCti0I5OyGAtFlkFIZ5Kzp9g/videos    > videos.json
+ *   yt-dlp --flat-playlist -J https://www.youtube.com/channel/UCti0I5OyGAtFlkFIZ5Kzp9g/playlists > playlists.json
+ *   and for each playlist:  yt-dlp --flat-playlist -J https://www.youtube.com/playlist?list=<id> > playlists/<id>.json
+ *
+ * How it matches, per edition:
+ *  - candidates are the videos of the edition's playlist ("VarnaConf 2023"), or,
+ *    for editions without one, every channel video not used elsewhere;
+ *  - video titles look like "Title – Speaker"; the title part is compared with
+ *    the talk title (both lowercased and transliterated), and the speaker part
+ *    with the talk's speakers;
+ *  - "Lightning talks – VarnaConf 2023" matches the edition's lightning talks slot;
+ *  - each video is used once, best scores first.
+ *
+ * Status column: sure / likely / check (set here, by confidence). People
+ * reviewing the file change it to ok or wrong; wrong rows are ignored by the
+ * import. Rows already in the file are kept as they are on later runs.
+ */
+
+declare(strict_types=1);
+
+require dirname(__DIR__) . '/src/autoload.php';
+
+use ItTour\Db;
+use ItTour\Text;
+
+$yt = APP_ROOT . '/data/import/youtube';
+$out = APP_ROOT . '/import/video-matches.csv';
+$columns = ['edition', 'time', 'title', 'youtube_id', 'video_title', 'source', 'score', 'status'];
+
+if (!is_file("$yt/videos.json")) {
+    fwrite(STDERR, "No data/import/youtube/videos.json: see the comment at the top of this script.\n");
+    exit(1);
+}
+
+// ---- Existing file: kept as is --------------------------------------------
+
+$rows = [];
+$usedVideos = [];
+if (is_file($out)) {
+    $fh = fopen($out, 'r');
+    $head = fgetcsv($fh, escape: '');
+    while (($r = fgetcsv($fh, escape: '')) !== false) {
+        $row = array_combine($head, $r);
+        $rows[$row['edition'] . '|' . $row['time'] . '|' . $row['title']] = $row;
+        if ($row['status'] !== 'wrong') {
+            $usedVideos[$row['youtube_id']] = true;
+        }
+    }
+    fclose($fh);
+}
+
+// ---- YouTube lists -----------------------------------------------------------
+
+function entries(string $file): array
+{
+    $d = json_decode((string) file_get_contents($file), true);
+    $out = [];
+    foreach ($d['entries'] ?? [] as $e) {
+        if (!empty($e['id']) && !empty($e['title'])) {
+            $out[$e['id']] = $e['title'];
+        }
+    }
+    return $out;
+}
+
+$channel = entries("$yt/videos.json");
+$playlists = [];   // "varnaconf 2023" => [id => title]
+foreach (json_decode((string) file_get_contents("$yt/playlists.json"), true)['entries'] ?? [] as $p) {
+    $file = "$yt/playlists/{$p['id']}.json";
+    if (is_file($file) && preg_match('/^(\w+conf)\s+(\d{4})$/i', trim($p['title']), $m)) {
+        $playlists[strtolower($m[1] . ' ' . $m[2])] = entries($file);
+    }
+}
+
+/** Lowercase, Latin, letters and digits only, single spaces. */
+function norm(string $s): string
+{
+    $s = Text::transliterate($s);
+    $s = preg_replace('/[^a-z0-9]+/', ' ', $s);
+    return trim($s);
+}
+
+/** Similarity of two texts, 0–100. */
+function sim(string $a, string $b): float
+{
+    [$a, $b] = [norm($a), norm($b)];
+    if ($a === '' || $b === '') {
+        return 0;
+    }
+    if ($a === $b) {
+        return 100;
+    }
+    similar_text($a, $b, $pct);
+    return $pct;
+}
+
+/**
+ * "Title – Speaker, Speaker" → [title, speakers], after dropping numbering
+ * such as "07. ", "006 " or "08 - 02 ". Old playlists also use "Speaker - Title",
+ * "Speaker: Title" and "Title Speaker"; for those, $names (the talk's speakers)
+ * are looked for anywhere and removed from the title part.
+ */
+function splitTitle(string $title, array $names = []): array
+{
+    $title = preg_replace('/^\s*\d+\s*[.\-]?\s*(?:\d+\s*[.\-]?\s+)?/u', '', trim($title));
+    $title = preg_replace('/\s*[–—-]\s*\w+conf\s*\d{4}\s*$/iu', '', $title);   // "… - VarnaConf 2017"
+    $parts = preg_split('/\s+[–—-]\s+|:\s+/u', $title);
+    if (count($parts) >= 2) {
+        // Whichever end names a speaker is the speaker part.
+        if ($names && speakerMatch($names, $parts[0]) && !speakerMatch($names, end($parts))) {
+            $who = array_shift($parts);
+            return [implode(' – ', $parts), $who];
+        }
+        if (speakerMatch($names, end($parts)) || !$names) {
+            $who = array_pop($parts);
+            return [implode(' – ', $parts), $who];
+        }
+    }
+    // "Title Speaker Name": take the speaker's name out of the title.
+    foreach ($names as $name) {
+        if (speakerMatch([$name], $title)) {
+            $clean = $title;
+            foreach (preg_split('/\s+/u', $name) as $w) {
+                $clean = preg_replace('/\b' . preg_quote($w, '/') . '\b/iu', '', $clean);
+            }
+            return [trim(preg_replace('/\s+/u', ' ', $clean)), $name];
+        }
+    }
+    return [$title, ''];
+}
+
+/**
+ * Does the text name any of the speakers? By surname, in Cyrillic or Latin,
+ * allowing a different ending (Иванов / Ivanov / Иванова are not confused
+ * because the first name must match too when the surname is common).
+ */
+function speakerMatch(array $names, string $who): bool
+{
+    $who = ' ' . norm($who) . ' ';
+    foreach ($names as $name) {
+        $words = explode(' ', norm($name));
+        $surname = end($words);
+        $first = $words[0];
+        if (strlen($surname) >= 3 && str_contains($who, " $surname ")
+            && (count($words) < 2 || str_contains($who, " $first ") || !in_array($surname, ['ivanov', 'georgiev', 'dimitrov', 'petrov', 'todorov', 'nikolov', 'stoyanov'], true))) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// ---- Talks and lightning slots without a video ------------------------------
+
+$events = Db::all('SELECT e.id, e.name, e.year, c.domain FROM events e JOIN cities c ON c.id = e.city_id ORDER BY e.year, e.date');
+$candidatesFound = 0;
+$newRows = 0;
+
+foreach ($events as $ev) {
+    $edition = $ev['domain'] . '/' . $ev['year'];
+    $items = Db::all(
+        "SELECT s.starts_at AS time, COALESCE(t.title, s.title) AS title, t.id AS talk_id
+         FROM slots s LEFT JOIN talks t ON t.id = s.talk_id
+         WHERE s.event_id = ? AND (
+             (t.id IS NOT NULL AND t.video_url IS NULL)
+             OR (s.talk_id IS NULL AND lower(s.title) LIKE 'light%')
+         )",
+        [$ev['id']],
+    );
+    $items = array_filter($items, fn ($i) => !isset($rows["$edition|{$i['time']}|{$i['title']}"]));
+    if (!$items) {
+        continue;
+    }
+
+    $key = strtolower($ev['name']);
+    $fromPlaylist = isset($playlists[$key]);
+    $videos = $fromPlaylist ? $playlists[$key] : $channel;
+    $source = $fromPlaylist ? 'playlist' : 'channel';
+
+    $pairs = [];
+    foreach ($items as $i => $item) {
+        $names = $item['talk_id'] ? array_column(Db::all('SELECT s.name FROM talk_speakers ts JOIN speakers s ON s.id = ts.speaker_id WHERE ts.talk_id = ?', [$item['talk_id']]), 'name') : [];
+        foreach ($videos as $id => $vtitle) {
+            if (isset($usedVideos[$id])) {
+                continue;
+            }
+            [$vt, $who] = splitTitle($vtitle, $names);
+            if (!$item['talk_id']) {
+                // Lightning talks: "Lightning Talks – VarnaConf 2023"
+                if (preg_match('/^lightn?ing/i', $vt) && ($fromPlaylist || str_contains(norm($vtitle), norm($ev['name'])))) {
+                    $pairs[] = [100.0, $i, $id, $vtitle, 'sure'];
+                }
+                continue;
+            }
+            // Videos of other editions name them ("Откриване – PlovdivConf 2026"); skip those.
+            if (preg_match('/(\w+conf)\s*(\d{4})/i', $vtitle, $m) && strtolower($m[1] . ' ' . $m[2]) !== $key) {
+                continue;
+            }
+            $score = sim($item['title'], $vt);
+            $who_ok = speakerMatch($names, $who);
+            // Without a playlist the whole channel is searched, so the speaker must match.
+            $status = match (true) {
+                $score >= 90 && ($who_ok || $fromPlaylist) => 'sure',
+                $score >= 70 && $who_ok => 'likely',
+                $score >= 45 && $who_ok && $fromPlaylist => 'check',
+                $score >= 60 && $who_ok => 'check',
+                $score >= 80 && $fromPlaylist => 'check',
+                default => null,
+            };
+            if ($status) {
+                $pairs[] = [$score + ($who_ok ? 10 : 0), $i, $id, $vtitle, $status];
+            }
+        }
+    }
+    usort($pairs, fn ($a, $b) => $b[0] <=> $a[0]);
+    $taken = [];
+    foreach ($pairs as [$score, $i, $id, $vtitle, $status]) {
+        if (isset($taken[$i]) || isset($usedVideos[$id])) {
+            continue;
+        }
+        $taken[$i] = true;
+        $usedVideos[$id] = true;
+        $item = $items[$i];
+        $rows["$edition|{$item['time']}|{$item['title']}"] = [
+            'edition' => $edition, 'time' => $item['time'], 'title' => $item['title'],
+            'youtube_id' => $id, 'video_title' => $vtitle, 'source' => $source,
+            'score' => (string) round(min($score, 100)), 'status' => $status,
+        ];
+        $newRows++;
+    }
+    $candidatesFound += count($items);
+}
+
+// ---- Write ---------------------------------------------------------------------
+
+uasort($rows, fn ($a, $b) => [substr($a['edition'], -4), $a['edition'], $a['time']] <=> [substr($b['edition'], -4), $b['edition'], $b['time']]);
+@mkdir(dirname($out), 0777, true);
+$fh = fopen($out, 'w');
+fputcsv($fh, $columns, escape: '');
+foreach ($rows as $row) {
+    fputcsv($fh, array_map(fn ($c) => $row[$c], $columns), escape: '');
+}
+fclose($fh);
+
+$byStatus = array_count_values(array_column($rows, 'status'));
+printf("Looked at %d talks and lightning slots without a video; %d new matches.\n", $candidatesFound, $newRows);
+foreach ($byStatus as $s => $n) {
+    printf("  %-7s %d\n", $s, $n);
+}
+echo "Written to import/video-matches.csv\n";
