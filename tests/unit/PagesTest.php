@@ -117,4 +117,18 @@ return [
         $res = page_with("UPDATE events SET schedule_published = 0 WHERE year = 2024", $main, '/talks?year=2024');
         ok(str_contains($res->body, 'Няма лекции'), 'talks of an unpublished programme listed');
     },
+    'home: season sponsors, newsletter and the videos switch' => function () use ($main) {
+        $sql = "INSERT INTO sponsorships (sponsor_id, year, type, sort_order) SELECT id, 2026, 'Спонсори', 1 FROM sponsors WHERE name = 'StorPool';
+                UPDATE settings SET value = 'https://example.com/newsletter' WHERE key = 'newsletter_url';
+                UPDATE settings SET value = '0' WHERE key = 'home_videos';";
+        $body = page_with($sql, $main, '/')->body;
+        ok(str_contains($body, 'id="sponsors"') && str_contains($body, 'Партньори 2026'), 'season sponsors missing');
+        ok(str_contains($body, 'id="subscribe"') && str_contains($body, 'href="https://example.com/newsletter"'), 'newsletter missing');
+        ok(!str_contains($body, 'id="videos"'), 'videos block should be off');
+    },
+    'home: an event without a map position is left off the map, not the list' => function () use ($main) {
+        $body = page_with("UPDATE cities SET lat = NULL, lng = NULL WHERE slug = 'ruse'", $main, '/')->body;
+        same(4, substr_count($body, '<g class="node'));
+        ok(str_contains($body, '<h3 lang="en">RuseConf</h3>'), 'Ruse missing from the list');
+    },
 ];

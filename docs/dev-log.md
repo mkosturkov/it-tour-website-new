@@ -244,3 +244,25 @@ The user decided (2026-11-16) that no colour is corrected for contrast for now, 
 **Open:**
 - 8 speakers have their names in Latin script, so they sort before everyone else.
 - Talk and speaker `search_text` is filled by `bin/import`; the admin will have to refresh it on save (talks: title and speaker names, so renaming a speaker touches their talks).
+
+## 2026-11-16 · Search text stays a stored column
+
+Discussed with the user: computing the Latin form during each search (no stored field, never stale) versus the stored `search_text` column. Kept the column: plain lookups, room for SQLite full-text search later, usable outside our PHP. The cost is that saving a talk or speaker must rebuild it, including the talks of a renamed speaker. **The admin's save code must do this, with a test** (decisions.md).
+
+## 2026-11-16 · Step 7: it-tour.bg homepage
+
+**What:** `src/Pages/Home.php`, `templates/pages/home.php`, `src/Season.php` (the season's stops, next stop, season state, pop-up data), `src/Map.php` (outline and projection), `partials/status.php` (season pop-up), `partials/sponsors.php` (shared with event pages), `Talks::recentVideos()`, `Sponsors::forSeason()`, `migrations/005_city_positions.sql` (`cities.lat`, `cities.lng`, set by `bin/import`). The placeholder home page is gone.
+
+**Why / how:**
+- Sections (version 1 of decisions.md section 3, minus news, team and "get involved"): hero with photo, wordmark, heading, tagline, numbers and the season's badges; stops (map + list); recent videos (setting `home_videos`); season sponsors; newsletter box (only when `newsletter_url` is set; a link to the external platform, no form).
+- **Season state** (`Season::current()`): the next stop is the first one not finished; the season is `live` when that stop is on now, `off` when none is left. Hero, stops text, badges and the map follow it: upcoming → "Виж спирките"; live → "▶ На живо: BurgasConf 2026" to the event's `#live`; off → "Сезон 2026 завърши. Датите за 2027 предстоят." (plus "Абонирай се" when the newsletter is on).
+- **Numbers are counted:** conferences already held (finished editions), first year, public talks, speakers with a public talk.
+- **Map:** the design's outline in a 1000 × 680 box. Its city dots fit a straight-line projection exactly (x = 150·lng − 3329.5, y = 9058.6 − 204·lat), so `Map::point()` uses that with each city's latitude and longitude (decisions.md: map position is copied from Google Maps). The line joins the stops in date order: solid up to the next stop, dotted after. Labels go right of the dot, or left for cities east of x = 700 (Varna, Burgas). A city without a position is left off the map but stays in the list.
+- **Videos:** one talk with a video and still from each of the four latest editions that have one (the first in the programme), so the block isn't four talks from one day.
+- **Season pop-up** on every main-site page (`View::page` adds it; city sites show their own state): next stop with "След N дни" and a link to the programme (or the event), or "На живо сега" with what's on stage. Off-season there is none. Closing it keeps it closed for the visit (`sessionStorage`, keyed by event and state, so a live pop-up still appears after closing the "next stop" one).
+
+**Gotchas:**
+- `section.tight`-style specificity again: none here, but the pop-up is `position: fixed`, so in full-page screenshots it lands mid-page; the test closes it first.
+- The test for "conferences held" must use the faked date: on 20 July 2026 it's 59, not 62.
+
+**Open:** see decisions.md, "Homepage, open points from step 7" (no season sponsors in the old data, short tagline, the dropped "0 лв." fact).

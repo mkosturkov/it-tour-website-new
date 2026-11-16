@@ -6,8 +6,8 @@ namespace ItTour;
 
 use ItTour\Pages\Archive;
 use ItTour\Pages\EventPage;
+use ItTour\Pages\Home;
 use ItTour\Pages\NotFound;
-use ItTour\Pages\Placeholder;
 use ItTour\Pages\SpeakerPage;
 use ItTour\Pages\SpeakersDirectory;
 use ItTour\Pages\TalksLibrary;
@@ -27,7 +27,7 @@ final class App
     {
         $r = new Router();
         if ($site->isMain()) {
-            $r->add('/', fn () => Placeholder::main());
+            $r->add('/', fn () => Home::show());
             $r->add('/archive', fn ($req) => Archive::show($req));
             $r->add('/talks', fn ($req) => TalksLibrary::show($req));
             $r->add('/speakers', fn ($req) => SpeakersDirectory::show($req));

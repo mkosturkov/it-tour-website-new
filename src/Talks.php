@@ -99,6 +99,30 @@ final class Talks
         return [$total, $talks];
     }
 
+    /**
+     * For the homepage: one talk with a video and a still from each of the
+     * latest $editions editions that have one (the first in the programme), newest first.
+     */
+    public static function recentVideos(int $editions = 4): array
+    {
+        $rows = Db::all(
+            self::SELECT . ' WHERE t.id IN (
+                SELECT id FROM (
+                    SELECT t.id, e.date, ROW_NUMBER() OVER (PARTITION BY t.event_id ORDER BY s.starts_at, t.id) AS n
+                    FROM talks t JOIN events e ON e.id = t.event_id LEFT JOIN slots s ON s.talk_id = t.id
+                    WHERE ' . self::VISIBLE . " AND t.video_url <> '' AND t.video_still_media_id IS NOT NULL
+                ) WHERE n = 1 ORDER BY date DESC LIMIT ?
+             ) ORDER BY e.date DESC",
+            [$editions],
+        );
+        $talks = array_map([self::class, 'shape'], $rows);
+        $speakers = self::speakers(array_column($talks, 'id'));
+        foreach ($talks as &$t) {
+            $t['speakers'] = $speakers[$t['id']] ?? [];
+        }
+        return $talks;
+    }
+
     /** Numbers for the library's introduction: public talks, and how many have a recording. */
     public static function counts(): array
     {

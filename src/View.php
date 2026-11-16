@@ -46,8 +46,13 @@ final class View
         if ($page->partial && $req->wantsPartial()) {
             $body = self::render($page->partial, $page->data);
         } else {
-            $content = self::render($page->template, $page->data);
-            $body = self::render('layout', $page->data + ['content' => $content]);
+            $data = $page->data;
+            // The season pop-up on main-site pages; a page can turn it off with 'popup' => null.
+            if ($site->isMain() && !array_key_exists('popup', $data)) {
+                $data['popup'] = Season::popup();
+            }
+            $content = self::render($page->template, $data);
+            $body = self::render('layout', $data + ['content' => $content]);
         }
         $res = new Response($page->status, $body);
         if ($page->partial) {

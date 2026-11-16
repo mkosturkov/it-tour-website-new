@@ -7,9 +7,13 @@
       var open = document.body.classList.toggle('nav-open');
       m.setAttribute('aria-expanded', open);
     }
-    // Close the season pop-up
+    // Close the season pop-up, and keep it closed for the rest of the visit
     var x = e.target.closest('.status .x');
-    if (x) x.closest('.status').classList.add('closed');
+    if (x) {
+      var box = x.closest('.status');
+      box.classList.add('closed');
+      try { sessionStorage.setItem('popup-closed', box.getAttribute('data-popup')); } catch (err) { /* storage blocked */ }
+    }
     // Tab groups: [data-tabs] with buttons [data-tab] and panels [data-panel]
     var t = e.target.closest('[data-tabs] [data-tab]');
     if (t) {
@@ -18,6 +22,14 @@
       g.querySelectorAll('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== t.getAttribute('data-tab'); });
     }
   });
+})();
+
+// The season pop-up stays closed once closed (until it shows something else).
+(function () {
+  var box = document.querySelector('.status[data-popup]');
+  try {
+    if (box && sessionStorage.getItem('popup-closed') === box.getAttribute('data-popup')) box.classList.add('closed');
+  } catch (err) { /* storage blocked: show it */ }
 })();
 
 // Click-to-load embeds (YouTube, Google Maps): [data-embed] becomes an iframe when its

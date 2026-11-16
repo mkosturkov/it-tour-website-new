@@ -7,6 +7,7 @@
  *   $description  meta description
  *   $nav          key of the active menu item (stops, talks, speakers, archive, team)
  *   $canonical    absolute canonical URL
+ *   $popup        season pop-up data (main site, added by View::page), or null
  *   $noindex      true: search engines may follow the links but not index the page
  *   $colour       colour for this page on a city site (an edition's own colour);
  *                 defaults to the city's latest colour
@@ -61,5 +62,8 @@ $classes = $city ? 'city' . (ink_for($colour) !== '#ffffff' ? ' ink-dark' : '') 
 <?= raw($content) ?>
 </main>
 <?= partial('footer') ?>
+<?php if (!empty($popup)): ?>
+<?= partial('status', ['popup' => $popup]) ?>
+<?php endif ?>
 </body>
 </html>

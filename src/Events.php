@@ -9,7 +9,7 @@ use DateTimeImmutable;
 /** Queries about events (editions). Only published events. */
 final class Events
 {
-    private const SELECT = 'SELECT e.*, c.slug AS city_slug, c.name AS city_name, c.domain AS city_domain
+    private const SELECT = 'SELECT e.*, c.slug AS city_slug, c.name AS city_name, c.domain AS city_domain, c.lat AS city_lat, c.lng AS city_lng
                             FROM events e JOIN cities c ON c.id = e.city_id';
 
     /** This season: the published events of the latest year that has any, in date order. */
