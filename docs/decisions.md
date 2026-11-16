@@ -517,3 +517,12 @@ Legend: ✅ decided · ❓ open, to discuss · 🔜 later · 📝 note for later
 - ✅ **Still images for new talks:** when an editor saves a talk with a YouTube link, the server downloads the still once and adds it to the media library. If that fails, the talk still saves, the card shows the edition's colour, and the next save tries again. Editors can upload their own image instead. Until the admin exists, `bin/video-stills` does the same for talks that have a YouTube link but no still.
 - ✅ **Full-day livestream recordings** (2024 onwards, when talks weren't cut into separate videos): each edition page links to its recording ("Запис на целия ден", in parts when the stream was split), and each talk links into the recording at its start time. The start comes from the recording's YouTube chapters when it has them (exact), otherwise from the programme time and the stream's real start time (approximate, usually within a few minutes). Talk pages say when the start is approximate.
 - ✅ **Note for editors:** talks whose video start was worked out from the programme time are marked (`talks.video_start_approx`). The admin must list them so an editor can check each timestamp and correct it, which also clears the mark.
+
+## To resolve after the build (parked)
+
+Things deliberately left for after the coding of the site, so they don't get lost:
+
+- ❓ **Colours and contrast** (2026-11-16): no colour is corrected for contrast, design or editor colours. Review with `bin/contrast-report` and the browser tests' `tests/browser/reports/contrast.txt`.
+- ❓ **Approximate video starts** (2026-11-16): 75 talks link into full-day recordings at a calculated start (`import/video-matches.csv` status `approximate`, `talks.video_start_approx`). Decide how they get checked: by hand in the CSV (how-to in `import/README.md`), by adding chapters on YouTube, or in the admin.
+- ❓ **Video matches to review** (2026-11-16): the `check` and `likely` rows in `import/video-matches.csv` (one known wrong: TarnovoConf 2017 "За стартъпите и погребенията").
+- ❓ **Talks still without a video:** 35 (TarnovoConf 2017 and 2018, RuseConf 2017, and first talks that started before the stream, such as at VarnaConf 2025).
