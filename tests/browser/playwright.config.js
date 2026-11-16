@@ -9,6 +9,7 @@ module.exports = defineConfig({
   testDir: './specs',
   snapshotPathTemplate: '{testDir}/../screenshots/{testFilePath}/{arg}-{projectName}{ext}',
   fullyParallel: true,
+  globalSetup: './global-setup.js',
   reporter: [['list']],
   expect: {
     // Small rendering differences (anti-aliasing) are not changes.

@@ -117,7 +117,10 @@ A running log of how the real site is being built: what was done, why, how, and 
 - Media rows joined into queries use `Media::JOIN_COLUMNS` and `Media::pluck($row, 'photo')`.
 
 **Gotchas:**
-- **Accessibility fixes to the F design** (axe found them): `--dim` darkened from `#7f8899` to `#5f6878` (small grey text was 3:1); text in the accent or city colour now uses `--accent-text`, computed in PHP (`text_colour()`: the colour darkened until 4.6:1 against `#e8ecf5`), because light city colours such as 2024 orange `#E09D4E` were 3.5:1. `<dl>` may only contain `dt`/`dd` groups, so the map button sits after it.
+- **Accessibility fixes to the F design** (axe found them): `--dim` darkened from `#7f8899` to `#5f6878` (small grey text was 3:1, a design colour, not an editor's). `<dl>` may only contain `dt`/`dd` groups, so the map button sits after it.
+- **Colours chosen by editors are not corrected** (the user's instruction, 2026-11-16): city/edition colours and the hub accent are used as they are, and contrast problems are logged for review instead. An automatic darkening (`text_colour()`) was tried and removed. Two logs:
+  - `bin/contrast-report` lists every edition colour and the accent with their contrast as link text (`color-mix(70%, #111)`, as site.css does) on both page grounds and as a button background. On 2026-11-16: 25 of 63 colours are below 4.5:1 somewhere (for example VarnaConf 2026 `#6dc4aa` text 3.2:1, TarnovoConf 2015 `#ffffff`).
+  - The browser tests' axe check doesn't fail on `color-contrast`; it writes those findings to `tests/browser/reports/contrast.txt` (not committed), and `bin/test` prints how many there are.
 - Lazy images with `height: auto` collapse to zero until loaded (logos were "hidden" and the page jumped). Sponsor logos have a fixed height.
 - `mb_ucfirst()` (PHP 8.4+) capitalises Bulgarian dates ("Събота, 17 август 2024").
 - PHP page tests (`tests/unit/PagesTest.php`) cover data the frozen database doesn't have: each test copies the test database, changes it with SQL, and calls `App::handle()` in-process (hidden after party, unpublished programme/edition/speaker, escaping).

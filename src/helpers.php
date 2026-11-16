@@ -120,27 +120,6 @@ function contrast(string $a, string $b): float
     return (max($x, $y) + 0.05) / (min($x, $y) + 0.05);
 }
 
-/**
- * The colour darkened just enough to be readable as text on the site's light
- * grounds (4.5:1 against the darkest one, #e8ecf5), for links and labels in
- * a city or accent colour.
- */
-function text_colour(string $hex): string
-{
-    $hex = ltrim(css_colour($hex), '#');
-    if (strlen($hex) === 3) {
-        $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
-    }
-    $rgb = array_map('hexdec', str_split($hex, 2));
-    for ($k = 1.0; $k > 0; $k -= 0.02) {
-        $out = '#' . implode('', array_map(fn ($c) => sprintf('%02x', (int) round($c * $k)), $rgb));
-        if (contrast($out, '#e8ecf5') >= 4.6) {
-            return $out;
-        }
-    }
-    return '#1d1d1d';
-}
-
 /** A safe CSS colour value, or the fallback. */
 function css_colour(?string $hex, string $fallback = '#375992'): string
 {

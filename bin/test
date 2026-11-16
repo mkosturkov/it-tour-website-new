@@ -68,5 +68,10 @@ if (!in_array('--php', $args, true)) {
     }
     $pass = ($i = array_search('--', $args, true)) === false ? [] : array_slice($args, $i + 1);
     passthru('cd ' . escapeshellarg("$root/tests/browser") . ' && npx playwright test ' . implode(' ', array_map('escapeshellarg', $pass)), $browserCode);
+    $report = "$root/tests/browser/reports/contrast.txt";
+    if (is_file($report)) {
+        $n = count(file($report, FILE_SKIP_EMPTY_LINES));
+        echo "Colour contrast: $n element(s) below WCAG AA, listed in tests/browser/reports/contrast.txt (not a failure; editors choose colours).\n";
+    }
 }
 exit($failed || $checkCode || $browserCode ? 1 : 0);

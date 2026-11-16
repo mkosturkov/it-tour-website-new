@@ -28,8 +28,7 @@ if (!$site->isMain()) {
 $colour = css_colour($colour ?? $city['colour'] ?? null, css_colour(Settings::get('accent')));
 $style = ($city
     ? '--c:' . $colour . ';--c-ink:' . ink_for($colour)
-    : '--accent:' . $colour . ';--accent-ink:' . ink_for($colour))
-    . ';--accent-text:' . text_colour($colour);
+    : '--accent:' . $colour . ';--accent-ink:' . ink_for($colour));
 $classes = $city ? 'city' . (ink_for($colour) !== '#ffffff' ? ' ink-dark' : '') : 'hub';
 ?>
 <!doctype html>

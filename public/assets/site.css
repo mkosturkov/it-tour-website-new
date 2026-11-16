@@ -450,8 +450,9 @@ section.tight { padding: 48px 0; }
 
 /* ===== Version F brand layer: light surfaces, white cards with soft shadows, city colour bar,
    dotted wave textures, round photos with white rings, ribbons and the code-comment info block ===== */
-/* --accent-text (accent colour dark enough for text on light grounds) is computed in PHP and set on <html>. */
-body { font-size: 16px; }
+/* Text in the accent or city colour. Editors choose these colours; contrast problems are reported
+   (bin/contrast-report, and the browser tests' contrast report), not corrected automatically. */
+body { font-size: 16px; --accent-text: color-mix(in srgb, var(--accent) 70%, #111); }
 .more, .slot .act, .prose a:not(.btn), .state-chip { color: var(--accent-text); }
 .speakers { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
 h1, h2, h3 { font-weight: 800; letter-spacing: -0.015em; }

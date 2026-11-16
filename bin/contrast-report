@@ -1,0 +1,55 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Reports how readable the colours editors chose are (each edition's colour
+ * and the hub accent). The site does not correct these colours; this report
+ * is for people to review. WCAG AA needs 4.5:1 for normal text.
+ *
+ * For each colour:
+ *  - text:   the colour as text on the lightest and darkest page grounds,
+ *            mixed 70% with #111 as site.css does for links and labels
+ *  - button: the text colour the site puts on the colour (near-black or white)
+ *
+ *   bin/contrast-report          problems only
+ *   bin/contrast-report --all    every colour
+ */
+
+declare(strict_types=1);
+
+require dirname(__DIR__) . '/src/autoload.php';
+
+use ItTour\Db;
+use ItTour\Settings;
+
+$all = in_array('--all', $argv, true);
+
+/** color-mix(in srgb, $hex 70%, #111) */
+function mix70(string $hex): string
+{
+    $hex = ltrim(css_colour($hex), '#');
+    if (strlen($hex) === 3) {
+        $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+    }
+    return '#' . implode('', array_map(fn ($c) => sprintf('%02x', (int) round(hexdec($c) * 0.7 + 0x11 * 0.3)), str_split($hex, 2)));
+}
+
+$rows = [['Hub accent (settings)', Settings::get('accent')]];
+foreach (Db::all('SELECT name, colour FROM events WHERE published = 1 ORDER BY year DESC, date') as $e) {
+    $rows[] = [$e['name'], $e['colour']];
+}
+
+$problems = 0;
+printf("%-24s %-8s %8s %8s %8s  %s\n", 'Where', 'Colour', 'text/bg', 'text/bg2', 'button', '');
+foreach ($rows as [$name, $colour]) {
+    $c = css_colour($colour);
+    $text = mix70($c);
+    $onBg = contrast($text, '#e8ecf5');
+    $onBg2 = contrast($text, '#f4f6fb');
+    $button = contrast(ink_for($c), strlen($c) === 4 ? '#' . str_repeat($c[1], 2) . str_repeat($c[2], 2) . str_repeat($c[3], 2) : $c);
+    $bad = min($onBg, $onBg2, $button) < 4.5;
+    $problems += $bad ? 1 : 0;
+    if ($bad || $all) {
+        printf("%-24s %-8s %8.2f %8.2f %8.2f  %s\n", $name, $c, $onBg, $onBg2, $button, $bad ? 'below 4.5:1' : '');
+    }
+}
+echo "\n$problems of " . count($rows) . " colours have contrast below 4.5:1 somewhere.\n";
