@@ -449,7 +449,9 @@ foreach ($editions as [$year, $host, $file]) {
             continue;
         }
         $isBreak = (bool) preg_match('/^(кафе|обяд|обедна|почивка|break|coffee|lunch)/iu', $item['title']);
-        $isTalk = $item['speakers'] || (!$isBreak && ($item['video'] || $item['slides'] || $item['description']));
+        // Openings and closings are short organisational slots, never talks, even with a video.
+        $isFormal = (bool) preg_match('/^(откриване|закриване|opening|closing)\b/iu', $item['title']);
+        $isTalk = $item['speakers'] || (!$isBreak && !$isFormal && ($item['video'] || $item['slides'] || $item['description']));
         $talkId = null;
         if ($isTalk) {
             $names = [];
