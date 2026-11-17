@@ -300,3 +300,9 @@ Discussed with the user: computing the Latin form during each search (no stored 
 - The media library stores identical files once and keeps only the first address, so 4 old addresses whose file is identical to another edition's image (BurgasConf's logo 38, VarnaConf's banner 10) don't redirect. Listed as exceptions in `tests/old-addresses.txt`; recording every old address per media item would fix it if it ever matters.
 
 **Open:** if the galleries are imported, extend the rule to them (decisions.md).
+
+## 2026-11-17 · Fix: speaker directory city + year filter
+
+**What:** `/speakers?city=ruse&year=2026` listed anyone who had spoken in Ruse in any year and anywhere in 2026, so it showed more speakers than the RuseConf 2026 page. `Speakers::directory()` now requires the city and the year to hold for the same talk (`HAVING SUM(c.slug = ? AND e.year = ?) > 0`). Found by the user in the first review.
+
+**Test:** `PagesTest` "speakers filtered by city and year are the speakers of that edition" compares the directory with the edition's speakers for RuseConf 2026 and VarnaConf 2025; it fails on the old query.

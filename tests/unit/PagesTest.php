@@ -111,6 +111,29 @@ return [
         same(404, page_with('', $main, '/speakers?page=0')->status);
         same(200, page_with('', $main, '/talks?q=nothing-matches-this')->status);
     },
+    'lists: speakers filtered by city and year are the speakers of that edition' => function () {
+        putenv('IT_TOUR_DB=' . APP_ROOT . '/data/test/site.sqlite');
+        Db::close();
+        try {
+            $edition = 'SELECT DISTINCT ts.speaker_id FROM talk_speakers ts JOIN talks t ON t.id = ts.talk_id
+                JOIN events e ON e.id = t.event_id JOIN cities c ON c.id = e.city_id
+                JOIN speakers s ON s.id = ts.speaker_id
+                WHERE c.slug = ? AND e.year = ? AND s.published = 1 AND ' . ItTour\Talks::VISIBLE;
+            foreach ([['ruse', 2026], ['varna', 2025]] as [$city, $year]) {
+                $want = array_map('intval', array_column(Db::all($edition, [$city, $year]), 'speaker_id'));
+                [$total, $rows] = ItTour\Speakers::directory(['city' => $city, 'year' => $year], 0, 1000);
+                $got = array_map('intval', array_column($rows, 'id'));
+                sort($want);
+                sort($got);
+                ok($want !== [], "no speakers at $city $year in the test data");
+                same($want, $got);
+                same(count($want), $total);
+            }
+        } finally {
+            Db::close();
+            putenv('IT_TOUR_DB');
+        }
+    },
     'lists: unpublished talks and speakers are left out' => function () use ($main) {
         $res = page_with('UPDATE speakers SET published = 0 WHERE id = 15', $main, '/speakers?q=nakov');
         ok(!str_contains($res->body, 'Светлин Наков'), 'unpublished speaker listed');

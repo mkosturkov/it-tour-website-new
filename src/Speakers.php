@@ -34,16 +34,18 @@ final class Speakers
     public static function directory(array $f, int $offset, int $limit): array
     {
         [$search, $params] = Text::searchWhere('s.search_text', (string) ($f['q'] ?? ''));
-        $having = [];
+        // City and year must hold for the same talk: "Ruse 2026" means spoke at
+        // RuseConf 2026, not "spoke in Ruse once, and somewhere in 2026".
+        $match = [];
         if (!empty($f['city'])) {
-            $having[] = 'SUM(c.slug = ?) > 0';
+            $match[] = 'c.slug = ?';
             $params[] = $f['city'];
         }
         if (!empty($f['year'])) {
-            $having[] = 'SUM(e.year = ?) > 0';
+            $match[] = 'e.year = ?';
             $params[] = (int) $f['year'];
         }
-        $having = $having ? 'HAVING ' . implode(' AND ', $having) : '';
+        $having = $match ? 'HAVING SUM(' . implode(' AND ', $match) . ') > 0' : '';
         $sql = 'SELECT s.id, s.name, ' . Media::JOIN_COLUMNS . ', COUNT(DISTINCT t.id) AS talk_count
             FROM speakers s
             JOIN talk_speakers ts ON ts.speaker_id = s.id
