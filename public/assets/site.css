@@ -718,7 +718,8 @@ section.list-page { padding-top: 0; }
 .talk-rows .end.more { color: var(--accent-text); font-weight: 600; }
 .pager { flex-wrap: wrap; align-items: center; }
 .pager .gap { color: var(--dim); padding: 0 2px; }
-.list-page .speakers { margin-bottom: 8px; align-items: start; }   /* names line up when the city lines differ in length */
+.list-page .speakers { margin-bottom: 8px; align-items: start;   /* names line up when the city lines differ in length */
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }   /* one result keeps the usual card size */
 
 /* Homepage */
 .home-videos { grid-template-columns: repeat(4, minmax(0, 1fr)); }

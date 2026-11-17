@@ -319,3 +319,9 @@ Discussed with the user: computing the Latin form during each search (no stored 
 - On a demo installation, links to the real it-tour.bg would count as external; nothing links there today.
 
 **Test:** `PagesTest` "links to other websites open in a new tab…" (the function on sample tags, and a real edition page's Google Maps and archive links).
+
+## 2026-11-17 · Fix: one speaker in the results stretched across the page
+
+**What:** the speaker grid is `repeat(auto-fit, minmax(170px, 1fr))`, so with one or two results the cards grew to fill the row, and the photo (78% of the card) became huge. On the directory (`.list-page .speakers`) it is now `auto-fill`, which keeps the empty columns, so cards keep their usual size. Event pages keep `auto-fit` (few speakers there spread across the row by design). Found by the user in the first review.
+
+**Test:** the speaker directory browser test compares the photo width of a single result with the full list's (it was 936 px instead of 144 px on desktop).

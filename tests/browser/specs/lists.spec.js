@@ -109,6 +109,7 @@ test('speaker directory: alphabetical, cities, filters, search by name', async (
   await expect(page.locator('#main-nav a[aria-current=page]')).toHaveText('Лектори');
   await expect(page.locator('.count-line')).toHaveText('221 лектори · страница 1 от 10');
   await expect(page.locator('.speakers .speaker')).toHaveCount(24);
+  const usualWidth = (await page.locator('.speaker .face').first().boundingBox()).width;
   const names = await page.locator('.speaker b').allTextContents();
   expect(names).toEqual([...names].sort());
   await page.getByLabel('Година').selectOption('2024');
@@ -121,6 +122,9 @@ test('speaker directory: alphabetical, cities, filters, search by name', async (
   const nakov = page.locator('.speaker', { hasText: 'Светлин Наков' });
   await expect(nakov).toContainText('11 лекции · Пловдив, Велико Търново, Бургас, Варна, Русе');
   await expect(nakov).toHaveAttribute('href', main('/speakers/15'));
+  // A single result keeps the usual card size instead of stretching across the row.
+  await expect(page.locator('.speakers .speaker')).toHaveCount(1);
+  expect((await nakov.locator('.face').boundingBox()).width).toBeCloseTo(usualWidth, 0);
   await page.goto(main('/speakers'));
   await expectNoSidewaysScroll(page);
   await expectAccessible(page);
