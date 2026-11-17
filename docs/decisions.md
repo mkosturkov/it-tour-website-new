@@ -543,6 +543,6 @@ Things deliberately left for after the coding of the site, so they don't get los
   - **Preview images are WebP** (our media library only makes WebP), except the default JPEG. Facebook, LinkedIn, X, Telegram, Slack and Discord show WebP; Viber is unclear. Check real previews after launch; if one fails, the library can also make a JPEG for sharing.
   - **`llms.txt` is in English** (aimed at AI tools), with names and dates as on the site.
 - ❓ **From the first review** (2026-11-17), notes from the user:
-  - **Links to other websites open in a new tab:** every link to a site that isn't one of the IT Tour sites (YouTube, Google Maps, speakers' links, sponsors…). Links between it-tour.bg and the city sites stay in the same tab.
+  - ✅ **Links to other websites open in a new tab** (done 2026-11-17): every link to a site that isn't one of the IT Tour sites (YouTube, Google Maps, speakers' links, sponsors, social profiles, the newsletter…). Links between it-tour.bg and the city sites stay in the same tab.
   - **Bios and talk descriptions mixed up:** Ivan Vankov's bio is a talk summary. Go through all speaker bios and check none is a talk summary, and all talk descriptions and check none is a bio.
   - **Search results with one speaker:** when the speaker search finds a single speaker, the photo is stretched to full width.

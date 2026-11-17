@@ -54,11 +54,34 @@ final class View
             $content = self::render($page->template, $data);
             $body = self::render('layout', $data + ['content' => $content]);
         }
-        $res = new Response($page->status, $body);
+        $res = new Response($page->status, self::externalLinks($body));
         if ($page->partial) {
             // The same address gives the whole page or only its results; caches must keep both.
             $res->headers['Vary'] = 'X-Partial';
         }
         return $res;
+    }
+
+    /**
+     * Links to other websites (YouTube, Google Maps, speakers' and sponsors'
+     * sites…) open in a new tab; links between the IT Tour sites don't.
+     * Done here on the finished HTML, so no template can forget it.
+     * Modern browsers imply rel="noopener" for target="_blank".
+     */
+    public static function externalLinks(string $html): string
+    {
+        return preg_replace_callback(
+            '~<a\b[^>]*>~',
+            static function (array $m): string {
+                $tag = $m[0];
+                if (str_contains($tag, ' target=') || !preg_match('~\shref="(https?://[^"/?#]+)~i', $tag, $h)) {
+                    return $tag;
+                }
+                $host = (string) parse_url(html_entity_decode($h[1]), PHP_URL_HOST);
+                $port = parse_url(html_entity_decode($h[1]), PHP_URL_PORT);
+                return Site::fromHost($host . ($port ? ":$port" : '')) ? $tag : substr($tag, 0, -1) . ' target="_blank">';
+            },
+            $html,
+        );
     }
 }

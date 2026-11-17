@@ -306,3 +306,16 @@ Discussed with the user: computing the Latin form during each search (no stored 
 **What:** `/speakers?city=ruse&year=2026` listed anyone who had spoken in Ruse in any year and anywhere in 2026, so it showed more speakers than the RuseConf 2026 page. `Speakers::directory()` now requires the city and the year to hold for the same talk (`HAVING SUM(c.slug = ? AND e.year = ?) > 0`). Found by the user in the first review.
 
 **Test:** `PagesTest` "speakers filtered by city and year are the speakers of that edition" compares the directory with the edition's speakers for RuseConf 2026 and VarnaConf 2025; it fails on the old query.
+
+## 2026-11-17 · Links to other websites open in a new tab
+
+**What:** `View::externalLinks()` runs on every rendered page (and on the search results block): an `<a>` whose `href` is an absolute http(s) address on a host that isn't one of ours (`Site::fromHost()` is null) gets `target="_blank"`. Links between it-tour.bg and the city sites, relative links and `mailto:` are left alone; a link that already has a `target` keeps it. Asked for by the user in the first review.
+
+**Why here and not in the templates:** external links come from about 15 places (videos, recordings, Google Maps, Facebook, speakers' links, sponsors, footer social links, newsletter, stream address), and new templates would have to remember it. One pass on the finished HTML covers them all. It works on our own output, where `href` is always double-quoted and escaped by `e()`.
+
+**Gotchas:**
+- No `rel="noopener"`: browsers imply it for `target="_blank"`, and adding it would mean merging with existing `rel` values (`me`, `nofollow`).
+- The embed's "▶ Гледай тук" link also gets the target, but its click handler cancels navigation and loads the player in the page, so nothing changes; without JavaScript it opens YouTube in a new tab.
+- On a demo installation, links to the real it-tour.bg would count as external; nothing links there today.
+
+**Test:** `PagesTest` "links to other websites open in a new tab…" (the function on sample tags, and a real edition page's Google Maps and archive links).

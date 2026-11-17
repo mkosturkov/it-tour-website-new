@@ -111,6 +111,27 @@ return [
         same(404, page_with('', $main, '/speakers?page=0')->status);
         same(200, page_with('', $main, '/talks?q=nothing-matches-this')->status);
     },
+    'links to other websites open in a new tab, links between IT Tour sites do not' => function () use ($main, $varna) {
+        $html = '<a href="https://www.youtube.com/watch?v=x&amp;t=5" class="b">'
+            . '<a href="' . ItTour\Site::mainUrl('/talks') . '">'
+            . '<a class="c" href="http://' . $varna . '/">'
+            . '<a href="/speakers">'
+            . '<a href="mailto:a@b.bg">'
+            . '<a href="https://maps.google.com/" target="_self">';
+        same(
+            '<a href="https://www.youtube.com/watch?v=x&amp;t=5" class="b" target="_blank">'
+            . '<a href="' . ItTour\Site::mainUrl('/talks') . '">'
+            . '<a class="c" href="http://' . $varna . '/">'
+            . '<a href="/speakers">'
+            . '<a href="mailto:a@b.bg">'
+            . '<a href="https://maps.google.com/" target="_self">',
+            ItTour\View::externalLinks($html),
+        );
+        // On a real page: the edition's Google Maps link opens a new tab, the archive link doesn't.
+        $body = page_with('', $varna, '/archive/2025')->body;
+        ok((bool) preg_match('~<a [^>]*href="https://www\.google\.com/maps[^"]*"[^>]*target="_blank"~', $body), 'Google Maps link without target');
+        ok(!preg_match('~<a [^>]*href="[^"]*/archive[^"]*"[^>]*target=~', $body), 'archive link opens a new tab');
+    },
     'lists: speakers filtered by city and year are the speakers of that edition' => function () {
         putenv('IT_TOUR_DB=' . APP_ROOT . '/data/test/site.sqlite');
         Db::close();
